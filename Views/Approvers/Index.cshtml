@@ -1,0 +1,57 @@
+﻿
+
+@{
+    ViewBag.Title = "Approvers";
+}
+
+<div id="approversTable" style="width: 100%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#approversTable').jtable({
+            title: 'Approvers',
+            sorting: false,
+            selecting: false,
+            multiselect: false, 
+            selectingCheckboxes: false, 
+            actions: {
+                listAction: 'Approvers/GetAllApprovers'
+            },
+            fields: {
+                IpRequestorId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: false
+                },
+                EmpID: {
+                    title: 'Emp Id'
+                }
+                ,FullName: {
+                    title: 'Name'
+                }
+                ,Email: {
+                    title: 'Email'
+                }
+                ,JobTitle: {
+                    title: 'Title'
+                }
+                ,DeptName: {
+                    title: 'Dept'
+                }
+                ,NumberOfPendingReq: {
+                    title: 'Count'
+                }
+                ,RequestDetailsLink: {
+                    title: '',
+                    width: '15%'
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#approversTable').jtable('load');
+
+    });
+
+</script>

@@ -1,0 +1,265 @@
+﻿@model InformationProtection.Models.RemoteAccessMdlData
+
+@{
+    ViewBag.Title = "New Remote Access Request";
+}
+
+<h2 class="RenownHeader1">REMOTE ACCESS FORM - INTERNAL</h2>
+
+@using (Html.BeginForm())
+{
+
+    @Html.Hidden("EmpID", ViewData["EmpID"]);
+    
+    <fieldset style="width: 96%">
+        <legend>Remote Access Request</legend>
+                <table style="width: 98%">
+            <tr style="background-color: #ffccff">
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+                </td>
+
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (no validation performed)<input type="submit" name="submitButton" value="Save" />
+                </td>
+            </tr>
+            <tr style="height: 25px"></tr>
+        </table>
+            @Html.Hidden("EmpID", ViewData["EmpID"])
+            @Html.ValidationSummary()
+        <table class="Table1Format">
+            <tr style="width: 98%">
+                <td class="Request" colspan="4">This form is a request for 
+                   This form is a request for remote access to internal Renown Health applications of systems for an employee who requires this
+                   access to fulfill their professional responsibilities on behalf of Renown. 
+                   In order to obtain remote access, the empoyee must complete this form, have it approved by their immediate supervisor, 
+                   and then submit it to the Renown Health CFO, Information Protection, and Information Resources for review/action. 
+                   All access is subject to Renown Health polices and procedures. Thank you.
+                </td>
+            </tr>
+             <tr>
+                <td colspan="4">
+                    <div class="editor-label">
+                        @Html.CheckBox("NonExemptEmployee")
+
+                        I am a non-exempt (hourly) Renown Health employee
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="editor-label">
+                        @Html.CheckBox("AccessToServer")
+                        I need access to:         
+                        Servers (Please specify IP Address(es) AND Server name(s))
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: left">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.IpAddressAndHostName, new { style = "width:500px;" })
+                        @Html.ValidationMessageFor(model => model.IpAddressAndHostName, "*")
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="editor-label">
+                        @Html.CheckBox("AccessToApp")
+                        I need access to:         
+                        Applications (Please specify the name(s) of the executable file to be used)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: left">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.AppNames, new { style = "width:500px;" })
+                        @Html.ValidationMessageFor(model => model.AppNames, "*")
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="editor-label">
+                        @Html.CheckBox("AccessToLanShares")
+                        I need access to:         
+                        LAN Shares (Please specify Share name(s), not just drive letter)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: left">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LanShares, new { style = "width:500px;" })
+                        @Html.ValidationMessageFor(model => model.LanShares, "*")
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4" style="width: 200px; text-align: left">
+                    <div class="editor-label">
+                        @Html.CheckBox("AccessToMyWorkStation")
+                        My Workstation (please specify the full computer name or S/N)
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: left">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ComputerName, new { style = "width:500px;" })
+                        @Html.ValidationMessageFor(model => model.ComputerName, "*")
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="width: 200px; text-align: left">
+                    <div class="editor-label">
+                        @Html.CheckBox("ConnectFromHome")
+                        I need this access from my home, on the road and elsewhere.
+                    </div>
+                </td>
+
+            </tr>
+
+
+
+            <tr>
+                <td colspan="1" style="width: 200px; text-align: left">
+                    <div class="editor-label">
+                        @Html.DisplayNameFor(model => model.WorkStationOS)
+                    </div>
+                </td>
+
+                <td colspan="3" style="width: 200px; text-align: left">
+                    <div class="editor-label">
+                        @Html.TextBoxFor(model => model.WorkStationOS, new { style = "width:300px;" })
+                    </div>
+                </td>
+
+            </tr>
+
+
+
+        </table>
+
+        <table class="Table1Format">
+
+            <tr>
+                <td style="text-align: left" colspan="2">
+                    @Html.ValidationMessageFor(model => model.RemoteConnectionType, "*")
+                    @{
+                        bool cableType = false;
+                        bool dslType = false;
+                        bool dialUpType = false;
+                        if (Model.RemoteConnectionType != null)
+                        {
+                            cableType = Model.RemoteConnectionType.ToLower() == "cable";
+                            dslType = Model.RemoteConnectionType.ToLower() == "dsl";
+                            dialUpType = Model.RemoteConnectionType.ToLower() == "dialup";
+                        }
+                    }
+                    <strong>My Remote Connection is:
+                                    <br />
+                    </strong>
+                    @Html.Label("Cable:")
+                    @Html.RadioButton("RadBtnConnectionType", "Cable", cableType)
+                    @Html.Label("DSL:")
+                    @Html.RadioButton("RadBtnConnectionType", "DSL", dslType)
+                    @Html.Label("DialUp:")
+                    @Html.RadioButton("RadBtnConnectionType", "DialUp", dialUpType)
+
+                </td>
+            </tr>
+
+
+
+        </table>
+
+
+
+
+        <table class="Table1Format">
+
+            <tr>
+                <td class="Request" colspan="4">
+                    Please specify the job duties that require you to have remote access to the 
+                        listed applications/systems, 
+                        how this access would support your work, 
+                        and how your work would be impacted without it.
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: antiquewhite; text-align: left; width: 500px" colspan="4">
+                    @Html.TextAreaFor(model => model.JobDuties, new { style = "width:700px" })
+                    @Html.ValidationMessageFor(model => model.JobDuties, "*")
+                </td>
+            </tr>
+
+        </table>
+        <table class="Request" style="width:700px">
+
+            <tr>
+                <td  colspan="4">
+                    @Html.CheckBoxFor(model => model.SecuredAck1)
+                    @Html.ValidationMessageFor(model => model.SecuredAck1, "*")
+                    @Html.DisplayNameFor(model => model.SecuredAck1)
+                </td>
+            </tr>
+            <tr style="border: groove">
+                <td>
+                  @Html.CheckBoxFor(model => model.SecuredAck2)
+                     @Html.ValidationMessageFor(model => model.SecuredAck2, "*")
+                     @Html.DisplayNameFor(model => model.SecuredAck2)
+                Current patches
+                <td>
+                    @Html.CheckBox("SecuredAck3")
+                     @Html.ValidationMessageFor(model => model.SecuredAck3, "*")
+                     @Html.DisplayNameFor(model => model.SecuredAck3)
+                </td>
+                <td>
+                    @Html.CheckBoxFor(model => model.SecuredAck4)
+                     @Html.ValidationMessageFor(model => model.SecuredAck4, "*")
+                     @Html.DisplayNameFor(model => model.SecuredAck4)
+                </td>
+            </tr>
+
+        </table>
+        <table style="width: 100%">
+            <tr>
+                <td colspan="2" style="border: groove">
+                    <table class="box1">
+                        <tr>
+                            <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                                @Html.CheckBox("SecuredAck5")
+                                 @Html.ValidationMessageFor(model => model.SecuredAck5, "*")
+                                I verify that everything written herein is true to the best of my knowledge. 
+                                I realize that remote access to Renown systems is monitored and is subject to 
+                                Renown’s policies and procedures concerning professional use of computers, information systems, 
+                                Information assets and RENOWN.IRP.130 Remote Access Policy.
+                                <strong>RENOWN.IRP.130 Remote Access Policy.</strong>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="editor-label">
+                                    @Html.DisplayNameFor(model => model.EmployeeSignature)
+                                </div>
+                            </td>
+                            <td>
+                                <div class="editor-label">
+                                    @Html.TextBoxFor(model => model.EmployeeSignature, new { style = "width:300px" })
+                                    @Html.ValidationMessageFor(model => model.EmployeeSignature, "*")
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+            
+    </fieldset> 
+    
+}
+

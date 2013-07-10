@@ -1,0 +1,13 @@
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\JPR.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\JPR.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\WMC.Core.DataProvider2008.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\WMC.Core.Employees.Busobj2008.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\WMC.Core.Employees.DataProvider2008.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\WMC.Core.Util.NativeWrapper2008.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\WMC.Core.DataProvider2008.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\WMC.Core.Employees.Busobj2008.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\WMC.Core.Employees.DataProvider2008.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\bin\Release\WMC.Core.Util.NativeWrapper2008.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\obj\Release\JPR.csprojResolveAssemblyReference.cache
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\obj\Release\JPR.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\Core\JPR\JPR\obj\Release\JPR.pdb

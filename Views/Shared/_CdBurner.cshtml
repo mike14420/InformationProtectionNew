@@ -1,0 +1,58 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+@{
+    ViewBag.Title = "LapTop Request";
+}
+
+    <div id="CdBurnerReqTable" style="width: 98%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var EmpId = $("#EmpId").val();
+        var RequestorId = $("#RequestorId").val();
+        //Prepare jtable plugin
+        $('#CdBurnerReqTable').jtable({
+            title: 'Cd Burner Request',
+            sorting: false,
+            selecting: false, //Enable selecting
+            multiselect: false, //Allow multiple selecting
+            selectingCheckboxes: false, //Show checkboxes on first column
+            actions: {
+                listAction: 'UsersView/GetCdDvdBurnerRequest?EmpId=' + EmpId
+            },
+            fields: {
+                CdburnerDeviceId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true,
+                    title: 'device id'
+                }, 
+                TypeOfData: {
+                    title: 'Type of'
+                },
+                SerialNumber: {
+                    title: 'Serial Num'
+                },
+                ComputerLocation: {
+                    title: 'Computer Loc'
+                },
+                MediaStorLocation: {
+                    title: 'Media Loc'
+                },
+                RequestDetailsLink: {
+                    title: ''
+                },
+                RequestEditLink: {
+                    title: ''
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#CdBurnerReqTable').jtable('load');
+
+    });
+
+</script>
+ @Html.ActionLink("Create Cd/DVD Burner Request", "Create", "CdDvdRequest", new  { EmpID =  Model.EmpID }, null)

@@ -1,0 +1,66 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+
+@using (Html.BeginForm("Details", "Requestor", new {EmpID=Model.EmpID})) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Employee Information</legend>
+
+            <table class="Table1Format">
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.EmpID)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.EmpID)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.FullName)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.JobTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.JobTitle)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.DeptName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.DeptName)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.DeptID)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.DeptID)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </td>
+        </tr>
+    </table>
+            @Html.ActionLink("Edit", "Edit", "Requestor",  new { EmpID=Model.EmpID }, null)
+    </fieldset>
+}
+

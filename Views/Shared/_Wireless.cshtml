@@ -1,0 +1,62 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+@{
+    ViewBag.Title = "Wireless Request";
+}
+
+
+    <div id="WirelessTable" style="width: 100%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var EmpId = $("#EmpId").val();
+        var RequestorId = $("#RequestorId").val();
+        //Prepare jtable plugin
+        $('#WirelessTable').jtable({
+            title: 'Wireless Request',
+            sorting: false,
+            selecting: false, //Enable selecting
+            multiselect: false, //Allow multiple selecting
+            selectingCheckboxes: false, //Show checkboxes on first column
+            actions: {
+                listAction: 'UsersView/GetWirelessRequest?EmpId=' + EmpId
+            },
+            fields: {
+                WirelessDeviceId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true,
+                    title: 'Device Id'
+                },
+                Model: {
+                    title: 'Model'
+                }, 
+                SerialNumber: {
+                    title: 'Serial Num'
+                },
+                RenownOwnedType: {
+                    title: 'Type'
+                },       
+                SecuredAck: {
+                    title: 'Secured'
+                },
+                SecurityAck: {
+                    title: 'Security'
+                },
+                RequestDetailsLink: {
+                    title: ''
+                },
+                RequestEditLink: {
+                    title: ''
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#WirelessTable').jtable('load');
+
+    });
+
+</script>
+ @Html.ActionLink("Create Wireless Use Request", "Create", "WirelessRequest", new  { EmpID =  Model.EmpID }, null)

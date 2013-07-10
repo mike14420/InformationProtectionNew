@@ -1,0 +1,215 @@
+﻿@model InformationProtection.Models.WirelessMdlData
+
+<fieldset style="width: 96%">
+    <legend>Wireless RequestRequest:@Html.DisplayFor(model => model.WirelessDeviceId)</legend>
+
+    <table class="Table1Format">
+        <tr style="width: 98%">
+            <td class="Request" colspan="4">This form is to request and utilize a 
+               This form is to request and utilize a 
+               <strong><u>Renown-provided wireless Internet device</u></strong> 
+               for a Health employee who requires this equipment to fufill his/her professional responsibilities on behalf of Renown. 
+               To obtain a renow Health provided wireless Internet device for business use, the employee must complete this form, 
+               have it approved by his/her management, the Renown Health, Chief Financial Officer, Information Protection,
+               and Chief Information Officer. Once all approvals have been received, the document will be contained in the employee's HR file and
+               a copy resident in the immediate supervisor's employee file. 
+               All access is subject to Renown Health polices and procedures. Thank you.
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Model)
+                </div>
+            </td>
+            <td colspan="1" style="text-align: left">
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Model)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Vendor)
+                </div>
+            </td>
+            <td colspan="1" style="text-align: left">
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Vendor)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.SerialNumber)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.SerialNumber)
+                </div>
+            </td>
+        </tr>
+        <tr style="width: 98%">
+            <td colspan="4" style="text-align: left; border: groove">
+                <table class="box">
+                    <tr>
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="4">
+                            <strong>Business justification: </strong>
+                            Please specify the job duties that require wireless internet use, 
+                                how this access will support your work, 
+                                and how your work will be impacted without it.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center" colspan="4">
+                            <strong>@Html.DisplayNameFor(model => model.RenownOwnedType) :</strong>
+                            @Html.DisplayFor(model => model.RenownOwnedType)
+
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="text-align: left" colspan="4">
+                            <strong>Justification:</strong>
+                            @Html.DisplayFor(model => model.BusJustification, new { style = "width:500px" })
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left" colspan="4">
+                            <strong>Secured Physical Location of Laptop:</strong>
+                            @Html.DisplayFor(model => model.PhysLocation, new { style = "width:500px" })
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%">
+        <tr>
+            <td colspan="2" style="border: groove">
+                <table class="box1">
+                    <tr>
+                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                            @Html.DisplayFor(model => model.SecuredAck1)
+
+                            I verify that everything written 
+                               herein is true to the best of my knowledge. 
+                                I realize that wireless Internet device use and access to Renown Health computer systems and information assets are a privilege and are monitored and subject to 
+                                Renown Health’s policies and procedures concerning professional 
+                                use of computers and information systems, and 
+                                <strong>RENOWN.IRP.210 Mobile Device Usage Policy</strong>.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                            @Html.DisplayFor(model => model.SecuredAck2)
+
+                            I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
+                               Laptop usage. 
+                               In addition, this action may occur with Renown Health employment termination.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                            @Html.DisplayFor(model => model.SecuredAck3)
+                            @*<asp:checkbox id="Chk_ack3" runat="server" />*@
+                            I understand I am responsible for: 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10px"></td>
+                        <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                            @Html.DisplayFor(model => model.SecuredAck4)
+                            Logical security </td>
+
+                        <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                            @Html.DisplayFor(model => model.SecuredAck5)
+                            Physical security</td>
+
+                        <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                            @Html.DisplayFor(model => model.SecuredAck6)
+                            Immediate Notification: loss/theft</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+
+    <table style="width: 100%">
+        <tr>
+            <td colspan="2" style="border: groove">
+                <table class="box1">
+                    <tr>
+                        <td colspan="2" style="text-align: center"><strong>Security Requirements:</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.DisplayFor(model => model.SecurityAck1)
+                            Business Use Only
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.DisplayFor(model => model.SecurityAck2)
+                            Must have Renown network account (UserID)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.DisplayFor(model => model.SecurityAck3)
+                            Assigned to individual, not to a Department
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.DisplayFor(model => model.SecurityAck4)
+                            Do not disable any security or technical configurations
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.DisplayFor(model => model.SecurityAck5)
+                            Physically secure device
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.DisplayFor(model => model.SecurityAck6)
+                            Upon transfer or termination of employement, submit wireless Internet device to Inforrmation Resources
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.DisplayFor(model => model.SecurityAck7)
+                            Do not store information on laptop; backup all information to network drive
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.DisplayFor(model => model.SecurityAck8)
+                            Do not allow others to use this device
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; width: 75px">
+                            <strong>Employee Signature:</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => Model.EmployeeSignature, new { style = "width:200px" })
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
+</fieldset>
+

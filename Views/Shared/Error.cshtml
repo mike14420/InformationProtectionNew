@@ -1,0 +1,76 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@using IpDataProvider;
+@using System.Web.Configuration;
+@using IpModelData;
+@using System.Web.Mvc;
+@using InformationProtection.Models;
+<!DOCTYPE html>
+@{
+    String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+    ErrorDbAccess errorsDb = new ErrorDbAccess(connectionString);
+    String LoginUserName = HttpContext.Current.Request.LogonUserIdentity.Name;
+    EmployeeView EmployeeDB = new EmployeeView();
+
+    /// LOG EXCEPTION
+    try
+    {
+        IpRequestorViewData employee = EmployeeDB.GetUserInfo(LoginUserName);
+
+        int empId = 0;
+        if (employee != null)
+        {
+            String empIdStr = employee.EmpID;
+            int.TryParse(empIdStr, out empId);
+        }
+
+        Error ourError = new Error
+        {
+            UserId = empId,
+            UserName = LoginUserName,
+            TimeStamp = DateTime.Now,
+            IpAddress = (String)Request.ServerVariables["REMOTE_ADDR"],
+            Url = HttpContext.Current.Request.Url.ToString(),
+            HelpLink = String.Empty,
+            Source = HttpContext.Current.Server.ToString(),
+            Message = @Model.Exception.Message,
+            StackTrace = @Model.Exception.StackTrace,
+            PhysLocatTargetSiteion = String.Format("{0} {1}", @Model.ActionName, @Model.ControllerName)
+        };
+        errorsDb.Create(ourError);
+    }
+    catch (Exception ex)
+    {
+        // GIVE UP
+    }
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+</head>
+<body>
+    <div class="list-sfs-holder">
+        <div class="alert alert-error">
+            An unexpected error has occurred. Please contact the system administrator.
+        </div>
+        <b>Exception:</b> @ViewBag.id<br />
+        @if (Model != null)
+        {
+            <div>
+                <p>
+                    <b>Exception:</b> @ViewBag.id<br />
+                    <b>Exception:</b> @Model.Exception.Message<br />
+                    <b>Controller:</b> @Model.ControllerName<br />
+                    <b>Action:</b> @Model.ActionName
+                </p>
+                <div style="overflow: scroll">
+                    <pre>
+                    @Model.Exception.StackTrace
+                </pre>
+                </div>
+            </div>
+        }
+    </div>
+</body>
+</html>

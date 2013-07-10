@@ -1,0 +1,55 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+@{
+    ViewBag.Title = "Lap Top Information Protection Request";
+}
+    <div id="CellPhoneSyncTable" style="width: 100%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var EmpId = $("#EmpId").val();
+        var RequestorId = $("#RequestorId").val();
+        //Prepare jtable plugin
+        $('#CellPhoneSyncTable').jtable({
+            title: 'Cell Phone Syncing Request',
+            sorting: false,
+            selecting: false, //Enable selecting
+            multiselect: false, //Allow multiple selecting
+            selectingCheckboxes: false, //Show checkboxes on first column
+            actions: {
+                listAction:  'UsersView/GetCellPhoneSyncRequest?EmpId=' + EmpId
+            },
+            fields: {
+                CellPhoneSyncDeviceId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true,
+                    title: 'Device Id'
+                }, 
+                Make: {
+                    title: 'Make'
+                },
+                SerialNumber: {
+                    title: 'SerialNumber'
+                },
+                SecuredAck: {
+                    title: 'Secured'
+                },
+                RequestDetailsLink: {
+                    title: 'Details'
+                },
+                RequestEditLink: {
+                    title: 'Edit'
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#CellPhoneSyncTable').jtable('load');
+
+    });
+
+</script>
+ @Html.ActionLink("Create Celll Phone Syncing Request", "Create", "CellPhoneSyncingReq", new  { EmpID =  Model.EmpID }, null)
+

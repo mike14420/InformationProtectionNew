@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "ViewPendingRequest";
+}
+    <div id="PendingRequestTable" style="width: 98%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var EmpId = $("#EmpId").val();
+        var RequestorId = $("#RequestorId").val();
+        //Prepare jtable plugin
+        $('#PendingRequestTable').jtable({
+            title: 'All Pending Request',
+            sorting: false,
+            selecting: false,
+            multiselect: false,
+            selectingCheckboxes: false, 
+            actions: {
+                listAction: 'GetPendingRequests'
+            },
+            fields: {
+                Id: {
+                    key: true,
+                    create: false,
+                    edit: false
+                },
+                SubmitDate: {
+                    title: 'Submited',
+                    type: 'date',
+                    displayFormat: 'dd.mm.yy'
+                },
+                RequestType: {
+                    title: 'type'
+                },
+                RequestorsName: {
+                    title: 'Name'
+                },
+                FirstSupName: {
+                    title: '1st'
+                },
+                FirstSupStatus: {
+                    title: 'St'
+                },
+                SecondSupName: {
+                    title: '2nd'
+                },
+                SecondSupStatus: {
+                    title: 'St'
+                },
+                VpHrName: {
+                    title: 'Vphr'
+                },
+                VpHrStatus: {
+                    title: 'St'
+                },
+                RhCfoName: {
+                    title: 'RhCfo'
+                },
+                RhCfoStatus: {
+                    title: 'St'
+                },
+                IpdName: {
+                    title: 'IPD'
+                },
+                IpdStatus: {
+                    title: 'St'
+                },
+                CioName: {
+                    title: 'CIO'
+                },
+                CioStatus: {
+                    title: 'St'
+                },
+                RequestDetailsLink: {
+                    title: 'Ping'
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#PendingRequestTable').jtable('load');
+
+    });
+
+</script>

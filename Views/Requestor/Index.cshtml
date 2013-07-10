@@ -1,0 +1,52 @@
+﻿
+
+@{
+    ViewBag.Title = "IP Users";
+}
+    
+<div id="AllUsersTable" style="width: 100%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#AllUsersTable').jtable({
+            title: 'IP Users',
+            paging: true,
+            pageSize: 10,
+            sorting: false,
+            selecting: false,
+            multiselect: false, 
+            selectingCheckboxes: false, 
+            actions: {
+                listAction: 'AdminView/GetRequestorsIncludeRoles'
+            },
+            fields: {
+                IpRequestorId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true
+                }, 
+                EmpID: {
+                    title: 'EmpID'
+                },
+                Email: {
+                    title: 'E Mail'
+                },
+                FullName: {
+                    title: 'Name'
+                },
+                RequestorsRoles: {
+                    title: 'Roles'
+                },
+                RequestDetailsLink: {
+                    title: ''
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#AllUsersTable').jtable('load');
+
+    });
+
+</script>

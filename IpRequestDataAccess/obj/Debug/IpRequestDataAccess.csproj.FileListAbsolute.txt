@@ -1,0 +1,16 @@
+C:\MyCoding\CSharp2012\InformationProtection\IpRequestDataAccess\bin\Debug\IpRequestDataAccess.dll.config
+C:\MyCoding\CSharp2012\InformationProtection\IpRequestDataAccess\bin\Debug\IpRequestDataAccess.dll
+C:\MyCoding\CSharp2012\InformationProtection\IpRequestDataAccess\bin\Debug\IpRequestDataAccess.pdb
+C:\MyCoding\CSharp2012\InformationProtection\IpRequestDataAccess\bin\Debug\IpModelData.dll
+C:\MyCoding\CSharp2012\InformationProtection\IpRequestDataAccess\bin\Debug\IpModelData.pdb
+C:\MyCoding\CSharp2012\InformationProtection\IpRequestDataAccess\obj\Debug\IpRequestDataAccess.csprojResolveAssemblyReference.cache
+C:\MyCoding\CSharp2012\InformationProtection\IpRequestDataAccess\obj\Debug\IpRequestDataAccess.dll
+C:\MyCoding\CSharp2012\InformationProtection\IpRequestDataAccess\obj\Debug\IpRequestDataAccess.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpRequestDataAccess\bin\Debug\IpRequestDataAccess.dll.config
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpRequestDataAccess\bin\Debug\IpRequestDataAccess.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpRequestDataAccess\bin\Debug\IpRequestDataAccess.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpRequestDataAccess\bin\Debug\IpModelData.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpRequestDataAccess\bin\Debug\IpModelData.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpRequestDataAccess\obj\Debug\IpRequestDataAccess.csprojResolveAssemblyReference.cache
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpRequestDataAccess\obj\Debug\IpRequestDataAccess.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpRequestDataAccess\obj\Debug\IpRequestDataAccess.pdb

@@ -1,0 +1,57 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+@{
+    ViewBag.Title = "Lap Top Information Protection Request";
+}
+    <div id="LapTopReqTable" style="width: 98%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var EmpId = $("#EmpId").val();
+        var RequestorId = $("#RequestorId").val();
+        //Prepare jtable plugin
+        $('#LapTopReqTable').jtable({
+            title: 'Lap Top Request',
+            sorting: false,
+            selecting: false, 
+            multiselect: false, 
+            selectingCheckboxes: false, 
+            actions: {
+                listAction: 'UsersView/GetLapTopRequest?EmpId=' + EmpId
+            },
+            fields: {
+                LapTopDeviceId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true,
+                    title: 'Device Id'
+                }, 
+                Model: {
+                    title: 'Model',
+                },
+                SerialNumber: {
+                    title: 'Serial Num'
+                },
+                SecuredAck: {
+                    title: 'Secured'
+                },
+                SecurityAck: {
+                    title: 'Secureity'
+                },
+                RequestDetailsLink: {
+                    title: ''
+                },
+                RequestEditLink: {
+                    title: ''
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#LapTopReqTable').jtable('load');
+
+    });
+
+</script>
+ @Html.ActionLink("Create Laptop Request", "Create", "LapTopRequest", new  { EmpID =  Model.EmpID }, null)

@@ -1,0 +1,57 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+@{
+    ViewBag.Title = "Usb Use Request";
+}
+
+    <div id="UsbReqTable" style="width: 100%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var EmpId = $("#EmpId").val();
+        var RequestorId = $("#RequestorId").val();
+        //Prepare jtable plugin
+        $('#UsbReqTable').jtable({
+            title: 'Usb Request',
+            sorting: false,
+            selecting: false,
+            multiselect: false,
+            selectingCheckboxes: false,
+            actions: {
+                listAction: 'UsersView/GetUsbRequest?EmpId=' + EmpId
+            },
+            fields: {
+                UsbDeviceId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true,
+                    title: 'Device Id'
+                },
+                Model: {
+                    title: 'Model'
+                }, 
+                SerialNumber: {
+                    title: 'Serial Num'
+                },
+                RenownOwned: {
+                    title: 'R. Type'
+                },       
+                SecuredAck: {
+                    title: 'Questions'
+                    },
+                RequestDetailsLink: {
+                    title: ''
+                },
+                RequestEditLink: {
+                    title: ''
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#UsbReqTable').jtable('load');
+
+    });
+
+</script>
+ @Html.ActionLink("Create USB Use Request", "Create", "UsbRequest", new  { EmpID =  Model.EmpID }, null)

@@ -1,0 +1,7 @@
+C:\MyCoding\CSharp2012\InformationProtectionNew\InformationProtection\IpDataProvider\bin\Release\IpDataProvider.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\InformationProtection\IpDataProvider\bin\Release\IpDataProvider.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\InformationProtection\IpDataProvider\bin\Release\IpModelData.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\InformationProtection\IpDataProvider\bin\Release\IpModelData.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\InformationProtection\IpDataProvider\obj\Release\IpDataProvider.csprojResolveAssemblyReference.cache
+C:\MyCoding\CSharp2012\InformationProtectionNew\InformationProtection\IpDataProvider\obj\Release\IpDataProvider.dll
+C:\MyCoding\CSharp2012\InformationProtectionNew\InformationProtection\IpDataProvider\obj\Release\IpDataProvider.pdb

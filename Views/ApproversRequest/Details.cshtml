@@ -1,0 +1,127 @@
+﻿@model InformationProtection.Models.IpApprovalRequestViewData
+
+@{
+    ViewBag.Title = "Details";
+}
+@using InformationProtection.Models;
+@helper DisplayDetails( InformationProtection.Models.IpApprovalRequestViewData request) 
+{
+
+    if (request.RequestType == "cellphone")
+    {
+         CellPhoneView ourModle = new CellPhoneView();
+         CellPhoneViewData data = ourModle.GetDevice(request.CellPhoneDeviceId.ToString());
+         ViewBag.ourData = data;
+         @RenderPage("~/Views/Shared/_CellPhoneDetails1.cshtml", data );
+    }  
+    if (request.RequestType == "remoteaccess")
+    {
+        RemoteAccessMdl ourModle = new RemoteAccessMdl();
+        RemoteAccessMdlData data = ourModle.GetRemoteAccessRequest(request.RemoteAccessID.ToString());
+         ViewBag.ourData = data;
+         @RenderPage("~/Views/Shared/_RemoteAccessDetails1.cshtml", data );
+    }
+    if (request.RequestType == "wireless")
+    { 
+        WirelessMdl ourModle = new WirelessMdl();
+        WirelessMdlData data = ourModle.GetWirelessRequest(request.WirelessDeviceID);
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_WirelessDetails1.cshtml", data);
+    }
+    if (request.RequestType == "usb")
+    { 
+        UsbView ourModle = new UsbView();
+        UsbViewData data = ourModle.GetUsbRequest(request.UsbDeviceID);
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_UsbDetails1.cshtml", data);
+    }
+    if (request.RequestType == "cdburrner")
+    { 
+        CdBurnerView ourModle = new CdBurnerView();
+        CdBurrnerViewData data = ourModle.GetCdBurnerRequest(request.CdburnerDeviceID.ToString());
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_CdBurrnerDetails1.cshtml", data);
+    }
+    if (request.RequestType == "laptop")
+    {   
+        LapTopView ourModle = new LapTopView();
+        LapTopViewData data = ourModle.GetLapTopRequest(request.LapTopID.ToString());
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_LapTopDetails1.cshtml", data);
+    }
+    if (request.RequestType == "cellphonesync")
+    {
+        CellPhoneSyncMdl ourModle = new CellPhoneSyncMdl();
+        CellPhoneSyncMdlData data = ourModle.GetDevice(request.CellPhoneSyncDeviceID.ToString());
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_CellPhoneSyncDetails1.cshtml", data);
+    }
+}
+
+
+<h2>Details</h2>
+<fieldset>
+    <legend>Requestor Information</legend>
+    @{
+        InformationProtection.Models.IpRequestorViewData requestor = (InformationProtection.Models.IpRequestorViewData)(ViewData["requestor"]);
+        InformationProtection.Models.IpRequestorViewData approver = (InformationProtection.Models.IpRequestorViewData)(ViewData["approver"]);
+        
+        @Html.Hidden("EmpID", requestor.EmpID, new { id = requestor.EmpID });
+        @Html.Hidden("ApproverEmpID", approver.EmpID, new { approverEmpID = requestor.EmpID });
+        var id = requestor.EmpID;
+        var ApproverEmpID = approver.EmpID;
+    }
+    <h2>Approver</h2>
+    <table style="font-size:medium">
+        <tr>
+            <td>
+                <p>Approver Information for Employee ID:</p>
+            </td>
+            <td>@Html.Label(approver.EmpID as string)</td>
+        </tr>
+        <tr>
+            <td>
+                <p>Employee Name:</p>
+            </td>
+            <td>@Html.Label(approver.FullName as string)</td>
+        </tr>
+    </table>
+        <h2>Requestor</h2>
+    <table style="font-size:medium;width: 50%;">
+        <tr>
+            <td>
+                <p>User Form for Employee ID:</p>
+            </td>
+            <td>@Html.Label(requestor.EmpID as string)</td>
+        </tr>
+        <tr>
+            <td>
+                <p>Employee Name:</p>
+            </td>
+            <td>@Html.Label(requestor.FullName as string)</td>
+        </tr>
+
+
+    </table>
+</fieldset>
+
+@RenderPage("~/Views/Shared/_IpApprovalRequestDetails.cshtml")
+
+
+@DisplayDetails(Model)
+
+<p>
+    @Html.ActionLink("Approvers View", "Approvers", "ApproversRequest", new { ApproverEmpID = ApproverEmpID }, null)
+</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+
+
+
+
+

@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{32D4210F-DD0A-4969-BC20-4D64DC68111C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JPR</RootNamespace>
+    <AssemblyName>JPR</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IPEmp.cs" />
+    <Compile Include="IPR.cs" />
+    <Compile Include="SQLRFSDP.cs" />
+    <Compile Include="WebApplicationError.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\WMC.Core.DataProvider2008\WMC.Core.DataProvider2008.csproj">
+      <Project>{0a80fb24-04c7-43c7-b9f8-0f8a5fd8da7b}</Project>
+      <Name>WMC.Core.DataProvider2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WMC.Core.Employees.Busobj2008\WMC.Core.Employees.Busobj2008.csproj">
+      <Project>{147a3e37-8d8c-4832-8373-852c7a5089b9}</Project>
+      <Name>WMC.Core.Employees.Busobj2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WMC.Core.Employees.DataProvider2008\WMC.Core.Employees.DataProvider2008.csproj">
+      <Project>{bf564c50-abaf-4c45-a9ef-02d088b92f63}</Project>
+      <Name>WMC.Core.Employees.DataProvider2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WMC.Core.Util.NativeWrapper2008\WMC.Core.Util.NativeWrapper2008.csproj">
+      <Project>{30de8ff3-1f5a-4d3b-8e96-1deb37608e3a}</Project>
+      <Name>WMC.Core.Util.NativeWrapper2008</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

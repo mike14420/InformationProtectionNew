@@ -1,0 +1,52 @@
+﻿
+
+@{
+    ViewBag.Title = "Admin View";
+}
+    
+<div id="AdminTable" style="width: 100%; margin: auto;"></div>
+<form>
+<input type="button" value="Print this page" onClick="window.print()">
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#AdminTable').jtable({
+            title: 'Admin View',
+            sorting: false,
+            selecting: false,
+            multiselect: false, 
+            selectingCheckboxes: false, 
+            actions: {
+                listAction: 'AdminView/GetRequestors'
+            },
+            fields: {
+                IpRequestorId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true
+                }, 
+                EmpID: {
+                    title: 'EmpID'
+                },
+                Email: {
+                    title: 'E Mail'
+                },
+                FullName: {
+                    title: 'Name'
+                },
+                RequestorsRoles: {
+                    title: 'Roles'
+                },
+                RequestDetailsLink: {
+                    title: ''
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#AdminTable').jtable('load');
+
+    });
+
+</script>

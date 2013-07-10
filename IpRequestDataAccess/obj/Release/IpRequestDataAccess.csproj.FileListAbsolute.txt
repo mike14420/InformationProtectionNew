@@ -1,0 +1,1 @@
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpRequestDataAccess\obj\Release\IpRequestDataAccess.csprojResolveAssemblyReference.cache

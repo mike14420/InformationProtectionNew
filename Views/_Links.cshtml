@@ -1,0 +1,79 @@
+﻿@using System.Web.Configuration;
+@using IpDataProvider;
+@using IpModelData;
+@using InformationProtection.Models;
+@{
+    var LoginUserName = Request.LogonUserIdentity.Name;
+    String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+    IpRequestorView ourModel = new IpRequestorView();
+    IpRequestorViewData ourRequestor = ourModel.GetRequestorIncludeRoles(LoginUserName);
+}
+
+
+<table style="font-size:medium">
+    <tr>
+        @if (ourRequestor != null && (ourRequestor.IsApprover || ourRequestor.IsAdmin))
+        {
+            <td>
+            @Html.ActionLink("Approvers View", "Index", "ApproversRequest", null, null)
+            </td>
+        }
+    </tr>
+    <tr>
+        @if (ourRequestor != null && ourRequestor.IsAdmin)
+        {
+            <td>
+                @Html.ActionLink("Admin View", "Index", "AdminView", null, null)
+            </td>
+        }
+    </tr>
+        <tr>
+        @if (ourRequestor != null && ourRequestor.IsAdmin)
+        {
+            <td>
+                @Html.ActionLink("View Pending", "ViewPendingRequest", "AdminView", null, null)
+            </td>
+          
+        }
+    </tr>
+    <tr>
+        @if (ourRequestor != null && ourRequestor.IsAdmin)
+        {
+            <td>
+                @Html.ActionLink("List Requestors", "Index", "Requestor", null, null)
+            </td>
+        }
+    </tr>
+    <tr>
+        @if (ourRequestor != null && (ourRequestor.IsAdmin))
+        {
+            <td>
+                @Html.ActionLink("View All Approvers", "Index", "Approvers", null, null)
+            </td>
+        }
+    </tr>
+    <tr>
+        @if (LoginUserName != null && ourRequestor != null && ourRequestor.IsAdmin == false && ourRequestor.IsApprover == false)
+        {
+            <td>
+                @Html.ActionLink("Add Requestor", "Create", "Requestor", null, null)
+            </td>
+        }
+    </tr>
+    <tr>
+        @if (ourRequestor != null && ourRequestor.IsUser == false)
+        {
+            <td>
+                @Html.ActionLink("Add Requestor", "Create", "Requestor", null, null)
+            </td>
+        }
+    </tr>
+    <tr>
+        @if (ourRequestor != null && ourRequestor.IsUser == true)
+        {
+            <td>
+                @Html.ActionLink("Users View", "Index", "UsersView", new { EmpID = ourRequestor.EmpID }, null)
+            </td>
+        }
+    </tr>
+</table>

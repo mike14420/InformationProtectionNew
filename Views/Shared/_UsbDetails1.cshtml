@@ -1,0 +1,208 @@
+﻿
+    <fieldset style="width: 96%">
+        <legend>Usb Use Request</legend>
+    @using InformationProtection.Models;
+    @{
+        UsbViewData data = (UsbViewData)ViewBag.ourData;
+    }
+        <table class="Table1Format">
+            <tr style="width: 98%">
+                <td class="Request" colspan="4">This form is a request for 
+                    <strong>
+                        <u>Renown-owned USB use</u>
+                    </strong>
+                    for a Renown Health employee who requires this equipment to fulfill his/her professional 
+                    responsibilities on behalf of Renown. In order to obtain Renown Health USB use, 
+                    the employee must complete this form, have it approved by his/her management, 
+                    and submit it to the Renown Health VP of Human Resources, Chief Financial Officer, 
+                    nformation Protection, and Chief Information Officer for approval. Once all approvals have been received, 
+                    the document will be contained in the employee’s HR file and a copy resident in the immediate supervisor’s employee file. 
+                    All access is subject to Renown Health policies and procedures. Thank you.
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="editor-label">
+                        Model:
+                    </div>
+                </td>
+                <td colspan="1" style="text-align: left">
+                    <div class="editor-field">
+                        @Html.Label(data.Model)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        SerialNumber:
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.Label(data.SerialNumber)
+                    </div>
+                </td>
+            </tr>
+                        <tr>
+                <td>
+                    <div class="editor-label">
+                        Renown Owned:
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.Label(data.RenownOwned)
+                    </div>
+                </td>
+            </tr>
+            <tr style="width: 98%">
+                <td colspan="4" style="text-align: left; border:groove">
+                    <table class="box">
+                        <tr>
+                            <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                                <strong>Business justification: </strong>
+                                Please specify the job duties that require laptop use, 
+                                how this access will support your work, 
+                                and how your work will be impacted without it.
+                            </td>
+                        </tr>
+                        <tr>
+
+
+                        <tr>
+                             <td style=" text-align: left" colspan="4">
+                                @Html.Label(data.BusJustification, new { style = "width:500px" })
+                            </td>
+                        </tr>  
+                    </table>
+                </td>
+            </tr>
+                    </table>
+        <table style="width:100%">
+            <tr>
+                <td colspan="2" style="border: groove">
+                    <table class="box1">
+                        <tr>
+                            <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none;border: hidden">
+                                @Html.CheckBox("Ack1", data.SecuredAck1, new {  disabled="true" })
+                                I verify that everything written 
+                               herein is true to the best of my knowledge. 
+                                I realize that laptop use and access to Renown Health computer systems and information assets are a privilege and are monitored and subject to 
+                                Renown Health’s policies and procedures concerning professional 
+                                use of computers and information systems, and 
+                                <strong>RENOWN.IRP.210 Mobile Device Usage Policy</strong>.
+                            </td>
+                        </tr>
+                         <tr>
+                            <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none;border: hidden">
+                                @Html.CheckBox("Ac2", data.SecuredAck2, new {  disabled="true" })
+                                I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
+                               Laptop usage. 
+                               In addition, this action may occur with Renown Health employment termination.
+                            </td>
+                        </tr>
+                         <tr>
+                            <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none;border: hidden">
+                               @Html.CheckBox("Ac3", data.SecuredAck3, new {  disabled="true" })
+                                @*<asp:checkbox id="Chk_ack3" runat="server" />*@
+                                I understand I am responsible for: 
+                            </td>
+                        </tr>
+                        <tr >
+                            <td style="width:10px"></td>
+                             <td style="text-align: left; vertical-align: top; text-wrap: none;border: hidden;width:100px">
+                                 @Html.CheckBox("Ac4", data.SecuredAck4, new {  disabled="true" })
+                                Logical security </td>
+
+                            <td style="text-align: left; vertical-align: top; text-wrap: none;border: hidden;width:100px">
+                                @Html.CheckBox("Ac5", data.SecuredAck5, new {  disabled="true" })
+                                Physical security</td>
+
+                            <td style="text-align: left; vertical-align: top; text-wrap: none;border: hidden;width:100px">
+                                @Html.CheckBox("Ac6", data.SecuredAck6, new {  disabled="true" })
+                                Immediate Notification: loss/theft</td>
+                        </tr>
+                     </table>
+               </td>
+             </tr>
+        </table>
+                
+
+        <table style="width:100%">
+            <tr>
+                <td colspan="2" style="border: groove">
+                    <table class="box1">
+                        <tr>
+                            <td colspan="2" style="text-align: center"><strong>Security Requirements:</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none;border: ridge">
+                               @Html.CheckBox("SecurityAck1", data.SecurityAck1, new {  disabled="true" })
+                                Business Use Only
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none;border:ridge">
+                                @Html.CheckBox("SecurityAck2", data.SecurityAck2, new {  disabled="true" })
+                                Must have Renown network account (UserID)
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none;border: ridge">
+                                @Html.CheckBox("SecurityAck3", data.SecurityAck3, new {  disabled="true" })
+                                Assigned to individual, not to a Department
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none;border: ridge">
+                               @Html.CheckBox("SecurityAck4", data.SecurityAck4, new {  disabled="true" })
+                                Use encryption
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none;border: ridge">
+                                 @Html.CheckBox("SecurityAck5", data.SecurityAck5, new {  disabled="true" })
+                                Physically secure device
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none;border: ridge">
+                                 @Html.CheckBox("SecurityAck6", data.SecurityAck6, new {  disabled="true" })
+                                Do not disable any security or technical configurations
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none;border: ridge">
+                                @Html.CheckBox("SecurityAck7", data.SecurityAck7, new {  disabled="true" })
+                                Do not permanently store information on USB; backup all information to network drive
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none;border: ridge">
+                                @Html.CheckBox("SecurityAck8", data.SecurityAck8, new {  disabled="true" })
+                                Do not install any software
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none;border: ridge">
+                               @Html.CheckBox("SecurityAck9", data.SecurityAck9, new {  disabled="true" })
+                                Scan the device for malicious software prior to opening files
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; width: 75px">
+                                <strong>Employee Signature:</strong>
+                            </td>
+                            <td>
+                                @Html.Label(data.EmployeeSignature, new { style = "width:200px" })
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+

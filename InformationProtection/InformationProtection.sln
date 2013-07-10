@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InformationProtection", "..\InformationProtection.csproj", "{11FB6498-76E5-4AE3-94E8-00CE9C86790B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPR", "..\Core\JPR\JPR\JPR.csproj", "{32D4210F-DD0A-4969-BC20-4D64DC68111C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpModelData", "..\IpModelData\IpModelData.csproj", "{B14C4328-F236-4CA4-B5CC-CF7662FFC010}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMC.Core.DataProvider2008", "..\Core\WMC.Core.DataProvider2008\WMC.Core.DataProvider2008.csproj", "{0A80FB24-04C7-43C7-B9F8-0F8A5FD8DA7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMC.Core.Employees.Busobj2008", "..\Core\WMC.Core.Employees.Busobj2008\WMC.Core.Employees.Busobj2008.csproj", "{147A3E37-8D8C-4832-8373-852C7A5089B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMC.Core.Employees.DataProvider2008", "..\Core\WMC.Core.Employees.DataProvider2008\WMC.Core.Employees.DataProvider2008.csproj", "{BF564C50-ABAF-4C45-A9EF-02D088B92F63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMC.Core.Util.NativeWrapper2008", "..\Core\WMC.Core.Util.NativeWrapper2008\WMC.Core.Util.NativeWrapper2008.csproj", "{30DE8FF3-1F5A-4D3B-8E96-1DEB37608E3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMC.Core.Web.Util2008", "..\Core\WMC.Core.Web.Util2008\WMC.Core.Web.Util2008.csproj", "{BE711E8F-84EC-444B-9CDA-12FEA19F9D6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpDataProvider", "IpDataProvider\IpDataProvider.csproj", "{AAE65598-A576-4F37-B9DA-E2742245A780}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 3
+		SccProjectUniqueName0 = ..\\Core\\WMC.Core.Employees.Busobj2008\\WMC.Core.Employees.Busobj2008.csproj
+		SccProjectName0 = \u0022$/InformationProtection/InformationProtectionMay10_2013/InformationProtection/Core/WMC.Core.Employees.Busobj2008\u0022,\u0020EHEDAAAA
+		SccLocalPath0 = ..\\Core\\WMC.Core.Employees.Busobj2008
+		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		SccProjectUniqueName1 = ..\\Core\\WMC.Core.Employees.DataProvider2008\\WMC.Core.Employees.DataProvider2008.csproj
+		SccProjectName1 = \u0022$/InformationProtection/InformationProtectionMay10_2013/InformationProtection/Core/WMC.Core.Employees.DataProvider2008\u0022,\u0020YIEDAAAA
+		SccLocalPath1 = ..\\Core\\WMC.Core.Employees.DataProvider2008
+		SccProvider1 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		SccProjectUniqueName2 = ..\\Core\\WMC.Core.Web.Util2008\\WMC.Core.Web.Util2008.csproj
+		SccProjectName2 = \u0022$/InformationProtection/InformationProtectionMay10_2013/InformationProtection/Core/WMC.Core.Web.Util2008\u0022,\u0020HOEDAAAA
+		SccLocalPath2 = ..\\Core\\WMC.Core.Web.Util2008
+		SccProvider2 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11FB6498-76E5-4AE3-94E8-00CE9C86790B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11FB6498-76E5-4AE3-94E8-00CE9C86790B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11FB6498-76E5-4AE3-94E8-00CE9C86790B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11FB6498-76E5-4AE3-94E8-00CE9C86790B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32D4210F-DD0A-4969-BC20-4D64DC68111C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32D4210F-DD0A-4969-BC20-4D64DC68111C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32D4210F-DD0A-4969-BC20-4D64DC68111C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32D4210F-DD0A-4969-BC20-4D64DC68111C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B14C4328-F236-4CA4-B5CC-CF7662FFC010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B14C4328-F236-4CA4-B5CC-CF7662FFC010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B14C4328-F236-4CA4-B5CC-CF7662FFC010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B14C4328-F236-4CA4-B5CC-CF7662FFC010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A80FB24-04C7-43C7-B9F8-0F8A5FD8DA7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A80FB24-04C7-43C7-B9F8-0F8A5FD8DA7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A80FB24-04C7-43C7-B9F8-0F8A5FD8DA7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A80FB24-04C7-43C7-B9F8-0F8A5FD8DA7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{147A3E37-8D8C-4832-8373-852C7A5089B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{147A3E37-8D8C-4832-8373-852C7A5089B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{147A3E37-8D8C-4832-8373-852C7A5089B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{147A3E37-8D8C-4832-8373-852C7A5089B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF564C50-ABAF-4C45-A9EF-02D088B92F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF564C50-ABAF-4C45-A9EF-02D088B92F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF564C50-ABAF-4C45-A9EF-02D088B92F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF564C50-ABAF-4C45-A9EF-02D088B92F63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30DE8FF3-1F5A-4D3B-8E96-1DEB37608E3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30DE8FF3-1F5A-4D3B-8E96-1DEB37608E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30DE8FF3-1F5A-4D3B-8E96-1DEB37608E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30DE8FF3-1F5A-4D3B-8E96-1DEB37608E3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE711E8F-84EC-444B-9CDA-12FEA19F9D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE711E8F-84EC-444B-9CDA-12FEA19F9D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE711E8F-84EC-444B-9CDA-12FEA19F9D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE711E8F-84EC-444B-9CDA-12FEA19F9D6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAE65598-A576-4F37-B9DA-E2742245A780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE65598-A576-4F37-B9DA-E2742245A780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE65598-A576-4F37-B9DA-E2742245A780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE65598-A576-4F37-B9DA-E2742245A780}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

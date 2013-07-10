@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "ApproversList";
+}
+
+<h2>ApproversList</h2>
+
+<div id="ApproversTable" style="width: 580px; margin: auto;"></div>
+<link href="@Url.Content("~/Scripts/jtable/themes/metro/purple/jtable.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/jtable/jquery.jtable.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //Prepare jtable plugin
+        $('#ApproversTable').jtable({
+            title: 'The Approvers List',
+            sorting: true,
+            defaultSorting: 'Name ASC',
+            selecting: true, //Enable selecting
+            multiselect: true, //Allow multiple selecting
+            selectingCheckboxes: true, //Show checkboxes on first column
+            actions: {
+                listAction: '/AdminView/GetApproversData'
+                //deleteAction: '/Demo/DeletePerson',
+                //updateAction: '/Demo/UpdatePerson',
+                //createAction: '/Demo/CreatePerson'
+            },
+            fields: {
+                IpApproverId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: false
+                },
+                RequestorsName: {
+                    title: 'Name',
+                    width: '50%'
+                },
+                Status: {
+                    title: 'Approval Status',
+                    width: '50%',
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#ApproversTable').jtable('load');
+    });
+
+</script>
+

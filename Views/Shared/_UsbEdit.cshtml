@@ -1,0 +1,262 @@
+﻿@model InformationProtection.Models.UsbViewData
+@{
+    ViewBag.Title = "USB Request";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    @Html.Hidden("EmpID", ViewData["EmpID"]); 
+    <fieldset style="width: 96%">
+        <legend>USB IP Request:@Html.DisplayFor(model => model.UsbDeviceId)</legend>
+        <table style="width: 98%">
+            <tr style="background-color: #ffccff">
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+                </td>
+
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (no validation performed)<input type="submit" name="submitButton" value="Save" />
+                </td>
+            </tr>
+            <tr style="height: 25px"></tr>
+        </table>
+        <table class="Table1Format">
+            <tr style="width: 98%">
+                <td class="Request" colspan="4">This form is a request for 
+                    <strong>
+                        <u>Renown-owned USB use</u>
+                    </strong>
+                    for a Renown Health employee who requires this equipment to fulfill his/her professional 
+                    responsibilities on behalf of Renown. In order to obtain Renown Health USB use, 
+                    the employee must complete this form, have it approved by his/her management, 
+                    and submit it to the Renown Health VP of Human Resources, Chief Financial Officer, 
+                    nformation Protection, and Chief Information Officer for approval. Once all approvals have been received, 
+                    the document will be contained in the employee’s HR file and a copy resident in the immediate supervisor’s employee file. 
+                    All access is subject to Renown Health policies and procedures. Thank you.
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Model)
+                    </div>
+                </td>
+                <td colspan="1" style="text-align: left">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Model)
+                        @Html.ValidationMessageFor(model => model.Model, "*")
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.SerialNumber)
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.SerialNumber)
+                        @Html.ValidationMessageFor(model => model.SerialNumber, "*")
+                    </div>
+                </td>
+            </tr>
+            <tr style="width: 98%">
+                <td colspan="4" style="text-align: left; border: groove">
+                    <table class="box">
+                        <tr>
+                            <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                                <strong>Business justification: </strong>
+                                Please specify the job duties that require laptop use, 
+                                how this access will support your work, 
+                                and how your work will be impacted without it.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center" colspan="3">
+                                @Html.ValidationMessageFor(model => model.RenownOwned, "*")
+                                @{
+                                            bool newOpt = false;
+                                            bool existingOpt = false;
+                                            if (Model.RenownOwned != null)
+                                            {
+                                                newOpt = Model.RenownOwned == "New";
+                                                existingOpt = Model.RenownOwned == "Existing";
+                                            }
+                                }
+                                <strong>
+                                    <br />
+                                    @Html.Label("New:")
+                                    @Html.RadioButton("RadBtnRenownOwned", "New", newOpt)
+                                    @Html.Label("Existing:")
+                                    @Html.RadioButton("RadBtnRenownOwned", "Existing", existingOpt)
+                                </strong>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="text-align: left" colspan="1">
+                                <strong>Justification:</strong>
+                            </td>
+                            <td style="background-color: antiquewhite; text-align: left" colspan="3">
+                                @Html.TextArea("BusJustification", new { style = "width:500px" })
+                                @Html.ValidationMessageFor(model => model.BusJustification, "*")
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%">
+            <tr>
+                <td colspan="2" style="border: groove">
+                    <table class="box1">
+                        <tr>
+                            <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                                @Html.CheckBox("SecuredAck1")
+                                @Html.ValidationMessageFor(model => model.SecuredAck1, "*")
+                                I verify that everything written 
+                               herein is true to the best of my knowledge. 
+                                I realize that laptop use and access to Renown Health computer systems and information assets are a privilege and are monitored and subject to 
+                                Renown Health’s policies and procedures concerning professional 
+                                use of computers and information systems, and 
+                                <strong>RENOWN.IRP.210 Mobile Device Usage Policy</strong>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                                @Html.CheckBox("SecuredAck2")
+                                @Html.ValidationMessageFor(model => model.SecuredAck2, "*")
+                                I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
+                               Laptop usage. 
+                               In addition, this action may occur with Renown Health employment termination.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                                @Html.CheckBox("SecuredAck3")
+                                @Html.ValidationMessageFor(model => model.SecuredAck3, "*")
+                                @*<asp:checkbox id="Chk_ack3" runat="server" />*@
+                                I understand I am responsible for: 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 10px"></td>
+                            <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                                @Html.ValidationMessageFor(model => model.SecuredAck4, "*")
+                                @Html.CheckBox("SecuredAck4")
+                                Logical security </td>
+
+                            <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                                @Html.ValidationMessageFor(model => model.SecuredAck5, "*")
+                                @Html.CheckBox("SecuredAck5")
+                                Physical security</td>
+
+                            <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                                @Html.ValidationMessageFor(model => model.SecuredAck6, "*")
+                                @Html.CheckBox("SecuredAck6")
+                                Immediate Notification: loss/theft</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+
+        <table style="width: 100%">
+            <tr>
+                <td colspan="2" style="border: groove">
+                    <table class="box1">
+                        <tr>
+                            <td colspan="2" style="text-align: center"><strong>Security Requirements:</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                                @Html.CheckBox("SecurityAck1")
+                                @Html.ValidationMessageFor(model => model.SecurityAck1, "*")
+                                Business Use Only
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                                @Html.CheckBox("SecurityAck2")
+                                @Html.ValidationMessageFor(model => model.SecurityAck2, "*")
+                                Must have Renown network account (UserID)
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                                @Html.CheckBox("SecurityAck3")
+                                @Html.ValidationMessageFor(model => model.SecurityAck3, "*")
+                                Assigned to individual, not to a Department
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                                @Html.CheckBox("SecurityAck4")
+                                @Html.ValidationMessageFor(model => model.SecurityAck4, "*")
+                                Use encryption
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                                @Html.CheckBox("SecurityAck5")
+                                @Html.ValidationMessageFor(model => model.SecurityAck6, "*")
+                                Physically secure device
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                                @Html.CheckBox("SecurityAck6")
+                                @Html.ValidationMessageFor(model => model.SecurityAck6, "*")
+                                Do not disable any security or technical configurations
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                                @Html.CheckBox("SecurityAck7")
+                                @Html.ValidationMessageFor(model => model.SecurityAck7, "*")
+                                Do not permanently store information on USB; backup all information to network drive
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                                @Html.CheckBox("SecurityAck8")
+                                @Html.ValidationMessageFor(model => model.SecurityAck3, "*")
+                                Do not install any software
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                                @Html.CheckBox("SecurityAck8")
+                                Scan the device for malicious software prior to opening files
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; width: 75px">
+                                <strong>Employee Signature:</strong>
+                            </td>
+                            <td>
+                                @Html.TextBox("EmployeeSignature", null, new { style = "width:200px" })
+                                @Html.ValidationMessageFor(model => model.EmployeeSignature, "*")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; width: 75px">
+                                <strong>Date:</strong>
+                            </td>
+                            <td>
+                                @Html.TextBox("SubmitDate", DateTime.Now, new { style = "width:200px", disabled = "true" })
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+
+    </fieldset> 
+    
+}
+

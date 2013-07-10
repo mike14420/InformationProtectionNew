@@ -1,0 +1,60 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+@{
+    ViewBag.Title = "Remote Access Information Protection Request";
+}
+    <div id="RemoteAccessReqTable" style="width: 100%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var EmpId = $("#EmpId").val();
+        var RequestorId = $("#RequestorId").val();
+        //Prepare jtable plugin
+        $('#RemoteAccessReqTable').jtable({
+            title: 'Remote Access Request',
+            sorting: false,
+            selecting: false,
+            multiselect: false, 
+            selectingCheckboxes: false, 
+            actions: {
+                listAction: 'UsersView/GetRemoteAccessRequest?EmpId=' + EmpId
+            },
+            fields: {
+                RemoteAccessId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true,
+                    Title: 'Device Id'
+                }, 
+                AccessToServerStr: {
+                    title: 'Server'
+                },
+                AccessToAppStr: {
+                    title: 'Apps'
+                },
+                AccessToMyWorkStationStr: {
+                    title: 'WorkStation'
+                },
+                AccessToLanSharesStr: {
+                    title: 'Lan Access'
+                },
+                RemoteConnectionType: {
+                    title: 'Type'
+                },
+                RequestDetailsLink: {
+                    title: ''
+                },
+                RequestEditLink: {
+                    title: ''
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#RemoteAccessReqTable').jtable('load');
+
+    });
+
+</script>
+ @Html.ActionLink("Create Remote Access Request", "Create", "RemoteAccess", new  { EmpID =  Model.EmpID }, null)

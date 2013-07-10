@@ -1,0 +1,109 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Requestor Information</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("EmpId", Model.EmpID, new { id = "EmpId" })
+    @Html.Hidden("RequestorId", Model.IpRequestorId, new { id = "RequestorId" })
+
+    <fieldset>
+        <legend>Employee Information</legend>
+
+        <table class="Table1Format">
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.EmpID)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EmpID)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.FullName)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.JobTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.JobTitle)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.DeptName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.DeptName)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.DeptID)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.DeptID)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.PhoneNumber)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.RequestorsRoles)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.RequestorsRoles)
+                </td>
+            </tr>
+        </table>
+        @Html.ActionLink("Edit", "Edit", "Requestor", new { EmpID = Model.EmpID }, null)
+
+    </fieldset>
+    <table class="Table1Format">
+        <tr style="border: 1px solid black; border-color: lightblue; display: table; margin: 5px; visibility: visible">
+            <td>Roll for</td>
+            <td style="text-align: center;" colspan="2">
+                <div class="poem-stanza">
+                    @Html.DropDownList("AllRolls", ViewBag.AllRolls as SelectList, "--Select a Roll--", new { id = "AllRollsID" })
+                </div>
+            </td>
+
+        </tr>
+
+    </table>
+
+    <table>
+        <tr>
+            <td>
+                <input type="submit" name="RequestorRollButton" value="Add Roll" />
+            </td>
+            <td>
+                <input type="submit" name="RequestorRollButton" value="Remove Roll" />
+            </td>
+        </tr>
+    </table>
+
+}
+
+
+

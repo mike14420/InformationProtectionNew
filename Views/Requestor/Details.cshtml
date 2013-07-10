@@ -1,0 +1,13 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+@{
+    ViewBag.Title = "Employee (Requestor) Information";
+}
+ @Html.Hidden("EmpID", Model.EmpID)
+<h2>Details</h2>
+ @RenderPage("~/Views/Shared/_RequestorViewData.cshtml")
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { EmpID=Model.EmpID }) |
+    @Html.ActionLink("Users View", "Index", "UsersView", new { EmpID=Model.EmpID }, null)
+</p>

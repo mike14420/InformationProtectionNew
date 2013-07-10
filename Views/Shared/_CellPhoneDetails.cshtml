@@ -1,0 +1,161 @@
+﻿@model InformationProtection.Models.CellPhoneViewData
+<fieldset>
+    <legend>CellPhone Request:@Html.DisplayFor(model => model.CellPhoneReqId)</legend>
+
+    <table class="Table1Format">
+        <tr style="height: 100px">
+            <td class="Request" colspan="4">This form is a request for mobile device use and/or syncing to internal Renown 
+                    Health information for a Renown Health exempt employee who requires this access to fulfill 
+                    their professional responsibilities on behalf of Renown.  
+                    In order to obtain mobile device use and/or syncing access, 
+                    the employee must complete this form, have it approved by his/her management, 
+                    and submit it to the Renown Health VP of Human Resources, Chief Financial Officer, 
+                    Information Protection, and Chief Information Officer for approval.  
+                    Once all approvals have been received, 
+                    the document will be contained in the employee’s HR file and a copy resident in the 
+                    immediate supervisor’s employee file.  
+                    All access is subject to Renown Health policies and procedures.
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="1">
+                @Html.DisplayNameFor(model => model.Make)
+            </td>
+            <td colspan="1" style="text-align: left">
+                @Html.DisplayFor(model => model.Make)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="editor-label">
+                    @Html.DisplayNameFor(model => model.Model)
+                </div>
+            </td>
+            <td colspan="1" style="text-align: left">
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Model)
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="4">
+                <table class="box1">
+                    <tr>
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <strong>Business justification: </strong>
+                            Please specify the job duties that require 
+                                mobile device use and/or syncing to Renown information, 
+                                how this access will support your work, 
+                                and how your work will be impacted without it.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: antiquewhite; text-align: left" colspan="4">
+                            @Html.DisplayFor(model => model.BusJustification)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="24 style="text-align: left; vertical-align: top">
+                @Html.DisplayFor(model => model.SecuredAck1)
+                I verify that everything written 
+                   herein is true to the best of my knowledge. 
+                    I realize that mobile device use and access to Renown Health computer systems and information assets are a privilege and are monitored and subject to 
+                    Renown Health’s policies and procedures concerning professional 
+                    use of computers and information systems, and 
+                    <strong>RENOWN.IRP.210 Mobile Device Usage Policy</strong>.
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: left; vertical-align: top">
+                @Html.DisplayFor(model => model.SecuredAck2)
+                I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
+                   Cell device usage. 
+                   In addition, this action may occur with Renown Health employment termination.
+
+            </td>
+        </tr>
+
+                      <tr>
+                <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                    @Html.DisplayFor(model => model.SecuredAck3)
+                    I understand I am responsible for: 
+                </td>
+            </tr>
+            <tr>
+                 <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 150px">
+                   Logical security 
+                     @Html.DisplayFor(model => model.SecuredAck4)
+                    </td>
+                <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                    Physical security
+                    @Html.DisplayFor(model => model.SecuredAck5)
+                    </td>
+
+                <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">
+                    Immediate Notification: loss/theft
+                    @Html.DisplayFor(model => model.SecuredAck6)
+                    </td>
+            </tr>
+
+
+
+        <tr>
+            <td style="text-align: left; vertical-align: top; text-wrap: none">
+                <strong>I request use of Cellular/Smart Phone:
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="border: groove">
+
+                <table class="box1">
+                    <tr>
+                        <td style="text-align: left" colspan="1">
+                            <strong>Renown-Owned Type (New or Used)
+                            </strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.RenownOwnedType)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left" colspan="1">
+                            <strong>Renown-Owned (Paid by Renown)
+                            </strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.RenownOwnedPhone)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: left" colspan="1">
+                            <strong>Carrier:
+                            </strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.RenownOwnedCarrier)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="width: 200px">
+                            <strong>Employee Signature:</strong>
+                        </td>
+                        <td style="width: 200px">
+                            @Html.DisplayFor(model => model.EmployeeSignature)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</fieldset>

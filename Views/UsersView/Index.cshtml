@@ -1,0 +1,64 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+@{
+    ViewBag.Title = "Index";
+}
+@*<link href="@Url.Content("~/Scripts/jtable/themes/metro/purple/jtable.css")" rel="stylesheet" type="text/css" />*@
+
+<h2>Users View</h2>
+@Html.Hidden("EmpId", Model.EmpID, new { id = "EmpId" })
+@Html.Hidden("RequestorId", Model.IpRequestorId, new { id = "RequestorId" })
+
+
+<script>
+    $(function () {
+        $("#tabs").tabs();
+    });
+</script>
+@{
+    var myViewsShared = "~/Views/Shared/";
+}
+
+
+<div id="tabs" style="height: 100%">
+
+        <ul style="height: 40px">
+            <li><a href="#tabs-1">Requestor</a></li>
+            <li><a href="#tabs-2">Request</a></li>
+            <li><a href="#tabs-3">Wireless</a></li>
+            <li><a href="#tabs-4">USB</a></li>
+            <li><a href="#tabs-5">CD</a></li>
+            <li><a href="#tabs-6">Phone</a></li>
+            <li><a href="#tabs-7">Sync</a></li>
+            <li><a href="#tabs-8">Laptop</a></li>
+            <li><a href="#tabs-9">Remote</a></li>
+        </ul>
+
+    <div id="tabs-1">
+        @RenderPage(myViewsShared + "_IpRequestor.cshtml")
+    </div>
+    <div id="tabs-2">
+        @RenderPage("~/Views/Shared/_ApprovalRequests.cshtml")
+    </div>
+    <div id="tabs-3">
+        @RenderPage("~/Views/Shared/_Wireless.cshtml")
+    </div>
+    <div id="tabs-4">
+        @RenderPage("~/Views/Shared/_USB.cshtml")
+    </div>
+    <div id="tabs-5">
+        @RenderPage("~/Views/Shared/_CdBurner.cshtml")
+    </div>
+    <div id="tabs-6">
+        @RenderPage(myViewsShared + "_CellPhoneRequest1.cshtml")
+    </div>
+    <div id="tabs-7">
+        @RenderPage("~/Views/Shared/_CellPhoneSync.cshtml")
+    </div>
+    <div id="tabs-8">
+        @RenderPage("~/Views/Shared/_Laptop.cshtml")
+    </div>
+    <div id="tabs-9">
+        @RenderPage("~/Views/Shared/_RemoteAccess.cshtml")
+    </div>
+</div>

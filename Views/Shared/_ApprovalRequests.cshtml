@@ -1,0 +1,97 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+
+
+@using (Html.BeginForm("SubmitRequest", "UsersView", new { EmpID = Model.EmpID }))
+{
+    <div id="divId" style="visibility: hidden">
+               @Html.TextBox("OurApprovalList", null)
+        @Html.Hidden("EmpID", @Model.EmpID, new { id = "EmpID" })
+    </div>
+    
+    <table style="width: 98%">
+    <tr style="background-color:#ffccff">
+
+        <td style = "font-size:20px;font-weight:bold;text-align:left" >
+            Submit selected request :
+           <input type="submit" name="submitButton" value="Submit" />
+        </td>
+
+
+    </tr>
+    <tr style="height:25px"></tr>
+</table>
+}
+<div id="IpRequestTable" style="width: 580px; margin: auto;"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var EmpId = $("#EmpId").val();
+        var RequestorId = $("#RequestorId").val();
+        $('#IpRequestTable').jtable({
+            title: 'Information Protection Request',
+            sorting: false,
+            selecting: true,
+            multiselect: true,
+            selectingCheckboxes: true,
+            actions: {
+                listAction: 'UsersView/GetRequests?EmpId=' + EmpId
+            },
+            fields: {
+                Id: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true,
+                    title: 'Id'
+                },
+                RequestType: {
+                    title: 'Request Type'
+                },
+                DeviceId: {
+                    title: 'Device Id'
+                },
+                ApprovedStatus: {
+                    title: 'Status'
+                },
+                SubmitDate: {
+                    title: 'Submited',
+                    type: 'date'
+                },
+                RequestDetailsLink: {
+                    title: 'Details'
+                }
+            },
+            //Register to selectionChanged event to hanlde events
+            selectionChanged: function () {
+                //Get all selected rows
+                var $selectedRows = $('#IpRequestTable').jtable('selectedRows');
+
+                $('#OurApprovalListId').val('');
+                if ($selectedRows.length > 0) {
+                    //Show selected rows
+                    var index = 0;
+                    var selectList = '<select id="ApproveTheese" name="ApproveTheese">'
+                    var selectList1 = 'Our Approvalls:'
+                    $selectedRows.each(function () {
+                        var record = $(this).data('record');
+                        var x = String(index);
+                        selectList1 += "Index=" + x + " RecordId=" + record.Id + ",";
+                        index++;
+                    });
+                    $('#OurApprovalList').val(selectList1);
+                } else {
+                    //No rows selected
+                    $('#SelectedRowList').append('No row selected! Select rows to see here...');
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#IpRequestTable').jtable('load');
+
+    });
+
+</script>
+
+
+

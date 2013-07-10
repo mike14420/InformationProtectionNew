@@ -1,0 +1,55 @@
+﻿@model InformationProtection.Models.IpRequestorViewData
+
+    <div id="CellPhoneReqTable" style="width: 100%; margin: auto;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var EmpId = $("#EmpId").val();
+        var RequestorId = $("#RequestorId").val();
+        //Prepare jtable plugin
+        $('#CellPhoneReqTable').jtable({
+            title: 'Cell Phone Request',
+            sorting: false,
+            selecting: false, //Enable selecting
+            multiselect: false, //Allow multiple selecting
+            selectingCheckboxes: false, //Show checkboxes on first column
+            actions: {
+                listAction: 'UsersView/GetCellPhoneRequests?EmpId=' + EmpId
+            },
+            fields: {
+                CellPhoneReqId: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: true,
+                    title: 'Device Id'
+                },
+                Make: {
+                    title: 'Make'
+                },
+                Model: {
+                    title: 'Model'
+                },
+                RenownOwnedPhone: {
+                    title: 'Phone Num'
+                },
+                SecuredAck: {
+                    title: 'Secured'
+                },
+                RequestDetailsLink: {
+                    title: ''
+                },
+                RequestEditLink: {
+                    title: ''
+                }
+            }
+        });
+
+        //Load person list from server
+        $('#CellPhoneReqTable').jtable('load');
+
+    });
+
+</script>
+
+ @Html.ActionLink("Create Cell Phone Request", "Create", "CellPhoneRequest", new  { EmpID =  Model.EmpID }, null)

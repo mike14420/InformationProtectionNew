@@ -1,0 +1,187 @@
+﻿@model InformationProtection.Models.CdBurrnerViewData
+@{
+    ViewBag.Title = "Print";
+    Layout = "~/Views/Shared/_PrintView.cshtml";
+}
+    @Styles.Render("~/Content/css")
+<fieldset>
+    <legend>Requestor Information</legend>
+    @{
+        InformationProtection.Models.IpRequestorViewData requestor = (InformationProtection.Models.IpRequestorViewData)(ViewData["requestor"]);
+
+        @Html.Hidden("EmpID", requestor.EmpID, new { id = requestor.EmpID });
+        var id = requestor.EmpID;
+    }
+    <table style="width: 50%;">
+        <tr>
+            <td>
+                <p>User Form for Employee ID:</p>
+            </td>
+            <td>@Html.Label(requestor.EmpID as string)</td>
+        </tr>
+        <tr>
+            <td>
+                <p>Employee Name:</p>
+            </td>
+            <td>@Html.Label(requestor.FullName as string)</td>
+        </tr>
+
+
+    </table>
+
+</fieldset>
+<fieldset style="width: 96%">
+    <legend>CD/DVD Burner Request:@Html.DisplayFor(model => model.CdburnerDeviceId)</legend>
+
+    <table class="Table1Format">
+        <tr style="height: 100px">
+            <td class="Request" colspan="2">This form is a request for CD/DVD for a
+                    Renown Health exempt employee who requires this access to fulfill 
+                    their professional responsibilities on behalf of Renown.  
+                    In order to obtain CD/DVD Burrner, 
+                    the employee must complete this form, have it approved by his/her management, 
+                    and submit it to the Renown Health VP of Human Resources, Chief Financial Officer, 
+                    Information Protection, and Chief Information Officer for approval.  
+                    Once all approvals have been received, 
+                    the document will be contained in the employee’s HR file and a copy resident in the 
+                    immediate supervisor’s employee file.  
+                    All access is subject to Renown Health policies and procedures.
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="editor-label">
+                    @Html.DisplayNameFor(model => model.SerialNumber)
+                </div>
+            </td>
+            <td colspan="1" style="text-align: left">
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.SerialNumber)
+                  </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="editor-label">
+                    @Html.DisplayNameFor(model => model.Access2Computer)
+                </div>
+            </td>
+            <td colspan="1" style="text-align: left">
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Access2Computer)
+                  </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="editor-label">
+                    @Html.DisplayNameFor(model => model.Access2Media)
+                </div>
+            </td>
+            <td colspan="1" style="text-align: left">
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Access2Media)
+                  </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <table class="box1">
+                    <tr>
+                         <td style="text-align: center" colspan="1">
+                            <strong>Type:
+                            </strong>
+                        </td>
+                        <td style="text-align: left" colspan="1">
+                            @Html.DisplayFor(model => model.BusJustType)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <strong>Identify physical location of the computer (please include building, room #:
+                                    and any addition detailed information.)
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: antiquewhite; text-align: left" colspan="2">
+                            @Html.DisplayFor(model => model.ComputerLocation, new { style = "width:700px" })
+                         </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <strong>Identify where the media will be stored and/ or sent</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: antiquewhite; text-align: left" colspan="2">
+                            @Html.DisplayFor(model => model.MediaStorLocation, new { style = "width:700px" })
+                          </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <strong>Business justification: </strong>
+                            Please specify the job duties that require 
+                                CD/DVD use to Create portable media, how this access will support your
+                                work, and how your work will be impacted without it.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: antiquewhite; text-align: left" colspan="2">
+                            @Html.DisplayFor(model => model.BusJustification, new { style = "width:700px" })
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">Provide detail of the Security Controls to be taken to protect Renown Health information 
+                                on the media:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: antiquewhite; text-align: left" colspan="2">
+                            @Html.DisplayFor(model => model.SecurityControls, new { style = "width:700px" })
+                             </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">Identify the type of information to be placed on the CD/DVD media (Restricted Confidential, Confidential,
+                                Internal Proprietary, Internal Financial, or Public)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: antiquewhite; text-align: left" colspan="2">
+                            @Html.DisplayFor(model => model.TypeOfData, new { style = "width:700px" })
+                         </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                            @Html.DisplayFor(model => model.IsMediaAttached)
+                            Sample of information must be included with the request, indicate the sample is attached:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">All policies, including the following policies for compliance must be understood and assurance 
+                    for enforcement of the requirements as contained in these policies must be acknowledged by the requestor.
+                    Signing below acknowledges understanding.
+                    Information Handling Guideline <strong>(RENOWN.IRP.145)</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; width: 75px">
+                            <strong>Employee Signature:</strong>
+                        </td>
+                        <td>
+                           @Html.DisplayFor(model => model.EmployeeSignature)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+
+
+    </table>
+
+</fieldset>
