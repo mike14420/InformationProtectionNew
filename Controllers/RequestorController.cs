@@ -102,7 +102,49 @@ namespace InformationProtection.Controllers
             return View(data);
         }
 
+        public class JSONEmployee
+        {
+            public string name { get; set; }
+            public string EgmId { get; set; }
 
+            public JSONEmployee()
+            {
+            }
+
+            public JSONEmployee(String name, String EgmId)
+            {
+                this.name = name;
+                this.EgmId = EgmId;
+            }
+        }
+
+
+
+        [HttpPost]
+        public JsonResult GetData(JSONEmployee d)
+        {
+            Employee retData = null;
+            String myTxt = d.EgmId;
+            String EgmId = d.EgmId;
+            EmployeeView employeeView = new EmployeeView();
+            retData = employeeView.DbGetEmployeeByEmpId(d.EgmId);
+
+            return this.Json(
+                new
+                {
+                    DisplayName = retData.Display_name,
+                    FirstName = retData.FirstName,
+                    LastName = retData.LastName,
+                    MiddleName = retData.MiddleName,
+                    DepartmentID = retData.Department,
+                    Email = retData.Email,
+                    Emp_id = retData.Emp_id.IntValue.ToString(),
+                    PhoneNumber = "",
+                    JobTitle = retData.JobTitle,
+                    DepartmentName = retData.Department,
+                }
+             );
+        }
    
     }
 }

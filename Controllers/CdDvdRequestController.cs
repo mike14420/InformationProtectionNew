@@ -16,7 +16,7 @@ namespace InformationProtection.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "UsersView");
         }
 
         //
