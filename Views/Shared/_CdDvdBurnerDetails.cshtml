@@ -27,7 +27,7 @@
             <td colspan="1" style="text-align: left">
                 <div class="editor-field">
                     @Html.DisplayFor(model => model.SerialNumber)
-                  </div>
+                </div>
             </td>
         </tr>
         <tr>
@@ -39,7 +39,7 @@
             <td colspan="1" style="text-align: left">
                 <div class="editor-field">
                     @Html.DisplayFor(model => model.Access2Computer)
-                  </div>
+                </div>
             </td>
         </tr>
         <tr>
@@ -51,14 +51,14 @@
             <td colspan="1" style="text-align: left">
                 <div class="editor-field">
                     @Html.DisplayFor(model => model.Access2Media)
-                  </div>
+                </div>
             </td>
         </tr>
         <tr>
             <td colspan="4">
                 <table class="box1">
                     <tr>
-                         <td style="text-align: center" colspan="1">
+                        <td style="text-align: center" colspan="1">
                             <strong>Type:
                             </strong>
                         </td>
@@ -76,7 +76,7 @@
                     <tr>
                         <td style="background-color: antiquewhite; text-align: left" colspan="2">
                             @Html.DisplayFor(model => model.ComputerLocation, new { style = "width:700px" })
-                         </td>
+                        </td>
                     </tr>
                     <tr>
                         <td style="background-color: #D4D0C8; text-align: left" colspan="2">
@@ -86,7 +86,7 @@
                     <tr>
                         <td style="background-color: antiquewhite; text-align: left" colspan="2">
                             @Html.DisplayFor(model => model.MediaStorLocation, new { style = "width:700px" })
-                          </td>
+                        </td>
                     </tr>
                     <tr>
                         <td style="background-color: #D4D0C8; text-align: left" colspan="2">
@@ -103,24 +103,28 @@
                     </tr>
 
                     <tr>
-                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">Provide detail of the Security Controls to be taken to protect Renown Health information 
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <strong>Provide detail of the Security Controls to be taken to protect Renown Health information 
                                 on the media:
+                            </strong>
                         </td>
                     </tr>
                     <tr>
                         <td style="background-color: antiquewhite; text-align: left" colspan="2">
                             @Html.DisplayFor(model => model.SecurityControls, new { style = "width:700px" })
-                             </td>
+                        </td>
                     </tr>
                     <tr>
-                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">Identify the type of information to be placed on the CD/DVD media (Restricted Confidential, Confidential,
-                                Internal Proprietary, Internal Financial, or Public)
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <b>Identify the type of information to be placed on the CD/DVD media (Restricted Confidential, Confidential,
+                                    Internal Proprietary, Internal Financial, or Public)
+                            </b>
                         </td>
                     </tr>
                     <tr>
                         <td style="background-color: antiquewhite; text-align: left" colspan="2">
                             @Html.DisplayFor(model => model.TypeOfData, new { style = "width:700px" })
-                         </td>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
@@ -129,29 +133,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">All policies, including the following policies for compliance must be understood and assurance 
+                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                            <b>All policies, including the following policies for compliance must be understood and assurance 
                     for enforcement of the requirements as contained in these policies must be acknowledged by the requestor.
-                    Signing below acknowledges understanding.
-                    Information Handling Guideline <strong>(RENOWN.IRP.145)</strong>
+                    Signing below acknowledges understanding.</b>
+                            Information Handling Guideline <strong>(RENOWN.IRP.145)</strong>
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                     </tr>
                     <tr>
-                        <td style="vertical-align: top; width: 75px">
+                        <td style="vertical-align: top; width: 200px">
                             <strong>Employee Signature:</strong>
                         </td>
                         <td>
-                           @Html.DisplayFor(model => model.EmployeeSignature)
+                            @Html.DisplayFor(model => model.EmployeeSignature)
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
-
-
-
     </table>
 
 </fieldset>

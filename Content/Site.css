@@ -472,6 +472,15 @@ DIV#cart
     padding: 5px;
     border-spacing: 5px;
 }
+Table1Format tr
+{
+    border: 1px solid black;
+}
+
+Table1Format td
+{
+    vertical-align: bottom;
+}
 
 .RenownHeader1
 {

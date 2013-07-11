@@ -4,11 +4,31 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <style type="text/css">
+        .submit
+        {
+            padding: 8px;
+            border: 1px solid blue;
+        }
+    </style>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.10.2/jquery-1.9.1.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("[id$=btnHideSearch]").click(function () {
+                $('#showButton').hide();
+                window.print();
+            });
+        });
+    </script>
 </head>
 <body>
-    <a href="javascript:window.print()">Click to Print This Page</A>
-    <div>
-        @RenderBody()
-    </div>
+    <form id="form1" runat="server">
+        <div id="showButton">
+             <input type="button" id="btnHideSearch" runat="server" value="Print Page" style="bottom: 2px; clip: rect(auto,auto,auto,auto); margin-bottom: 5px;" />
+        </div>
+        <div>
+            @RenderBody()
+        </div>
+    </form>
 </body>
 </html>
