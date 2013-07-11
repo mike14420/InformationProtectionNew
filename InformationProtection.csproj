@@ -348,6 +348,7 @@
     <Content Include="images\webTemplate.png" />
     <Content Include="images\x.png" />
     <None Include="Scripts\jquery-1.7.1-vsdoc.js" />
+    <Content Include="Scripts\ApprovalRequestTbl.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.2\demos\autocomplete\search.php" />
@@ -1094,6 +1095,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\ApprovalRequestTblAll.js" />
     <Content Include="Scripts\JTable\extensions\jquery.jtable.aspnetpagemethods.js" />
     <Content Include="Scripts\JTable\extensions\jquery.jtable.aspnetpagemethods.min.js" />
     <Content Include="Scripts\JTable\external\json2.js" />
@@ -1264,7 +1266,6 @@
     <Content Include="Views\Shared\_LapTopDetails1.cshtml" />
     <Content Include="Views\Shared\_CellPhoneSyncDetails1.cshtml" />
     <Content Include="Views\Shared\View1.cshtml" />
-    <Content Include="Views\Requestor\About.cshtml" />
     <Content Include="Views\AdminView\Edit.cshtml" />
     <Content Include="Views\AdminView\ViewPendingRequest.cshtml" />
     <Content Include="Views\AdminView\SendReminder.cshtml" />

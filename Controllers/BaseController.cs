@@ -112,7 +112,7 @@ namespace InformationProtection.Controllers
             try
             {
                 CellPhoneView Model = new CellPhoneView();
-                List<CellPhoneViewData> ourList = Model.GetDevicesFor(EmpId, "CellPhoneRequest", "Details", "Edit");
+                List<CellPhoneViewData> ourList = Model.GetDevicesFor(EmpId, "CellPhoneRequest");
 
                 return Json(new { Result = "OK", Records = ourList });
             }
@@ -215,7 +215,28 @@ namespace InformationProtection.Controllers
             }
         }
         [HttpPost]
-        public JsonResult GetRequests(string EmpId)
+        public JsonResult GetRequestsNotSubmitted(string EmpId)
+        {
+            try
+            {
+                IpApprovalRequestView Model = new IpApprovalRequestView();
+                List<IpApprovalRequestViewData> outData = null;
+
+                outData = Model.GetRequestFor(EmpId, "IpApprovalRequest", "Details");
+
+                outData = (from item in outData
+                           where item.ApprovedStatus == IpApprover.ApproveState.not_submitted.ToString()
+                           select item).ToList();
+
+                return Json(new { Result = "OK", Records = outData });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+        [HttpPost]
+        public JsonResult GetRequestsAll(string EmpId)
         {
             try
             {
@@ -231,7 +252,6 @@ namespace InformationProtection.Controllers
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
         }
-
         [HttpPost]
         public JsonResult GetPendingRequests()
         {
@@ -314,15 +334,15 @@ namespace InformationProtection.Controllers
                 IpRequestorView Mdl = new IpRequestorView();
                 List<IpRequestorViewData> allRequestors = Mdl.GetRequestorsIncludeRoles();
                 int Count = allRequestors.Count;
-                // add the link for approvers details
-                foreach (IpRequestorViewData item in allRequestors)
+                // sort by last name add the link for approvers details 
+                List<IpRequestorViewData> allRequestors1 = allRequestors.OrderBy(P => P.Lname).ToList();
+                foreach (IpRequestorViewData item in allRequestors1)
                 {
-                    item.RequestDetailsLink = String.Format("<a href=\"Requestor/Edit?EmpID={0}\">Edit</a>",
+                    item.RequestDetailsLink = String.Format("<a href=\"/UsersView?EmpID={0}\">UsersView</a>",
                         item.EmpID);
-                }
-
-                List<IpRequestorViewData> PageRequestor = allRequestors.Skip(jtStartIndex).Take(jtPageSize).ToList();
-
+                }
+                List<IpRequestorViewData> PageRequestor = allRequestors1.Skip(jtStartIndex).Take(jtPageSize).ToList();
+                
                 return Json(new { Result = "OK", Records = PageRequestor, TotalRecordCount = Count });
             }
             catch (Exception ex)

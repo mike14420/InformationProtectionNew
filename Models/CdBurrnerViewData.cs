@@ -117,8 +117,6 @@ namespace InformationProtection.Models
                 ComputerLocation = "";
             if (MediaStorLocation == null)
                 MediaStorLocation = "";
-            if (IsMediaAttached == null)
-                IsMediaAttached = false;
             if (EmployeeSignature == null)
                 EmployeeSignature = "";
 

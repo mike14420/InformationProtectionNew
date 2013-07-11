@@ -41,7 +41,7 @@ namespace InformationProtection.Models
             return Convert(cDevice);
         }
 
-        public List<CellPhoneViewData> GetDevicesFor(String EmpId, String Controller, String Action, String EditAction)
+        public List<CellPhoneViewData> GetDevicesFor(String EmpId, String Controller)
         {
             // FIRST Get the requestor ID
             IpRequestorView Model = new IpRequestorView();
@@ -57,10 +57,10 @@ namespace InformationProtection.Models
 
             foreach (CellPhoneViewData item in retData)
             {
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&CellPhoneReqId={3}\">Details</a>",
-                    Controller, Action, requestor.EmpID, item.CellPhoneReqId);
-                item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&CellPhoneReqId={3}\">Edit</a>",
-                    Controller, EditAction, requestor.EmpID, item.CellPhoneReqId);
+                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&CellPhoneReqId={2}\">Details</a>",
+                    Controller, requestor.EmpID, item.CellPhoneReqId);
+                item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&CellPhoneReqId={2}\">Edit</a>",
+                    Controller, requestor.EmpID, item.CellPhoneReqId);
             }
             return retData;
         }

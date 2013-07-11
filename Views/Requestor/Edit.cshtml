@@ -2,22 +2,17 @@
 
 @{
     ViewBag.Title = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2 class="RenownHeader1">Employee Information</h2>
 
-<h2>Edit</h2>
 
 
-
-@using (Html.BeginForm("Edit", "Requestor"))
+@using (Html.BeginForm())
 {
-
-    @Html.ValidationSummary(true)
-
     @Html.Hidden("FullNameHidden", Model.FullName, new  { id = "FullNameHiddenId"});
     @Html.Hidden("IpRequestorId", Model.IpRequestorId, new { id = "IpRequestorId" });
-    
+    @Html.Hidden("EmpID", Model.EmpID)
+
     @Html.ValidationSummary(true)   
     <table class="Table1Format">
         <tr>
@@ -25,7 +20,7 @@
                 <p>Employee ID</p>
             </td>
             <td>
-                @Html.Hidden("EmpID", Model.EmpID)
+
                 @Html.Label("EmployeeNumber", Model.EmpID, new  {id = "EmployeeNumberID" })
             </td>
         </tr>

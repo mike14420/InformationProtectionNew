@@ -58,42 +58,44 @@ $(document).ready(function () {
     });
 
     function GetUser(myTxt, myId) {
+        if (myTxt && myId) {
+            var myUrl = "../Requestor/GetData";
+            // take the data and post it via json
+            $.ajax({
+                url: myUrl,
+                type: "POST",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8;",
+                data: JSON.stringify({ name: myTxt, EgmId: myId }),
+                success: function (result) {
+                    var dn = result.DisplayName;
+                    var f = result.FirstName;
+                    var l = result.LastName;
+                    var m = result.MiddleName;
+                    var d = result.DepartmentID;
+                    var e = result.Email;
+                    var empId = result.Emp_id;
+                    var p = result.PhoneNumber;
+                    var j = result.JobTitle;
+                    var deptN = result.DepartmentName;
 
-        var myUrl = "../Requestor/GetData";
-        // take the data and post it via json
-        $.ajax({
-            url: myUrl,
-            type: "POST",
-            datatype: "json",
-            contentType: "application/json; charset=utf-8;",
-            data: JSON.stringify({ name: myTxt, EgmId: myId }),
-            success: function (result) {
-                var dn = result.DisplayName;
-                var f = result.FirstName;
-                var l = result.LastName;
-                var m = result.MiddleName;
-                var d = result.DepartmentID;
-                var e = result.Email;
-                var empId = result.Emp_id;
-                var p = result.PhoneNumber;
-                var j = result.JobTitle;
-                var deptN = result.DepartmentName;
+                    $('#FullName').val(dn);
+                    $('#Fname').val(f);
+                    $('#EmpID').val(empId);
+                    $('#EmpID1').val(empId);
+                    $('#Lname').val(l);
+                    $('#Mname').val(m);
+                    $('#Email').val(e);
+                    $('#JobTitle').val(j);
+                    $('#DepartmentName').val(deptN);
+                },
+                error: function (data) {
+                    alert("ERROR");
+                }
 
-                $('#FullName').val(dn);
-                $('#Fname').val(f);
-                $('#EmpID').val(empId);
-                $('#EmpID1').val(empId);
-                $('#Lname').val(l);
-                $('#Mname').val(m);
-                $('#Email').val(e);
-                $('#JobTitle').val(j);
-                $('#DepartmentName').val(deptN);
-            },
-            error: function (data) {
-                alert("ERROR");
-            }
+            });
+        }
 
-        });
     }
 
 

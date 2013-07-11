@@ -9,8 +9,10 @@
 
 
 
-@using (Html.BeginForm("Create", "Requestor"))
+@using (Html.BeginForm())
 {
+    @Html.Hidden("FullNameHidden", Model.FullName, new  { id = "FullNameHiddenId"});
+    @Html.Hidden("EmpID", Model.EmpID, new { id = "EmpID" })
 
     @Html.ValidationSummary(true)
     <table class="Table1Format">
@@ -41,9 +43,6 @@
 
         </table>
     </div>
-    @Html.Hidden("FullNameHidden", Model.FullName, new  { id = "FullNameHiddenId"});
-    @Html.Hidden("EmpID", Model.EmpID, new { id = "EmpID" })
-    @Html.ValidationSummary(true)   
     <table class="Table1Format">
         <tr>
             <td>
