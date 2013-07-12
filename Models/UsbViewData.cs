@@ -156,5 +156,9 @@ namespace InformationProtection.Models
         }
 
         public string RequestStatus { get; set; }
+
+        public int RequestId { get; set; }
+
+        public string RequestorsName { get; set; }
     }
 }

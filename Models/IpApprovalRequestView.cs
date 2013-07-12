@@ -197,7 +197,17 @@ namespace InformationProtection.Models
             bool retValue = model.InitApprovalRequestState(data.CellPhoneReqId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString(), state.ToString());
             return retValue;
         }
-
+        public void AddOtherProperties(CellPhoneViewData data)
+        {
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(data.CellPhoneReqId,
+                IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
+            IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+            data.RequestStatus = request.ApprovedStatus;
+            data.RequestId = request.Id;
+            data.RequestorsName = request.RequestorsName;
+        }
         //***********************************************
         // LAP TOP
         //************************************************
@@ -224,6 +234,17 @@ namespace InformationProtection.Models
             bool retValue = model.InitApprovalRequestState(data.LapTopDeviceId, IpApprovalRequest.RequestTypeEnum.laptop.ToString(), state.ToString());
             return retValue;
         }
+        public void AddOtherProperties(LapTopViewData data)
+        {
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(data.LapTopDeviceId,
+                IpApprovalRequest.RequestTypeEnum.laptop.ToString());
+            IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+            data.RequestStatus = request.ApprovedStatus;
+            data.RequestId = request.Id;
+            data.RequestorsName = request.RequestorsName;
+        }
         //***********************************************
         // USB DEVICE
         //************************************************
@@ -248,6 +269,17 @@ namespace InformationProtection.Models
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
             bool retValue = model.InitApprovalRequestState(data.UsbDeviceId, IpApprovalRequest.RequestTypeEnum.usb.ToString(), state.ToString());
             return retValue;
+        }
+        public void AddOtherProperties(UsbViewData data)
+        {
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(data.UsbDeviceId,
+                IpApprovalRequest.RequestTypeEnum.usb.ToString());
+            IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+            data.RequestStatus = request.ApprovedStatus;
+            data.RequestId = request.Id;
+            data.RequestorsName = request.RequestorsName;
         }
         //***********************************************
         // CELL PHONE SYNC DEVICE
@@ -274,6 +306,17 @@ namespace InformationProtection.Models
             bool retValue = model.InitApprovalRequestState(data.CellPhoneSyncDeviceId, IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString(), state.ToString());
             return retValue;
         }
+        public void AddOtherProperties(CellPhoneSyncMdlData data)
+        {
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(data.CellPhoneSyncDeviceId,
+                IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString());
+            IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+            data.RequestStatus = request.ApprovedStatus;
+            data.RequestId = request.Id;
+            data.RequestorsName = request.RequestorsName;
+        }
         //***********************************************
         // WIRELESS DEVICE
         //************************************************
@@ -299,6 +342,19 @@ namespace InformationProtection.Models
             bool retValue = model.InitApprovalRequestState(data.WirelessDeviceId, IpApprovalRequest.RequestTypeEnum.wireless.ToString(), state.ToString());
             return retValue;
         }
+        public void AddOtherProperties(WirelessMdlData data)
+        {
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(data.WirelessDeviceId,
+                IpApprovalRequest.RequestTypeEnum.wireless.ToString());
+            IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+            data.RequestStatus = request.ApprovedStatus;
+            data.RequestId = request.Id;
+            data.RequestorsName = request.RequestorsName;
+        }
+
+
         //***********************************************
         // REMOTE DEVICE
         //************************************************
@@ -325,7 +381,17 @@ namespace InformationProtection.Models
             bool retValue = model.InitApprovalRequestState(data.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString(), state.ToString());
             return retValue;
         }
-
+        public void AddOtherProperties(RemoteAccessMdlData data)
+        {
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(data.RemoteAccessId,
+                IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString());
+            IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+            data.RequestStatus = request.ApprovedStatus;
+            data.RequestId = request.Id;
+            data.RequestorsName = request.RequestorsName;
+        }
         /// <summary>
         ///  FIND ALL REQUEST for approver with EMPID
         /// </summary>

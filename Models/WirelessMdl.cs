@@ -50,23 +50,22 @@ namespace InformationProtection.Models
          
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             WirelessDbAccessReq wirelessDbAccess = new WirelessDbAccessReq(connectionString);
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            
 
             List<WirelessDevice> data = wirelessDbAccess.GetDevicesFor(RequestorId);
 
             List<WirelessMdlData> retData = Convert(data);
             foreach (WirelessMdlData item in retData)
             {
-                IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(item.WirelessDeviceId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
-                IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
-                item.RequestStatus = request.ApprovedStatus;
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Details</a>",
+                   item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Details</a>",
                     Controller, Action, requestor.EmpID, item.WirelessDeviceId);
                 item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Edit</a>",
                     Controller, EditAction, requestor.EmpID, item.WirelessDeviceId);
             }
             return retData;
         }
+
+
 
         public List<WirelessMdlData> GetWireless()
         {
