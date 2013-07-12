@@ -44,7 +44,7 @@ namespace InformationProtection.Models
 
             UsbDevice data = UsbDbAccess.GetDevice(dbKey);
 
-            return Convert(data);
+            return IpApprovalRequestView.AddOtherProperties(Convert(data));
         }
 
         public List<UsbViewData> GetUsbRequestFor(String EmpId, String Controller, String Action, String EditAction)
@@ -56,16 +56,13 @@ namespace InformationProtection.Models
 
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             UsbDbAccessReq UsbDbAccess = new UsbDbAccessReq(connectionString);
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
 
             List<UsbDevice> data = UsbDbAccess.GetDevicesFor(RequestorId);
 
             List<UsbViewData> retData = UsbView.Convert(data); ;
             foreach (UsbViewData item in retData)
             {
-                IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(item.UsbDeviceId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
-                IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
-                item.RequestStatus = request.ApprovedStatus;
+                IpApprovalRequestView.AddOtherProperties(item);
                 item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&UsbDeviceId={3}\">Details</a>", 
                     Controller, Action, requestor.EmpID, item.UsbDeviceId);
                 item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Edit</a>",

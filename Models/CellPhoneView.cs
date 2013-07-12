@@ -33,12 +33,12 @@ namespace InformationProtection.Models
             int intId = 0;
             int.TryParse(cellPhoneDevId, out intId);
             CellPhoneDevice cDevice;
-
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             CellPhoneReqDbAccess CellReqDbAcess = new CellPhoneReqDbAccess(connectionString);
-
             cDevice = CellReqDbAcess.GetDevice(intId);
-            return Convert(cDevice);
+            CellPhoneViewData data = Convert(cDevice);
+            CellPhoneViewData retData = IpApprovalRequestView.AddOtherProperties(data);
+            return retData;
         }
 
         public List<CellPhoneViewData> GetDevicesFor(String EmpId, String Controller)
@@ -48,20 +48,13 @@ namespace InformationProtection.Models
             IpRequestorViewData requestor = Model.GetRequestor(EmpId);
             int RequestorId = requestor.IpRequestorId;
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-
             CellPhoneReqDbAccess CellPhoneReqDbAcess = new CellPhoneReqDbAccess(connectionString);
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-
             List<CellPhoneDevice> data = CellPhoneReqDbAcess.GetDevicesFor(RequestorId);
             List<CellPhoneViewData> retData;
-
             retData = Convert(data);
-
             foreach (CellPhoneViewData item in retData)
             {
-                IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(item.CellPhoneReqId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
-                IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
-                item.RequestStatus = request.ApprovedStatus;
+                IpApprovalRequestView.AddOtherProperties(item);
                 item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&CellPhoneReqId={2}\">Details</a>",
                     Controller, requestor.EmpID, item.CellPhoneReqId);
                 item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&CellPhoneReqId={2}\">Edit</a>",

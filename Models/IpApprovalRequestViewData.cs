@@ -284,7 +284,7 @@ namespace InformationProtection.Models
         {
             get
             {
-                if (RequestType == IpModelData.IpApprovalRequest.RequestTypeEnum.cdburrner.ToString())
+                if (RequestType == IpModelData.IpApprovalRequest.RequestTypeEnum.cdburnner.ToString())
                 {
                     return CdburnerDeviceID;
                 }

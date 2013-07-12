@@ -62,7 +62,7 @@ namespace IpModelData
         public string   CioComment { get; set; }
         public string   CioEmail { get; set; }
       
-        public enum RequestTypeEnum { cdburrner, cellphonesync, cellphone, laptop, remoteaccess, usb, wireless }
+        public enum RequestTypeEnum { cdburnner, cellphonesync, cellphone, laptop, remoteaccess, usb, wireless }
         public String RequestType { get; set; } // identifies one of the following
 
         public int CellPhoneDeviceId { get; set; }

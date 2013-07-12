@@ -20,7 +20,32 @@ namespace InformationProtection.Models
             int.TryParse(RemoteAccessId, out dbKey);
             RemoteAccess device = RemoteAccessModel.GetDevice(dbKey);
 
-            return Convert(device);
+            return IpApprovalRequestView.AddOtherProperties(Convert(device));
+        }
+        public List<RemoteAccessMdlData> GetRemoteAccessFor(String EmpId, String Controller)
+        {
+            IpRequestorView Model = new IpRequestorView();
+            IpRequestorViewData requestor = Model.GetRequestor(EmpId);
+            int RequestorId = requestor.IpRequestorId;
+
+            List<RemoteAccess> data;
+            List<RemoteAccessMdlData> retData;
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            RemoteAccessDbReqAccess RemoteAccessModel = new RemoteAccessDbReqAccess(connectionString);
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+
+            data = RemoteAccessModel.GetDevicesFor(RequestorId);
+
+            retData = Convert(data);
+            foreach (RemoteAccessMdlData item in retData)
+            {
+                IpApprovalRequestView.AddOtherProperties(item);
+                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&RemoteAccessReqId={2}\">Details</a>",
+                    Controller, requestor.EmpID, item.RemoteAccessId);
+                item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&RemoteAccessReqId={2}\">Edit</a>",
+                    Controller, requestor.EmpID, item.RemoteAccessId);
+            }
+            return retData;
         }
 
         public int Create(RemoteAccessMdlData RemoteAccessRequest)
@@ -73,33 +98,7 @@ namespace InformationProtection.Models
             return result;
         }
 
-        public List<RemoteAccessMdlData> GetRemoteAccessFor(String EmpId, String Controller)
-        {
-            IpRequestorView Model = new IpRequestorView();
-            IpRequestorViewData requestor = Model.GetRequestor(EmpId);
-            int RequestorId = requestor.IpRequestorId;
 
-            List<RemoteAccess> data;
-            List<RemoteAccessMdlData> retData;
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            RemoteAccessDbReqAccess RemoteAccessModel = new RemoteAccessDbReqAccess(connectionString);
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-
-            data = RemoteAccessModel.GetDevicesFor(RequestorId);
-
-            retData = Convert(data);
-            foreach (RemoteAccessMdlData item in retData)
-            {
-                IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(item.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
-                IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
-                item.RequestStatus = request.ApprovedStatus;
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&RemoteAccessReqId={2}\">Details</a>", 
-                    Controller, requestor.EmpID, item.RemoteAccessId);
-                item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&RemoteAccessReqId={2}\">Edit</a>",
-                    Controller, requestor.EmpID, item.RemoteAccessId);
-            }
-            return retData;
-        }
 
         public static List<RemoteAccessMdlData> Convert(List<RemoteAccess> ourData)
         {

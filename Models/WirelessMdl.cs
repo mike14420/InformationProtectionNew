@@ -38,7 +38,7 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             WirelessDbAccessReq wirelessDbAccess = new WirelessDbAccessReq(connectionString);
             WirelessDevice device = wirelessDbAccess.GetDevice(dbKey);
-            return Convert(device);
+            return IpApprovalRequestView.AddOtherProperties(Convert(device));
         }
 
         public List<WirelessMdlData> GetWirelessFor(String EmpId, String Controller, String Action, String EditAction)
@@ -50,14 +50,13 @@ namespace InformationProtection.Models
          
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             WirelessDbAccessReq wirelessDbAccess = new WirelessDbAccessReq(connectionString);
-            
-
             List<WirelessDevice> data = wirelessDbAccess.GetDevicesFor(RequestorId);
 
             List<WirelessMdlData> retData = Convert(data);
             foreach (WirelessMdlData item in retData)
             {
-                   item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Details</a>",
+                IpApprovalRequestView.AddOtherProperties(item);    
+                item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Details</a>",
                     Controller, Action, requestor.EmpID, item.WirelessDeviceId);
                 item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Edit</a>",
                     Controller, EditAction, requestor.EmpID, item.WirelessDeviceId);

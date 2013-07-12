@@ -39,16 +39,17 @@ namespace InformationProtection.Models
         {
             int intId = 0;
             int.TryParse(CdburnerDeviceId, out intId);
-            CdBurnerDevice cDevice;
 
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             CdBurnerReqDbAccess CdBurnerReqDbAcess = new CdBurnerReqDbAccess(connectionString);
 
             List<CdBurnerDevice> data = CdBurnerReqDbAcess.GetDevices();
-            cDevice = (from C in data
+            CdBurnerDevice cDevice = (from C in data
                            where C.CdburnerDeviceId == intId
                            select C).FirstOrDefault();  
-            return Convert(cDevice);
+            CdBurrnerViewData tmp = Convert(cDevice);
+            IpApprovalRequestView.AddOtherProperties(tmp);
+            return tmp;
         }
 
         public List<CdBurrnerViewData> CdDvdRequestFor(String EmpId, String Controller, String Action, String EditLnk)
@@ -59,7 +60,6 @@ namespace InformationProtection.Models
             int RequestorId = requestor.IpRequestorId;
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;          
             CdBurnerReqDbAccess CdBurnerReqDbAcess = new CdBurnerReqDbAccess(connectionString);
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
 
             List<CdBurnerDevice> data = CdBurnerReqDbAcess.GetDevices();
 
@@ -67,14 +67,10 @@ namespace InformationProtection.Models
                                                    where C.RequestorId == RequestorId
                                                    select C).ToList();
             List<CdBurrnerViewData> retData;
-
             retData = Convert(RequestorsData);
-
             foreach (CdBurrnerViewData item in retData)
             {
-                IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(item.CdburnerDeviceId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
-                IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
-                item.RequestStatus = request.ApprovedStatus;
+                IpApprovalRequestView.AddOtherProperties(item);               
                 item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&CdburnerDeviceId={3}\">Details</a>", 
                     Controller, Action, requestor.EmpID, item.CdburnerDeviceId);
                 item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&CdburnerDeviceId={3}\">Edit</a>",
@@ -82,8 +78,6 @@ namespace InformationProtection.Models
             }
             return retData;
         }
-
-
 
         public static List<CdBurrnerViewData> Convert(List<CdBurnerDevice> ourData)
         {
