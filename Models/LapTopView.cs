@@ -55,12 +55,16 @@ namespace InformationProtection.Models
             int RequestorId = requestor.IpRequestorId;
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             LapTopReqDbReqAccess LapTopModel = new LapTopReqDbReqAccess(connectionString);
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
 
             List<LapTopDevice> devices = LapTopModel.GetDevicesFor(RequestorId);
             List<LapTopViewData> retData = Convert(devices);
 
             foreach (LapTopViewData item in retData)
             {
+                IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(item.LapTopDeviceId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
+                IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+                item.RequestStatus = request.ApprovedStatus;
                 item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&LapTopDeviceId={3}\">Details</a>", 
                     Controller, "Details", requestor.EmpID, item.LapTopDeviceId);
                 item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&LapTopDeviceId={3}\">Edit</a>", 

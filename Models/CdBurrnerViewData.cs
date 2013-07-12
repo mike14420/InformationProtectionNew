@@ -121,5 +121,7 @@ namespace InformationProtection.Models
                 EmployeeSignature = "";
 
         }
+
+        public string RequestStatus { get; set; }
     }
 }

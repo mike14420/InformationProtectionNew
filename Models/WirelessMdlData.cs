@@ -153,5 +153,7 @@ namespace InformationProtection.Models
                 SerialNumber = "";
         }
 
+
+        public string RequestStatus { get; set; }
     }
 }

@@ -50,6 +50,8 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
 
             CellPhoneReqDbAccess CellPhoneReqDbAcess = new CellPhoneReqDbAccess(connectionString);
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+
             List<CellPhoneDevice> data = CellPhoneReqDbAcess.GetDevicesFor(RequestorId);
             List<CellPhoneViewData> retData;
 
@@ -57,6 +59,9 @@ namespace InformationProtection.Models
 
             foreach (CellPhoneViewData item in retData)
             {
+                IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(item.CellPhoneReqId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
+                IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+                item.RequestStatus = request.ApprovedStatus;
                 item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&CellPhoneReqId={2}\">Details</a>",
                     Controller, requestor.EmpID, item.CellPhoneReqId);
                 item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&CellPhoneReqId={2}\">Edit</a>",

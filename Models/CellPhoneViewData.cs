@@ -124,6 +124,8 @@ namespace InformationProtection.Models
                 RenownOwnedType = "";
 
         }
+
+        public string RequestStatus { get; set; }
     }
 
 }

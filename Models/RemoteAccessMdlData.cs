@@ -174,5 +174,7 @@ namespace InformationProtection.Models
             if (ComputerName == null)
                 ComputerName = "";
         }
+
+        public string RequestStatus { get; set; }
     }
 }

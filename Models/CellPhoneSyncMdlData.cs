@@ -157,5 +157,7 @@ namespace InformationProtection.Models
             if (MobileOS == null)
                 MobileOS = "";
         }
+
+        public string RequestStatus { get; set; }
     }
 }

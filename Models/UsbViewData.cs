@@ -154,5 +154,7 @@ namespace InformationProtection.Models
             if (EmployeeSignature == null)
                 EmployeeSignature = "";
         }
+
+        public string RequestStatus { get; set; }
     }
 }

@@ -453,6 +453,19 @@ namespace InformationProtection.Models
             }
         }
 
+
+        public IpApprovalRequestViewData GetApprovalRequest(String deviceId, IpApprovalRequest.RequestTypeEnum DeviceType)
+        {
+            IpApprovalRequestViewData retData = new IpApprovalRequestViewData();
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
+            IpApprovalRequest request = null;
+            request = model.GetApprovalRequest(deviceId);
+
+            retData = IpApprovalRequestView.Convert(request);
+            return retData;
+        }
+
         public static List<IpApprovalRequestViewData> Convert(List<IpApprovalRequest> ourData)
         {
 

@@ -83,12 +83,16 @@ namespace InformationProtection.Models
             List<RemoteAccessMdlData> retData;
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             RemoteAccessDbReqAccess RemoteAccessModel = new RemoteAccessDbReqAccess(connectionString);
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
 
             data = RemoteAccessModel.GetDevicesFor(RequestorId);
 
             retData = Convert(data);
             foreach (RemoteAccessMdlData item in retData)
             {
+                IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(item.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
+                IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+                item.RequestStatus = request.ApprovedStatus;
                 item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&RemoteAccessReqId={2}\">Details</a>", 
                     Controller, requestor.EmpID, item.RemoteAccessId);
                 item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&RemoteAccessReqId={2}\">Edit</a>",

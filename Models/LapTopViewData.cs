@@ -157,5 +157,7 @@ namespace InformationProtection.Models
             if (PhysLocation == null) 
                 PhysLocation = "";
         }
+
+        public string RequestStatus { get; set; }
     }
 }

@@ -300,7 +300,7 @@ namespace IpDataProvider
             }
             catch (Exception e)
             {
-                throw e;
+                String Message = e.Message;
             }
             finally
             {
@@ -350,6 +350,7 @@ namespace IpDataProvider
             }
             catch (Exception error)
             {
+                String Message = error.Message;
             }
             finally
             {
@@ -392,6 +393,7 @@ namespace IpDataProvider
             }
             catch (Exception error)
             {
+                String Message = error.Message;
             }
             finally
             {
@@ -410,7 +412,6 @@ namespace IpDataProvider
         public int GetRequestorPendingCount(String EmpId)
         {
             int retData = 0;
-            int CmdResult = 0;
             RequestorDbReqAccess requestorDbAccess = new RequestorDbReqAccess(ConnectionString);
 
             SqlConnection con = new SqlConnection(ConnectionString);
@@ -438,14 +439,15 @@ namespace IpDataProvider
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.StoredProcedure;
                     retData = ReadCountValue(cmd);
-                    if (p1 != null && p1.Value != null)
+                    if (p2 != null && p2.Value != null)
                     {
-                        CmdResult = (int)p1.Value;
+                        retData = (int)p2.Value;
                     }
                 }
             }
             catch (Exception error)
             {
+                String Message = error.Message;
             }
             finally
             {
@@ -459,11 +461,10 @@ namespace IpDataProvider
 
         }
 
-
-
         public IpApprovalRequest GetApprovalRequest(String ApprovalRequestId)
         {
             List<IpApprovalRequest> retData = null;
+            int RetVal;
             RequestorDbReqAccess requestorDbAccess = new RequestorDbReqAccess(ConnectionString);
 
             SqlConnection con = new SqlConnection(ConnectionString);
@@ -491,10 +492,15 @@ namespace IpDataProvider
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.StoredProcedure;
                     retData = ReadData(cmd);
+                    if (p1 != null && p1.Value != null)
+                    {
+                        RetVal = (int)p1.Value;
+                    }
                 }
             }
             catch (Exception error)
             {
+                String Message = error.Message;
             }
             finally
             {
@@ -557,6 +563,64 @@ namespace IpDataProvider
             {
             }
             return returnValue > 0;
+        }
+
+        public IpApprovalRequest GetApprovalRequestByDeviceId(int DeviceId, String RequestType)
+        {
+            int RetVal = 0;
+
+            List<IpApprovalRequest> retData = null;
+
+            SqlConnection con = new SqlConnection(ConnectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "GetApprovalRequestByDeviceId";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter p1 = new SqlParameter("@DeviceId", SqlDbType.Int);
+            p1.Direction = ParameterDirection.Input;
+            p1.Value = DeviceId;
+            cmd.Parameters.Add(p1);
+
+            SqlParameter p2 = new SqlParameter("@RequestType", SqlDbType.VarChar);
+            p2.Direction = ParameterDirection.Input;
+            p2.Value = RequestType;
+            cmd.Parameters.Add(p2);
+
+            SqlParameter p3 = new SqlParameter("@RetVal", SqlDbType.Int);
+            p3.Direction = ParameterDirection.Output;
+            cmd.Parameters.Add(p3);
+
+            try
+            {
+                con.Open();
+                if (cmd != null)
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    retData = ReadData(cmd);
+                    if (p3 != null && p3.Value != null)
+                    {
+                        RetVal = (int)p3.Value;
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                String Message = error.Message;
+            }
+            finally
+            {
+                if (con.State != ConnectionState.Closed)
+                {
+                    con.Close();
+                }
+
+            }
+            if (retData != null && retData.Count > 0)
+            {
+                return retData[0];
+            }
+            return null;
         }
 
         public bool UpdateFirstSupRequest(IpApprovalRequest item)

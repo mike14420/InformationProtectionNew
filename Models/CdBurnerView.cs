@@ -59,6 +59,7 @@ namespace InformationProtection.Models
             int RequestorId = requestor.IpRequestorId;
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;          
             CdBurnerReqDbAccess CdBurnerReqDbAcess = new CdBurnerReqDbAccess(connectionString);
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
 
             List<CdBurnerDevice> data = CdBurnerReqDbAcess.GetDevices();
 
@@ -71,6 +72,9 @@ namespace InformationProtection.Models
 
             foreach (CdBurrnerViewData item in retData)
             {
+                IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(item.CdburnerDeviceId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
+                IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
+                item.RequestStatus = request.ApprovedStatus;
                 item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&CdburnerDeviceId={3}\">Details</a>", 
                     Controller, Action, requestor.EmpID, item.CdburnerDeviceId);
                 item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&CdburnerDeviceId={3}\">Edit</a>",
