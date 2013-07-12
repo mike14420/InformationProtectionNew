@@ -12,38 +12,6 @@ namespace InformationProtection.Controllers
 {
     public abstract class BaseController : Controller
     {
-        //[HandleError]
-        //protected override void OnException(ExceptionContext filterContext)
-        //{
-        //    //dont interfere if the exception is already handled
-        //    if (filterContext.ExceptionHandled)
-        //        return;
-
-        //    base.OnException(filterContext);
-            
-        //    if (filterContext == null)
-        //        base.OnException(filterContext);
-
-        //    ControllerContext Context = filterContext.Controller.ControllerContext;
-        //    String message = filterContext.Exception.Message;
-        //    var ex = filterContext.Exception ?? new Exception("No further information exists.");
-
-        //    LogItException(ex, Context);
-            
-        //    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(
-        //        new
-        //        {
-        //            action = "Index",
-        //            controller = "Error",
-        //            id = filterContext.Exception.Message,
-        //            //exceptionAction = "Index",
-        //            exceptionAction = (string)filterContext.RouteData.Values["action"],
-        //            //exceptionController = "Error"
-        //            exceptionController = (string)filterContext.RouteData.Values["controller"]
-        //        }));
-        //    filterContext.ExceptionHandled = true;
-        //    Response.Redirect(String.Format("Error?id=", message));
-        //}
 
         private void LogItException(Exception ex, ControllerContext context)
         {

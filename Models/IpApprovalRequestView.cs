@@ -467,7 +467,7 @@ namespace InformationProtection.Models
                 item.RequestDetailsLink = String.Format("<a href=\"{0}?Id={1}\">Reminder</a>",
                     action, item.Id);
             }
-            return request.OrderBy(P => P.RequuestorsEmpId).ToList();
+            return request.OrderBy(P => P.RequestorsName).ToList();
         }
 
         public List<IpApprovalRequestViewData> GetRequest(String EmpID)
