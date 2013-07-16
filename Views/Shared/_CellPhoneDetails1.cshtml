@@ -1,7 +1,10 @@
-﻿@model InformationProtection.Models.CellPhoneViewData
+﻿@using InformationProtection.Models;
+@{
+    CellPhoneViewData data = (CellPhoneViewData)ViewBag.ourData;
+}
 <fieldset>
-    <legend>CellPhone Request:@Html.DisplayFor(model => model.CellPhoneReqId)</legend>
-    @using InformationProtection.Models;
+    <legend>CellPhone Request</legend>
+
 
     <table class="Table1Format">
         <tr style="height: 100px">
@@ -20,12 +23,7 @@
         </tr>
 
         <tr>
-            <td colspan="1">
-                <strong>Make:</strong>
-            </td>
-            <td colspan="1" style="text-align: left">
-                @Html.Label(Model.Make)
-            </td>
+            c
         </tr>
         <tr>
             <td colspan="1">
@@ -35,7 +33,7 @@
             </td>
             <td colspan="1" style="text-align: left">
                 <div class="editor-field">
-                    @Html.Label(Model.Model)
+                    @Html.Label(data.Model)
                 </div>
             </td>
         </tr>
@@ -54,7 +52,7 @@
                     </tr>
                     <tr>
                         <td style="background-color: antiquewhite; text-align: left" colspan="4">
-                            @Html.Label(Model.BusJustification)
+                            @Html.Label(data.BusJustification)
                         </td>
                     </tr>
 
@@ -63,7 +61,7 @@
         </tr>
         <tr>
             <td colspan="24" style="text-align: left; vertical-align: top">
-                @Html.CheckBox("Type", true, new {  disabled="true" })
+                @Html.CheckBox("Type", true, new { disabled = "true" })
                 I verify that everything written 
                    herein is true to the best of my knowledge. 
                     I realize that mobile device use and access to Renown Health computer systems and information assets are a privilege and are monitored and subject to 
@@ -75,7 +73,7 @@
         </tr>
         <tr>
             <td colspan="4" style="text-align: left; vertical-align: top">
-                @Html.CheckBox("SecuredAck2", true, new {  disabled="true" })
+                @Html.CheckBox("SecuredAck2", true, new { disabled = "true" })
                 I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
                    Cell device usage. 
                    In addition, this action may occur with Renown Health employment termination.
@@ -84,21 +82,24 @@
         </tr>
 
         <tr>
-            <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
-                @Html.CheckBox("data.SecuredAck3", true, new {  disabled="true" })
+            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                @Html.CheckBox("data.SecuredAck1", true, new { disabled = "true" })
                 I understand I am responsible for: 
+            </td>
+            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 150px">Logical security 
+                     @Html.CheckBox("data.SecuredAck4", true, new { disabled = "true" })
             </td>
         </tr>
         <tr>
             <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 150px">Logical security 
-                     @Html.CheckBox("data.SecuredAck4", true, new {  disabled="true" })
+                     @Html.CheckBox("data.SecuredAck4", true, new { disabled = "true" })
             </td>
             <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">Physical security
-                    @Html.CheckBox("data.SecuredAck5", true, new {  disabled="true" })
+                    @Html.CheckBox("data.SecuredAck5", true, new { disabled = "true" })
             </td>
 
             <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">Immediate Notification: loss/theft
-                    @Html.CheckBox("data.SecuredAck6", true, new {  disabled="true" })
+                    @Html.CheckBox("data.SecuredAck6", true, new { disabled = "true" })
             </td>
         </tr>
 
@@ -120,7 +121,7 @@
                             </strong>
                         </td>
                         <td style="text-align: left" colspan="1">
-                            @Html.Label(Model.RenownOwnedType)
+                            @Html.Label(data.RenownOwnedType)
                         </td>
                     </tr>
                     <tr>
@@ -129,7 +130,7 @@
                             </strong>
                         </td>
                         <td>
-                            @Html.Label(Model.RenownOwnedPhone)
+                            @Html.Label(data.RenownOwnedPhone)
                         </td>
                     </tr>
 
@@ -139,7 +140,7 @@
                             </strong>
                         </td>
                         <td>
-                        @Html.Label(Model.RenownOwnedCarrier)
+                        @Html.Label(data.RenownOwnedCarrier)
                     </tr>
 
 
@@ -148,7 +149,7 @@
                             <strong>Employee Signature:</strong>
                         </td>
                         <td style="width: 200px">
-                            @Html.Label(Model.EmployeeSignature)
+                            @Html.Label(data.EmployeeSignature)
                         </td>
                     </tr>
                 </table>

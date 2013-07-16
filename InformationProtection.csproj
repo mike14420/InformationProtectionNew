@@ -1232,7 +1232,7 @@
     <Content Include="Views\WirelessRequest\Details.cshtml" />
     <Content Include="Views\Shared\_WirelessDetails.cshtml" />
     <Content Include="Views\UsersView\Submited.cshtml" />
-    <Content Include="Views\Shared\_RemoteAccessDetails.cshtml" />
+    <Content Include="Views\Shared\_RemoteAccessDetails1.cshtml" />
     <Content Include="Scripts\JTable\themes\basic\jtable_basic.less" />
     <Content Include="Scripts\JTable\themes\jtable_theme_base.less" />
     <Content Include="Scripts\JTable\themes\lightcolor\blue\jtable.less" />
@@ -1285,6 +1285,7 @@
     <Content Include="Views\Shared\_RemoteAccessEdit.cshtml" />
     <Content Include="Views\Shared\_PrintView.cshtml" />
     <Content Include="Views\CdDvdRequest\Print.cshtml" />
+    <Content Include="Views\Shared\_remoteAccessDetials.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
