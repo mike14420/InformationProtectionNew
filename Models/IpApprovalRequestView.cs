@@ -155,6 +155,11 @@ namespace InformationProtection.Models
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.cellphone.ToString();
             /// Now Write to DB
             int retValue = Create(Request);
+            // Now Submit it
+            if (state == IpApprover.ApproveState.not_submitted)
+            {
+                retValue = SubmitRequest(Request);
+            }
             return retValue;
         }
         public bool Update(CdBurrnerViewData data, IpApprover.ApproveState state)
@@ -199,6 +204,11 @@ namespace InformationProtection.Models
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.cellphone.ToString();
             /// Now Write to DB
             int retValue = Create(Request);
+            // Now Submit it
+            if (state == IpApprover.ApproveState.not_submitted)
+            {
+                retValue = SubmitRequest(Request);
+            }
             return retValue;
         }
         public bool Update(CellPhoneViewData data, IpApprover.ApproveState state)
@@ -236,7 +246,13 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.LapTopID = LaptopDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.laptop.ToString();
-            return Create(Request);
+            int retValue = Create(Request);
+            // Now Submit it
+            if (state == IpApprover.ApproveState.not_submitted)
+            {
+                retValue = SubmitRequest(Request);
+            }
+            return retValue;
         }
 
         public bool Update(LapTopViewData data, IpApprover.ApproveState state)
@@ -274,7 +290,13 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.UsbDeviceID = UsbDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.usb.ToString();
-            return Create(Request);
+            int retValue = Create(Request);
+            // Now Submit it
+            if (state == IpApprover.ApproveState.not_submitted)
+            {
+                retValue = SubmitRequest(Request);
+            }
+            return retValue;
         }
         public bool Update(UsbViewData data, IpApprover.ApproveState state)
         {
@@ -311,7 +333,13 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.CellPhoneSyncDeviceID = CellSyncDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString();
-            return Create(Request);
+            int retValue = Create(Request);
+            // Now Submit it
+            if (state == IpApprover.ApproveState.not_submitted)
+            {
+                retValue = SubmitRequest(Request);
+            }
+            return retValue;
         }
         public bool Update(CellPhoneSyncMdlData data, IpApprover.ApproveState state)
         {
@@ -348,7 +376,13 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.WirelessDeviceID = WirelessDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.wireless.ToString();
-            return Create(Request);
+            int retValue = Create(Request);
+            // Now Submit it
+            if (state == IpApprover.ApproveState.not_submitted)
+            {
+                retValue = SubmitRequest(Request);
+            }
+            return retValue;
         }
         public bool Update(WirelessMdlData data, IpApprover.ApproveState state)
         {
@@ -387,7 +421,13 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.RemoteAccessID = RemoteAccessId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString();
-            return Create(Request);
+            int retValue = Create(Request);
+            // Now Submit it
+            if (state == IpApprover.ApproveState.not_submitted)
+            {
+                retValue = SubmitRequest(Request);
+            }
+            return retValue;
         }
 
         public bool Update(RemoteAccessMdlData data, IpApprover.ApproveState state)
@@ -917,6 +957,29 @@ namespace InformationProtection.Models
             IpApprovalRequest data = Convert(item);
             bool result = approvalReqDb.UpdateCioRequest(data);
             return result;
+        }
+
+        internal int SubmitRequest(IpApprovalRequestViewData request)
+        {
+
+            request.FirstSupApproval = IpApprover.ApproveState.pending.ToString();
+            request.SecondSupApproval = IpApprover.ApproveState.pending.ToString();
+            request.VpHrApproval = IpApprover.ApproveState.pending.ToString();
+            request.RhCfoApproval = IpApprover.ApproveState.pending.ToString();
+            request.IpdApproval = IpApprover.ApproveState.pending.ToString();
+            request.CioApproval = IpApprover.ApproveState.pending.ToString();
+
+            IpApprovalRequestView model = new IpApprovalRequestView();
+            model.UpdateFirstSupRequest(request);
+            model.UpdateSecondSupRequest(request);
+            model.UpdateVphrRequest(request);
+            model.UpdateRhCfoRequest(request);
+            model.UpdateIpdRequest(request);
+            model.UpdateCioRequest(request);
+
+            ApproversEmailNotification Notification = new ApproversEmailNotification();
+            Notification.SubmitRequestToNextApprover(request.RequuestorsEmpId, request);
+            return 1;
         }
 
         internal int SubmitRequest(String EmpID, String OurApprovalList)
