@@ -295,7 +295,6 @@ DIV#cart
     height: 100px;
     padding: 0;
     margin: 0;
-    background-color: #FDBB30;
 }
 #dvLogo
 {
@@ -477,13 +476,18 @@ DIV#cart
 Table1Format tr
 {
     border: 1px solid black;
-    width:98%";
+    width:98%;
 }
 
 Table1Format td
 {
     vertical-align: bottom;
 }
+
+
+
+
+
 
 .RenownHeader1
 {

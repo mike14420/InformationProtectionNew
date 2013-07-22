@@ -228,14 +228,14 @@ namespace InformationProtection.Models
         {
             get
             {
-                if (FirstSupApproval == IpApprover.ApproveState.not_submitted.ToString()
-                    || SecondSupApproval == IpApprover.ApproveState.not_submitted.ToString()
-                    || VpHrApproval == IpApprover.ApproveState.not_submitted.ToString()
-                    || RhCfoApproval == IpApprover.ApproveState.not_submitted.ToString()
-                    || IpdApproval == IpApprover.ApproveState.not_submitted.ToString()
-                    || CioApproval == IpApprover.ApproveState.not_submitted.ToString())
+                if (FirstSupApproval == IpApprover.ApproveState.resubmit.ToString()
+                    || SecondSupApproval == IpApprover.ApproveState.resubmit.ToString()
+                    || VpHrApproval == IpApprover.ApproveState.resubmit.ToString()
+                    || RhCfoApproval == IpApprover.ApproveState.resubmit.ToString()
+                    || IpdApproval == IpApprover.ApproveState.resubmit.ToString()
+                    || CioApproval == IpApprover.ApproveState.resubmit.ToString())
                 {
-                    return IpApprover.ApproveState.not_submitted.ToString();
+                    return IpApprover.ApproveState.resubmit.ToString();
                 }
                 if (FirstSupApproval == IpApprover.ApproveState.saved.ToString()
                     && SecondSupApproval == IpApprover.ApproveState.saved.ToString()

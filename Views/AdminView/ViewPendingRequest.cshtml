@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "ViewPendingRequest";
 }
-    <div id="PendingRequestTable" style="width: 98%; margin: auto;"></div>
+    <div id="PendingRequestTable" style="width: 98%; margin: auto;font-size:5px"></div>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -10,7 +10,10 @@
         //Prepare jtable plugin
         $('#PendingRequestTable').jtable({
             title: 'All Pending Request',
-            sorting: false,
+            sorting: true,
+            pageSize: 20,
+            paging: true,
+            defaultSorting: 'Name ASC',
             selecting: false,
             multiselect: false,
             selectingCheckboxes: false, 
@@ -26,7 +29,7 @@
                 SubmitDate: {
                     title: 'Submited',
                     type: 'date',
-                    displayFormat: 'dd.mm.yy'
+                    displayFormat: 'dd/mm/yy'
                 },
                 RequestType: {
                     title: 'type'
@@ -38,37 +41,43 @@
                     title: '1st'
                 },
                 FirstSupStatus: {
-                    title: 'St'
+                    title: 'St',
+                    sorting: false
                 },
                 SecondSupName: {
                     title: '2nd'
                 },
                 SecondSupStatus: {
-                    title: 'St'
+                    title: 'St',
+                    sorting: false
                 },
                 VpHrName: {
                     title: 'Vphr'
                 },
                 VpHrStatus: {
-                    title: 'St'
+                    title: 'St',
+                    sorting: false
                 },
                 RhCfoName: {
                     title: 'RhCfo'
                 },
                 RhCfoStatus: {
-                    title: 'St'
+                    title: 'St',
+                    sorting: false
                 },
                 IpdName: {
                     title: 'IPD'
                 },
                 IpdStatus: {
-                    title: 'St'
+                    title: 'St',
+                    sorting: false
                 },
                 CioName: {
                     title: 'CIO'
                 },
                 CioStatus: {
-                    title: 'St'
+                    title: 'St',
+                    sorting: false
                 },
                 RequestDetailsLink: {
                     title: 'Ping'
@@ -82,3 +91,7 @@
     });
 
 </script>
+<br />
+<br />
+<br />
+<br />

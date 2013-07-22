@@ -32,7 +32,7 @@ namespace IpModelData
         public const string CIO = "cio";
         public const int CIOID =19355;  // Chuck Scully
 
-        public enum ApproveState { not_submitted, pending, approved, rejected, saved };
+        public enum ApproveState {not_submitted, saved, pending, approved, rejected, resubmit };
 
     }
 }

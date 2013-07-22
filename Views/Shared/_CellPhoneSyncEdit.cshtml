@@ -8,18 +8,8 @@
     @Html.Hidden("EmpID", ViewData["EmpID"]);
     @Html.ValidationSummary()
     <fieldset style="width: 96%">
-        <legend>CellPhone Sync Request:@Html.DisplayFor(model => model.CellPhoneSyncDeviceId)</legend>
+        <legend>CellPhone Sync Request</legend>
 
-        <table style="width: 98%">
-            <tr style="background-color: #ffccff">
-                <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
-                </td>
-
-                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (no validation performed)<input type="submit" name="submitButton" value="Save" />
-                </td>
-            </tr>
-            <tr style="height: 25px"></tr>
-        </table>
         <table class="Table1Format">
             <tr style="height: 100px">
                 <td class="Request" colspan="4">This form is a request for mobile device use and/or syncing to internal Renown 
@@ -246,6 +236,16 @@
 
         </table>
 
+        <table style="width: 98%" class="Table1Format">
+            <tr>
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+                </td>
+
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (no validation performed)<input type="submit" name="submitButton" value="Save" />
+                </td>
+            </tr>
+            <tr style="height: 25px"></tr>
+        </table>
     </fieldset>
 
 }

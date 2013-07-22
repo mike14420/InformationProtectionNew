@@ -287,6 +287,7 @@
     <Content Include="images\info_small.png" />
     <Content Include="images\key.gif" />
     <Content Include="images\key.png" />
+    <Content Include="images\LeaderHeader.gif" />
     <Content Include="images\leftarrow.png" />
     <Content Include="images\leftnav_iChoose.gif" />
     <Content Include="images\leftnav_iChoose_employer.gif" />

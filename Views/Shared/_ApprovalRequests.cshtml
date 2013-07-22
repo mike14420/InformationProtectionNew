@@ -1,6 +1,5 @@
 ﻿@model InformationProtection.Models.IpRequestorViewData
 
-<script src="~/Scripts/ApprovalRequestTbl.js"></script>
 
 <script src="~/Scripts/ApprovalRequestTblAll.js"></script>
 
@@ -12,15 +11,6 @@
        @Html.TextBox("OurApprovalList", null)
         @Html.Hidden("EmpID", @Model.EmpID, new { id = "EmpID" })
     </div>  
-    <table style="width: 98%">
-    <tr style="background-color:#ffccff">
-        <td style = "font-size:18px;font-weight:bold;text-align:left" >
-            Submit selected request:
-           <input type="submit" name="submitButton" value="Submit" />
-        </td>
-    </tr>
-    <tr style="height:25px"></tr>
-</table>
 }
 
 <div id="allRequestTbl" style="width: 98%; margin: auto;"></div>

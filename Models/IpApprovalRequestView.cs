@@ -818,14 +818,14 @@ namespace InformationProtection.Models
             return retValue;
         }
 
-        internal void ApproveProcessing(string EmpID, string ApproveOrReject, List<int> approvalList, String Comment)
+        internal void ApproveProcessing(string ApproversEmpID, string ApproveOrReject, List<int> approvalList, String Comment)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalReqDb = new ApprovalRequestDbAccess(connectionString);
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
 
-            int intEmpID = 0;
-            int.TryParse(EmpID, out intEmpID);
+            int intApproversEmpID = 0;
+            int.TryParse(ApproversEmpID, out intApproversEmpID);
             string statusUpdate = String.Empty;
 
             if (ApproveOrReject == "Approve")
@@ -836,50 +836,54 @@ namespace InformationProtection.Models
             {
                 statusUpdate = IpApprover.ApproveState.rejected.ToString();
             }
+            if (ApproveOrReject == "Re-Submit with changes")
+            {
+                statusUpdate = IpApprover.ApproveState.resubmit.ToString();
+            }
 
-            if (!String.IsNullOrEmpty(statusUpdate) && intEmpID > 0)
+            if (!String.IsNullOrEmpty(statusUpdate) && intApproversEmpID > 0)
             {
                 foreach (int index in approvalList)
                 {
                     IpApprovalRequest request = approvalReqDb.GetApprovalRequest(index.ToString());
                     if (request != null)
                     {
-                        if (request.FirstSupEmpId == intEmpID)
+                        if (request.FirstSupEmpId == intApproversEmpID)
                         {
                             request.FirstSupApproval = statusUpdate;
                             request.FirstSupApprovalDate = DateTime.Now.Date;
                             request.FirstSupComment = Comment;
                             approvalReqDb.UpdateFirstSupRequest(request);
                         }
-                        if (request.SecondSupEmpId == intEmpID)
+                        if (request.SecondSupEmpId == intApproversEmpID)
                         {
                             request.SecondSupApproval = statusUpdate;
                             request.SecondSupApprovalDate = DateTime.Now.Date;
                             request.SecondSupComment = Comment;
                             approvalReqDb.UpdateSecondSupRequest(request);
                         }
-                        if (request.VpHrApproverEmpId == intEmpID)
+                        if (request.VpHrApproverEmpId == intApproversEmpID)
                         {
                             request.VpHrApproval = statusUpdate;
                             request.VpHrApprovalDate = DateTime.Now.Date;
                             request.VpHrComment = Comment;
                             approvalReqDb.UpdateVphrRequest(request);
                         }
-                        if (request.RhCfoApproverEmpId == intEmpID)
+                        if (request.RhCfoApproverEmpId == intApproversEmpID)
                         {
                             request.RhCfoApproval = statusUpdate;
                             request.RhCfoApprovalDate = DateTime.Now.Date;
                             request.RhCfoComment = Comment;
                             approvalReqDb.UpdateRhCfoRequest(request);
                         }
-                        if (request.CioApproverEmpId == intEmpID)
+                        if (request.CioApproverEmpId == intApproversEmpID)
                         {
                             request.CioApproval = statusUpdate;
                             request.CioApprovalDate = DateTime.Now.Date;
                             request.CioComment = Comment;
                             approvalReqDb.UpdateCioRequest(request);
                         }
-                        if (request.IpdApproverEmpId == intEmpID)
+                        if (request.IpdApproverEmpId == intApproversEmpID)
                         {
                             request.IpdApproval = statusUpdate;
                             request.IpdApprovalDate = DateTime.Now.Date;
@@ -888,21 +892,21 @@ namespace InformationProtection.Models
                         }
                     }
                     IpApprovalRequestViewData req = Convert(request);
-                    approversEmailNotification.SubmitRequestToNextApprover(EmpID, req);
+                    approversEmailNotification.SubmitRequestToNextApprover(ApproversEmpID, req);
                 }
 
             }
         }
 
-        public List<IpApprovalRequestViewData> GetAllNotSubmittedRequest(string EmpID)
+        public List<IpApprovalRequestViewData> GetAllResubmitRequest(string EmpID)
         {
             List<IpApprovalRequestViewData> request = GetRequest(EmpID);
 
-            var notSubmitted = (from A in request
-                                where A.FirstSupApproval == IpApprover.ApproveState.not_submitted.ToString()
+            var reSubmitted = (from A in request
+                                where A.FirstSupApproval == IpApprover.ApproveState.resubmit.ToString()
                                 select A);
 
-            return notSubmitted.ToList();
+            return reSubmitted.ToList();
         }
 
         public bool UpdateFirstSupRequest(IpApprovalRequestViewData item)

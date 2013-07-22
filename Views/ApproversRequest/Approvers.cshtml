@@ -35,7 +35,10 @@
         //Prepare jtable plugin
         $('#ApproversTable').jtable({
             title: 'Pending Request',
-            sorting: false,
+            sorting: true,
+            pageSize: 20,
+            paging: true,
+            defaultSorting: 'Name ASC',
             selecting: true, 
             multiselect: true, 
             selectingCheckboxes: true, 
@@ -50,24 +53,21 @@
                     list: false
                 },
                 RequestType: {
-                    title: 'Type',
-                    width: '20%'
+                    title: 'Type'
                 },
                 RequestorsName: {
-                    title: 'Name',
-                    width: '20%'
+                    title: 'Name'
                 },
                 RequuestorsEmpId: {
-                    title: 'EmpId',
-                    width: '20%'
+                    title: 'EmpId'
                 },
                 ApprovedStatus: {
                     title: 'Status',
-                    width: '20%'
+                    sorting: false
                 },
                 RequestDetailsLink: {
-                    title: 'Details',
-                    width: '20%'
+                    title: '',
+                    sorting: false
                 }
             },
             //Register to selectionChanged event to hanlde events
@@ -125,6 +125,9 @@
             </td>
             <td>
                  <input type="submit" name="submitButton" value="Reject" />
+            </td>
+            <td>
+                 <input type="submit" name="submitButton" value="Re-Submit with changes" />
             </td>
         </tr>
     </table>
