@@ -28,13 +28,14 @@
 
     </table>
 </fieldset>
-<table style="width: 98%" class="Table1Format">
-    <tr >
-        <td style = "font-size:20px;font-weight:bold;text-align:left" >
-            @Html.ActionLink("Back To Users View", "Index", "UsersView", new { EmpId = id }, null)
-        </td>
 
-    </tr>
-    <tr style="height:25px"></tr>
-</table>
  @RenderPage(myViewsShared + "_CdDvdEdit.cshtml", new { SubmitType = OurSubmitType })
+    <table class="Table1Format" style="width: 98%;border:2px solid">
+        <tr>
+            <td style="font-size: 20px; font-weight: bold; text-align: left">
+                @Html.ActionLink("Back To Users View", "Index", "UsersView", new { EmpId = id }, null)
+            </td>
+        </tr>
+    </table>
+<br />
+<br />

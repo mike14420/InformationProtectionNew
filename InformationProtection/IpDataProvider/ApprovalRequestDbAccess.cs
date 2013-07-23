@@ -518,8 +518,127 @@ namespace IpDataProvider
 
         }
 
+        public bool ChangeState(int IpApprovalRequestId, String oldState, String newState)
+        {
+            int RetVal = 0;
 
-        public bool InitApprovalRequestState(int DeviceId, String RequestType, String state)
+            IpApprovalRequest request = GetApprovalRequest(IpApprovalRequestId.ToString());
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "UpdateApprovalRequestState";
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlConnection con = new SqlConnection(ConnectionString);
+            try
+            {
+                con.Open();
+                cmd.Connection = con;
+
+                SqlParameter p1 = new SqlParameter("@IpApprovalRequestId", SqlDbType.Int);
+                p1.Direction = ParameterDirection.Input;
+                p1.Value = IpApprovalRequestId;
+                cmd.Parameters.Add(p1);
+
+                //----------------------
+                SqlParameter p2 = new SqlParameter("@FirstSupUpdate", SqlDbType.Bit);
+                p2.Direction = ParameterDirection.Input;
+                p2.Value = 0;
+                if (request.FirstSupApproval == oldState)
+                {
+                    p2.Value = 1;
+                }
+                cmd.Parameters.Add(p2);
+                SqlParameter p3 = new SqlParameter("@FirstSupApproval", SqlDbType.VarChar);
+                p3.Direction = ParameterDirection.Input;
+                p3.Value = newState;
+                cmd.Parameters.Add(p3);
+
+                //------------------------------------
+                SqlParameter p4 = new SqlParameter("@SecondSupUpdate", SqlDbType.Bit);
+                p4.Direction = ParameterDirection.Input;
+                p4.Value = 0;
+                if (request.SecondSupApproval == oldState)
+                {
+                    p4.Value = 1;
+                }
+                cmd.Parameters.Add(p4);
+                SqlParameter p5 = new SqlParameter("@SecondSupApproval", SqlDbType.VarChar);
+                p5.Direction = ParameterDirection.Input;
+                p5.Value = newState;
+                cmd.Parameters.Add(p5);
+
+                //-------------------------------
+                SqlParameter p6 = new SqlParameter("@VpHrUpdate", SqlDbType.Bit);
+                p6.Direction = ParameterDirection.Input;
+                p6.Value = 0;
+                if (request.VpHrApproval == oldState)
+                {
+                    p6.Value = 1;
+                }
+                cmd.Parameters.Add(p6);
+                SqlParameter p7 = new SqlParameter("@VpHrApproval", SqlDbType.VarChar);
+                p7.Direction = ParameterDirection.Input;
+                p7.Value = newState;
+                cmd.Parameters.Add(p7);
+                //-------------------------------
+                SqlParameter p8 = new SqlParameter("@RhCfoUpdate", SqlDbType.Bit);
+                p8.Direction = ParameterDirection.Input;
+                p8.Value = 0;
+                if (request.RhCfoApproval == oldState)
+                {
+                    p8.Value = 1;
+                }
+                cmd.Parameters.Add(p8);
+                SqlParameter p9 = new SqlParameter("@RhCfoApproval", SqlDbType.VarChar);
+                p9.Direction = ParameterDirection.Input;
+                p9.Value = newState;
+                cmd.Parameters.Add(p9);
+                //-------------------------------
+                SqlParameter p10 = new SqlParameter("@IpdUpdate", SqlDbType.Bit);
+                p10.Direction = ParameterDirection.Input;
+                p10.Value = 0;
+                if (request.IpdApproval == oldState)
+                {
+                    p10.Value = 1;
+                }
+                cmd.Parameters.Add(p10);
+                SqlParameter p11 = new SqlParameter("@IpdApproval", SqlDbType.VarChar);
+                p11.Direction = ParameterDirection.Input;
+                p11.Value = newState;
+                cmd.Parameters.Add(p11);
+                //-------------------------------
+                SqlParameter p12 = new SqlParameter("@CioUpdate", SqlDbType.Bit);
+                p12.Direction = ParameterDirection.Input;
+                p12.Value = 0;
+                if (request.CioApproval == oldState)
+                {
+                    p12.Value = 1;
+                }
+                cmd.Parameters.Add(p12);
+                SqlParameter p13 = new SqlParameter("@CioApproval", SqlDbType.VarChar);
+                p13.Direction = ParameterDirection.Input;
+                p13.Value = newState;
+                cmd.Parameters.Add(p13);
+
+                SqlParameter p14 = new SqlParameter("@RetVal", SqlDbType.VarChar);
+                p14.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(p14);
+
+
+                cmd.ExecuteScalar();
+
+                if (p14 != null && p14.Value != null)
+                {
+                    RetVal = (int)p14.Value;
+                }
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return RetVal > 0;
+        }
+
+        public bool InitApprovalRequest(int DeviceId, String RequestType, String state)
         {
             int returnValue = 0;
 
@@ -564,6 +683,7 @@ namespace IpDataProvider
             }
             return returnValue > 0;
         }
+
 
         public IpApprovalRequest GetApprovalRequestByDeviceId(int DeviceId, String RequestType)
         {

@@ -52,7 +52,7 @@ namespace InformationProtection.Models
             return tmp;
         }
 
-        public List<CdBurrnerViewData> CdDvdRequestFor(String EmpId, String Controller, String Action, String EditLnk)
+        public List<CdBurrnerViewData> CdDvdRequestFor(String EmpId, String Controller)
         {
             // FIRST Get the requestor ID
             IpRequestorView Model = new IpRequestorView();
@@ -71,10 +71,14 @@ namespace InformationProtection.Models
             foreach (CdBurrnerViewData item in retData)
             {
                 IpApprovalRequestView.AddOtherProperties(item);               
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&CdburnerDeviceId={3}\">Details</a>", 
-                    Controller, Action, requestor.EmpID, item.CdburnerDeviceId);
-                item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&CdburnerDeviceId={3}\">Edit</a>",
-                    Controller, EditLnk, requestor.EmpID, item.CdburnerDeviceId);
+                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&CdburnerDeviceId={2}\">Details</a>", 
+                    Controller, requestor.EmpID, item.CdburnerDeviceId);
+                item.RequestEditLink = String.Empty;
+                if (item.RequestStatus == IpApprover.ApproveState.rejected.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&CdburnerDeviceId={2}\">Edit</a>",
+                        Controller, requestor.EmpID, item.CdburnerDeviceId);
+                }
             }
             return retData;
         }

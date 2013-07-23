@@ -101,12 +101,17 @@ namespace InformationProtection.Controllers
             {
                 return RedirectToAction("Index", "UsersView", null);
             }
-            requestor = model.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
             CdBurnerView cdBurnerView = new CdBurnerView();
             CdBurrnerViewData data = null;
             data = cdBurnerView.GetCdBurnerRequest(CdburnerDeviceId);
+            if (data.RequestStatus == IpApprover.ApproveState.rejected.ToString())
+            {
+                return RedirectToAction("Details", new { EmpID=EmpID, CdburnerDeviceId = CdburnerDeviceId });
+            }
+            requestor = model.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+
             ViewBag.requestor = requestor;
             return View(data);
         }
@@ -133,6 +138,54 @@ namespace InformationProtection.Controllers
             if (ModelState.IsValid)
             {
                 ourModel.Update(data, IpApprover.ApproveState.not_submitted);
+                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
+            }
+            IpRequestorViewData thisEmp;
+            IpRequestorView model = new IpRequestorView();
+            thisEmp = model.GetRequestor(EmpID);
+
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = thisEmp.FullName;
+            return View(data);
+        }
+
+        public ActionResult ReSubmit(String EmpID, String CdburnerDeviceId)
+        {
+            IpRequestorViewData requestor;
+            IpRequestorView model = new IpRequestorView();
+            if (String.IsNullOrEmpty(EmpID))
+            {
+                return RedirectToAction("Index", "UsersView", null);
+            }
+            CdBurnerView cdBurnerView = new CdBurnerView();
+            CdBurrnerViewData data = null;
+            data = cdBurnerView.GetCdBurnerRequest(CdburnerDeviceId);
+            if (data.RequestStatus == IpApprover.ApproveState.rejected.ToString())
+            {
+                return RedirectToAction("Details", new { EmpID = EmpID, CdburnerDeviceId = CdburnerDeviceId });
+            }
+            requestor = model.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+
+            ViewBag.requestor = requestor;
+            return View(data);
+        }
+
+        //
+        // POST: /CdDvdRequest/Edit/5
+
+        [HttpPost]
+        public ActionResult ReSubmit(String EmpID, CdBurrnerViewData data, FormCollection col, String submitButton)
+        {
+            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+            data.BusJustType = col["RadBtnWriterType"];
+
+            CdBurnerView cdBurnerView = new CdBurnerView();
+            cdBurnerView.ValidateRenownOwned(data, ModelState);
+            if (ModelState.IsValid)
+            {
+                ipApprovalRequestView.ReSubmit(data);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             IpRequestorViewData thisEmp;

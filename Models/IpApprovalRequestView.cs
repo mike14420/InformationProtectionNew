@@ -31,7 +31,7 @@ namespace InformationProtection.Models
 
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess ApprovalReqReqDbAcess = new ApprovalRequestDbAccess(connectionString);
-            bool result = ApprovalReqReqDbAcess.InitApprovalRequestState(devId, type.ToString(), state.ToString());
+            bool result = ApprovalReqReqDbAcess.InitApprovalRequest(devId, type.ToString(), state.ToString());
 
             return result;
         }
@@ -148,11 +148,11 @@ namespace InformationProtection.Models
             data.RequestorId = requestor.IpRequestorId;
 
             CdBurnerView cMdl = new CdBurnerView();
-            int cellPhoneDevId = cMdl.Create(data);
+            int cdBurrnerId = cMdl.Create(data);
 
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
-            Request.CellPhoneDeviceId = cellPhoneDevId;
-            Request.RequestType = IpApprovalRequest.RequestTypeEnum.cellphone.ToString();
+            Request.CdburnerDeviceID = cdBurrnerId;
+            Request.RequestType = IpApprovalRequest.RequestTypeEnum.cdburnner.ToString();
             /// Now Write to DB
             int retValue = Create(Request);
             // Now Submit it
@@ -164,15 +164,32 @@ namespace InformationProtection.Models
         }
         public bool Update(CdBurrnerViewData data, IpApprover.ApproveState state)
         {
+            bool retValue = false;
             CdBurnerView CdMdl = new CdBurnerView();
             // Update the Device
             bool result = CdMdl.Update(data);
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;           
-            ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
             // Update the Request
-            bool retValue = model.InitApprovalRequestState(data.CdburnerDeviceId, IpApprovalRequest.RequestTypeEnum.cdburnner.ToString(), state.ToString());
+
+            retValue = approvalRequestDbAccess.InitApprovalRequest(data.CdburnerDeviceId, IpApprovalRequest.RequestTypeEnum.cdburnner.ToString(), state.ToString());
+
             return retValue;
         }
+        // move state from resubmit to pending
+        public bool ReSubmit(CdBurrnerViewData data)
+        {
+            bool retValue = false;
+            CdBurnerView CdMdl = new CdBurnerView();
+            // Update the Device
+            bool result = CdMdl.Update(data);
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            // Update the Request
+            retValue = approvalRequestDbAccess.ChangeState(data.CdburnerDeviceId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
+            return retValue;
+        }
+
         public static CdBurrnerViewData AddOtherProperties(CdBurrnerViewData data)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
@@ -217,7 +234,7 @@ namespace InformationProtection.Models
             bool result = cellPhoneView.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;    
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequestState(data.CellPhoneReqId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString(), state.ToString());
+            bool retValue = model.InitApprovalRequest(data.CellPhoneReqId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString(), state.ToString());
             return retValue;
         }
         public static CellPhoneViewData AddOtherProperties(CellPhoneViewData data)
@@ -261,7 +278,7 @@ namespace InformationProtection.Models
             bool result = lapTopView.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequestState(data.LapTopDeviceId, IpApprovalRequest.RequestTypeEnum.laptop.ToString(), state.ToString());
+            bool retValue = model.InitApprovalRequest(data.LapTopDeviceId, IpApprovalRequest.RequestTypeEnum.laptop.ToString(), state.ToString());
             return retValue;
         }
         public static LapTopViewData AddOtherProperties(LapTopViewData data)
@@ -304,7 +321,7 @@ namespace InformationProtection.Models
             bool result = lapTopView.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequestState(data.UsbDeviceId, IpApprovalRequest.RequestTypeEnum.usb.ToString(), state.ToString());
+            bool retValue = model.InitApprovalRequest(data.UsbDeviceId, IpApprovalRequest.RequestTypeEnum.usb.ToString(), state.ToString());
             return retValue;
         }
         public static UsbViewData AddOtherProperties(UsbViewData data)
@@ -347,7 +364,7 @@ namespace InformationProtection.Models
             bool result = cellPhoneSyncMdl.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequestState(data.CellPhoneSyncDeviceId, IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString(), state.ToString());
+            bool retValue = model.InitApprovalRequest(data.CellPhoneSyncDeviceId, IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString(), state.ToString());
             return retValue;
         }
         public static CellPhoneSyncMdlData AddOtherProperties(CellPhoneSyncMdlData data)
@@ -390,7 +407,7 @@ namespace InformationProtection.Models
             bool result = wirelessMdl.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequestState(data.WirelessDeviceId, IpApprovalRequest.RequestTypeEnum.wireless.ToString(), state.ToString());
+            bool retValue = model.InitApprovalRequest(data.WirelessDeviceId, IpApprovalRequest.RequestTypeEnum.wireless.ToString(), state.ToString());
             return retValue;
         }
         public static WirelessMdlData AddOtherProperties(WirelessMdlData data)
@@ -436,7 +453,7 @@ namespace InformationProtection.Models
             bool result = remoteAccessMdl.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequestState(data.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString(), state.ToString());
+            bool retValue = model.InitApprovalRequest(data.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString(), state.ToString());
             return retValue;
         }
         public static RemoteAccessMdlData AddOtherProperties(RemoteAccessMdlData data)

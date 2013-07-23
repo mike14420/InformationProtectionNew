@@ -3,15 +3,20 @@
 @{
     ViewBag.Title = "Details";
 }
+@{
+    InformationProtection.Models.IpRequestorViewData requestor = (InformationProtection.Models.IpRequestorViewData)(ViewData["requestor"]);
+    @Html.Hidden("EmpID", requestor.EmpID, new { id = requestor.EmpID });
+    var id = requestor.EmpID;
+}
+
+@Html.ActionLink("Printer Friendly View",
+           "Print",
+           new { EmpId = id, CdburnerDeviceId = Model.CdburnerDeviceId },
+           null)
 
 <fieldset>
     <legend>Requestor Information</legend>
-    @{
-        InformationProtection.Models.IpRequestorViewData requestor = (InformationProtection.Models.IpRequestorViewData)(ViewData["requestor"]);
 
-        @Html.Hidden("EmpID", requestor.EmpID, new { id = requestor.EmpID });
-        var id = requestor.EmpID;
-    }
     <table style="width: 50%;">
         <tr>
             <td>
@@ -25,28 +30,29 @@
             </td>
             <td>@Html.Label(requestor.FullName as string)</td>
         </tr>
-
+        <tr>
+            <td>
+                Request Number:
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.CdburnerDeviceId)
+            </td>
+        </tr>
 
     </table>
 
+
 </fieldset>
-<table style="width: 98%">
-    <tr style="background-color:#ffccff">
-        <td style = "font-size:20px;font-weight:bold;text-align:left" >
-            @Html.ActionLink("Back To Users View", "Index", "UsersView", new { EmpId = id }, null)
-        </td>
-
-        <td style = "font-size:20px;font-weight:bold;text-align:center" >
-            @Html.ActionLink("Edit", "Edit", new { EmpID = id, CdburnerDeviceId = Model.CdburnerDeviceId }, null)
-        </td>
-    </tr>
-    <tr style="height:25px">
-           @Html.ActionLink("Printer Friendly View", 
-           "Print", 
-           new { EmpId = id, CdburnerDeviceId=Model.CdburnerDeviceId }, 
-           null)
-
-    </tr>
-</table>
 @RenderPage("~/Views/Shared/_CdDvdBurnerDetails.cshtml")
 
+    <table class="Table1Format" style="width: 98%;border:2px solid">
+        <tr>
+            <td style="font-size: 20px; font-weight: bold; text-align: left">
+                @Html.ActionLink("Back To Users View", "Index", "UsersView", new { EmpId = id }, null)
+            </td>
+
+            <td style="font-size: 20px; font-weight: bold; text-align: center">
+                @Html.ActionLink("Edit", "Edit", new { EmpID = id, CdburnerDeviceId = Model.CdburnerDeviceId }, null)
+            </td>
+        </tr>
+    </table>

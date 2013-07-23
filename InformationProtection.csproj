@@ -1287,6 +1287,7 @@
     <Content Include="Views\Shared\_PrintView.cshtml" />
     <Content Include="Views\CdDvdRequest\Print.cshtml" />
     <Content Include="Views\Shared\_remoteAccessDetials.cshtml" />
+    <Content Include="Views\CdDvdRequest\ReSubmit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

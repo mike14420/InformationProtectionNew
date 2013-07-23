@@ -141,7 +141,7 @@ namespace InformationProtection.Controllers
             try
             {
                 CdBurnerView Model = new CdBurnerView();
-                List<CdBurrnerViewData> ourList = Model.CdDvdRequestFor(EmpId, "CdDvdRequest", "Details", "Edit");
+                List<CdBurrnerViewData> ourList = Model.CdDvdRequestFor(EmpId, "CdDvdRequest");
 
                 return Json(new { Result = "OK", Records = ourList });
             }
