@@ -74,9 +74,14 @@ namespace InformationProtection.Models
                 item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&CdburnerDeviceId={2}\">Details</a>", 
                     Controller, requestor.EmpID, item.CdburnerDeviceId);
                 item.RequestEditLink = String.Empty;
-                if (item.RequestStatus == IpApprover.ApproveState.rejected.ToString())
+                if (item.RequestStatus == IpApprover.ApproveState.saved.ToString())
                 {
-                    item.RequestEditLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&CdburnerDeviceId={2}\">Edit</a>",
+                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&CdburnerDeviceId={2}\">Edit</a>",
+                        Controller, requestor.EmpID, item.CdburnerDeviceId);
+                }
+                if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&CdburnerDeviceId={2}\">ReSubmit</a>",
                         Controller, requestor.EmpID, item.CdburnerDeviceId);
                 }
             }

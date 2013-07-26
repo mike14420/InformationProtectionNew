@@ -14,14 +14,14 @@ namespace InformationProtection.Models
 
 
 
-        public int Create(IpApprovalRequestViewData ourRequest)
+        public int Create(ref IpApprovalRequestViewData ourRequest)
         {
             IpApprovalRequest data = Convert(ourRequest);
 
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess ApprovalReqReqDbAcess = new ApprovalRequestDbAccess(connectionString);
             int IpApprovalRequestId = ApprovalReqReqDbAcess.Create(data);
-
+            ourRequest.Id = IpApprovalRequestId;
 
             return IpApprovalRequestId;
         }
@@ -154,13 +154,15 @@ namespace InformationProtection.Models
             Request.CdburnerDeviceID = cdBurrnerId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.cdburnner.ToString();
             /// Now Write to DB
-            int retValue = Create(Request);
+            int requestId = Create(ref Request);
+
+
             // Now Submit it
             if (state == IpApprover.ApproveState.not_submitted)
             {
-                retValue = SubmitRequest(Request);
+                SubmitRequest(Request);
             }
-            return retValue;
+            return requestId;
         }
         public bool Update(CdBurrnerViewData data, IpApprover.ApproveState state)
         {
@@ -186,7 +188,7 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
             // Update the Request
-            retValue = approvalRequestDbAccess.ChangeState(data.CdburnerDeviceId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
             return retValue;
         }
 
@@ -220,11 +222,11 @@ namespace InformationProtection.Models
             Request.CellPhoneDeviceId = cellPhoneDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.cellphone.ToString();
             /// Now Write to DB
-            int retValue = Create(Request);
+            int retValue = Create(ref Request);
             // Now Submit it
             if (state == IpApprover.ApproveState.not_submitted)
             {
-                retValue = SubmitRequest(Request);
+                SubmitRequest(Request);
             }
             return retValue;
         }
@@ -235,6 +237,19 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;    
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
             bool retValue = model.InitApprovalRequest(data.CellPhoneReqId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString(), state.ToString());
+            return retValue;
+        }
+        // move state from resubmit to pending
+        public bool ReSubmit(CellPhoneViewData data)
+        {
+            bool retValue = false;
+            CellPhoneView cellPhoneView = new CellPhoneView();
+            // Update the Device
+            bool result = cellPhoneView.Update(data);
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            // Update the Request
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
             return retValue;
         }
         public static CellPhoneViewData AddOtherProperties(CellPhoneViewData data)
@@ -263,11 +278,11 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.LapTopID = LaptopDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.laptop.ToString();
-            int retValue = Create(Request);
+            int retValue = Create(ref Request);
             // Now Submit it
             if (state == IpApprover.ApproveState.not_submitted)
             {
-                retValue = SubmitRequest(Request);
+               SubmitRequest(Request);
             }
             return retValue;
         }
@@ -281,12 +296,26 @@ namespace InformationProtection.Models
             bool retValue = model.InitApprovalRequest(data.LapTopDeviceId, IpApprovalRequest.RequestTypeEnum.laptop.ToString(), state.ToString());
             return retValue;
         }
+        // move state from resubmit to pending
+        public bool ReSubmit(LapTopViewData data)
+        {
+            bool retValue = false;
+            LapTopView lapTopView = new LapTopView();
+            // Update the Device
+            bool result = lapTopView.Update(data);
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            // Update the Request
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
+            return retValue;
+        }
+
         public static LapTopViewData AddOtherProperties(LapTopViewData data)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
             IpApprovalRequest tmp = approvalRequestDbAccess.GetApprovalRequestByDeviceId(data.LapTopDeviceId,
-                IpApprovalRequest.RequestTypeEnum.cellphone.ToString());
+                IpApprovalRequest.RequestTypeEnum.laptop.ToString());
             IpApprovalRequestViewData request = IpApprovalRequestView.Convert(tmp);
             data.RequestStatus = request.ApprovedStatus;
             data.RequestId = request.Id;
@@ -307,11 +336,11 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.UsbDeviceID = UsbDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.usb.ToString();
-            int retValue = Create(Request);
+            int retValue = Create(ref Request);
             // Now Submit it
             if (state == IpApprover.ApproveState.not_submitted)
             {
-                retValue = SubmitRequest(Request);
+                SubmitRequest(Request);
             }
             return retValue;
         }
@@ -322,6 +351,19 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
             bool retValue = model.InitApprovalRequest(data.UsbDeviceId, IpApprovalRequest.RequestTypeEnum.usb.ToString(), state.ToString());
+            return retValue;
+        }
+        // move state from resubmit to pending
+        public bool ReSubmit(UsbViewData data)
+        {
+            bool retValue = false;
+            UsbView usbView = new UsbView();
+            // Update the Device
+            bool result = usbView.Update(data);
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            // Update the Request
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
             return retValue;
         }
         public static UsbViewData AddOtherProperties(UsbViewData data)
@@ -350,11 +392,11 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.CellPhoneSyncDeviceID = CellSyncDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString();
-            int retValue = Create(Request);
+            int retValue = Create(ref Request);
             // Now Submit it
             if (state == IpApprover.ApproveState.not_submitted)
             {
-                retValue = SubmitRequest(Request);
+                SubmitRequest(Request);
             }
             return retValue;
         }
@@ -365,6 +407,19 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
             bool retValue = model.InitApprovalRequest(data.CellPhoneSyncDeviceId, IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString(), state.ToString());
+            return retValue;
+        }
+        // move state from resubmit to pending
+        public bool ReSubmit(CellPhoneSyncMdlData data)
+        {
+            bool retValue = false;
+            CellPhoneSyncMdl cellPhoneSyncMdl = new CellPhoneSyncMdl();
+            // Update the Device
+            bool result = cellPhoneSyncMdl.Update(data);
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            // Update the Request
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
             return retValue;
         }
         public static CellPhoneSyncMdlData AddOtherProperties(CellPhoneSyncMdlData data)
@@ -393,11 +448,11 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.WirelessDeviceID = WirelessDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.wireless.ToString();
-            int retValue = Create(Request);
+            int retValue = Create(ref Request);
             // Now Submit it
             if (state == IpApprover.ApproveState.not_submitted)
             {
-                retValue = SubmitRequest(Request);
+                SubmitRequest(Request);
             }
             return retValue;
         }
@@ -408,6 +463,19 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
             bool retValue = model.InitApprovalRequest(data.WirelessDeviceId, IpApprovalRequest.RequestTypeEnum.wireless.ToString(), state.ToString());
+            return retValue;
+        }
+        // move state from resubmit to pending
+        public bool ReSubmit(WirelessMdlData data)
+        {
+            bool retValue = false;
+            WirelessMdl wirelessMdl = new WirelessMdl();
+            // Update the Device
+            bool result = wirelessMdl.Update(data);
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            // Update the Request
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
             return retValue;
         }
         public static WirelessMdlData AddOtherProperties(WirelessMdlData data)
@@ -438,11 +506,11 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.RemoteAccessID = RemoteAccessId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString();
-            int retValue = Create(Request);
+            int retValue = Create(ref Request);
             // Now Submit it
             if (state == IpApprover.ApproveState.not_submitted)
             {
-                retValue = SubmitRequest(Request);
+                SubmitRequest(Request);
             }
             return retValue;
         }
@@ -454,6 +522,19 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
             bool retValue = model.InitApprovalRequest(data.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString(), state.ToString());
+            return retValue;
+        }
+        // move state from resubmit to pending
+        public bool ReSubmit(RemoteAccessMdlData data)
+        {
+            bool retValue = false;
+            RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
+            // Update the Device
+            bool result = remoteAccessMdl.Update(data);
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            // Update the Request
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
             return retValue;
         }
         public static RemoteAccessMdlData AddOtherProperties(RemoteAccessMdlData data)
@@ -980,7 +1061,7 @@ namespace InformationProtection.Models
             return result;
         }
 
-        internal int SubmitRequest(IpApprovalRequestViewData request)
+        internal void SubmitRequest(IpApprovalRequestViewData request)
         {
 
             request.FirstSupApproval = IpApprover.ApproveState.pending.ToString();
@@ -1000,7 +1081,7 @@ namespace InformationProtection.Models
 
             ApproversEmailNotification Notification = new ApproversEmailNotification();
             Notification.SubmitRequestToNextApprover(request.RequuestorsEmpId, request);
-            return 1;
+            return;
         }
 
         internal int SubmitRequest(String EmpID, String OurApprovalList)

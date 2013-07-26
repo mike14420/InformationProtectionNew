@@ -47,7 +47,7 @@ namespace InformationProtection.Models
             return IpApprovalRequestView.AddOtherProperties(Convert(data));
         }
 
-        public List<UsbViewData> GetUsbRequestFor(String EmpId, String Controller, String Action, String EditAction)
+        public List<UsbViewData> GetUsbRequestFor(String EmpId, String Controller)
         {
             // FIRST Get the requestor ID
             IpRequestorView Model = new IpRequestorView();
@@ -63,10 +63,19 @@ namespace InformationProtection.Models
             foreach (UsbViewData item in retData)
             {
                 IpApprovalRequestView.AddOtherProperties(item);
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&UsbDeviceId={3}\">Details</a>", 
-                    Controller, Action, requestor.EmpID, item.UsbDeviceId);
-                item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Edit</a>",
-                    Controller, EditAction, requestor.EmpID, item.UsbDeviceId);
+                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&UsbDeviceId={2}\">Details</a>",
+                    Controller, requestor.EmpID, item.UsbDeviceId);
+                item.RequestEditLink = String.Empty;
+                if (item.RequestStatus == IpApprover.ApproveState.saved.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&UsbDeviceId={2}\">Edit</a>",
+                        Controller, requestor.EmpID, item.UsbDeviceId);
+                }
+                if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&UsbDeviceId={2}\">ReSubmit</a>",
+                        Controller, requestor.EmpID, item.UsbDeviceId);
+                }
             }
             return retData;
         }

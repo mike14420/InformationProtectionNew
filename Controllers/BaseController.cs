@@ -157,7 +157,7 @@ namespace InformationProtection.Controllers
             try
             {
                 UsbView Model = new UsbView();
-                List<UsbViewData> ourList = Model.GetUsbRequestFor(EmpId, "UsbRequest", "Details", "Edit");
+                List<UsbViewData> ourList = Model.GetUsbRequestFor(EmpId, "UsbRequest");
 
                 return Json(new { Result = "OK", Records = ourList });
             }
@@ -187,7 +187,7 @@ namespace InformationProtection.Controllers
             try
             {
                 CellPhoneSyncMdl Model = new CellPhoneSyncMdl();
-                List<CellPhoneSyncMdlData> ourList = Model.GetDeviceFor(EmpId, "CellPhoneSyncingReq", "Details", "Edit");
+                List<CellPhoneSyncMdlData> ourList = Model.GetDeviceFor(EmpId, "CellPhoneSyncingReq");
 
                 return Json(new { Result = "OK", Records = ourList });
             }
@@ -202,7 +202,7 @@ namespace InformationProtection.Controllers
             try
             {
                 WirelessMdl Model = new WirelessMdl();
-                List<WirelessMdlData> ourList = Model.GetWirelessFor(EmpId, "WirelessRequest", "Details", "Edit");
+                List<WirelessMdlData> ourList = Model.GetWirelessFor(EmpId, "WirelessRequest");
 
                 return Json(new { Result = "OK", Records = ourList });
             }
@@ -344,13 +344,65 @@ namespace InformationProtection.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetAllApprovers()
+        public JsonResult GetAllApprovers(int jtStartIndex = 0, int jtPageSize = 0, string jtsorting = null)
         {
             try
             {
                 IpRequestorView requestorModel = new IpRequestorView();
-                List<IpRequestorViewData> approvers = requestorModel.GetAllApprovers("ApproversRequest", "Approvers");
-                return Json(new { Result = "OK", Records = approvers });
+                IEnumerable<IpRequestorViewData> approvers = requestorModel.GetAllApprovers("ApproversRequest", "Approvers");
+
+
+                if (string.IsNullOrEmpty(jtsorting) || jtsorting.Equals("EmpID ASC"))
+                {
+                    approvers = approvers.OrderBy(p => p.EmpID);
+                }
+                else if (jtsorting.Equals("EmpID DESC"))
+                {
+                    approvers = approvers.OrderByDescending(p => p.FullName);
+                }
+                else if (jtsorting.Equals("FullName ASC"))
+                {
+                    approvers = approvers.OrderBy(p => p.FullName);
+                }
+                else if (jtsorting.Equals("FullName DESC"))
+                {
+                    approvers = approvers.OrderByDescending(p => p.FullName);
+                }
+                else if (jtsorting.Equals("Email ASC"))
+                {
+                    approvers = approvers.OrderBy(p => p.Email);
+                }
+                else if (jtsorting.Equals("Email DESC"))
+                {
+                    approvers = approvers.OrderByDescending(p => p.Email);
+                }
+                else if (jtsorting.Equals("JobTitle ASC"))
+                {
+                    approvers = approvers.OrderBy(p => p.JobTitle);
+                }
+                else if (jtsorting.Equals("JobTitle DESC"))
+                {
+                    approvers = approvers.OrderByDescending(p => p.JobTitle);
+                }
+                else if (jtsorting.Equals("DeptName ASC"))
+                {
+                    approvers = approvers.OrderBy(p => p.DeptName);
+                }
+                else if (jtsorting.Equals("DeptName DESC"))
+                {
+                    approvers = approvers.OrderByDescending(p => p.DeptName);
+                }
+                else if (jtsorting.Equals("NumberOfPendingReq ASC"))
+                {
+                    approvers = approvers.OrderBy(p => p.NumberOfPendingReq);
+                }
+                else if (jtsorting.Equals("NumberOfPendingReq DESC"))
+                {
+                    approvers = approvers.OrderByDescending(p => p.NumberOfPendingReq);
+                }
+
+                List<IpRequestorViewData> outData1 = approvers.Skip(jtStartIndex).Take(jtPageSize).ToList();
+                return Json(new { Result = "OK", Records = approvers, TotalRecordCount = approvers.Count() });
             }
             catch (Exception ex)
             {

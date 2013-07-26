@@ -71,12 +71,13 @@ namespace InformationProtection.Controllers
                 int retValue = ourModel.Create(data, EmpID, IpApprover.ApproveState.not_submitted);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            IpRequestorViewData thisEmp;
+            IpRequestorViewData requestor;
 
-            thisEmp = model.GetRequestor(EmpID);
-
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            requestor = model.GetRequestor(EmpID);
+            data.RequestorId = requestor.IpRequestorId;
+            ViewData["EmpID"] = requestor.EmpID; ;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
             return View(data);
 
         }
@@ -86,19 +87,32 @@ namespace InformationProtection.Controllers
 
         public ActionResult Edit(String EmpID, String LapTopDeviceId)
         {
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
+
             if (String.IsNullOrEmpty(EmpID))
             {
                 return RedirectToAction("Index", "UsersView", null);
             }
-            requestor = model.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
+            IpRequestorViewData requestor;
+            IpRequestorView model = new IpRequestorView();
+
             LapTopView lapTopView = new LapTopView();
             LapTopViewData data = lapTopView.GetLapTopRequest(LapTopDeviceId);
-            ViewBag.requestor = requestor;
-            return View(data);
+            if (data.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+            {
+                return RedirectToAction("ReSubmit", new { EmpID = EmpID, LapTopDeviceId = LapTopDeviceId });
+            }
+            if (data.RequestStatus == IpApprover.ApproveState.saved.ToString())
+            {
+                requestor = model.GetRequestor(EmpID);
+                ViewData["EmpID"] = EmpID;
+                ViewData["FullName"] = requestor.FullName;
+
+                ViewBag.requestor = requestor;
+                return View(data);
+            }
+
+
+            return RedirectToAction("Index", "UsersView", null);
         }
 
         //
@@ -124,39 +138,73 @@ namespace InformationProtection.Controllers
                 ourModel.Update(data, IpApprover.ApproveState.not_submitted);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            IpRequestorViewData thisEmp;
-            IpRequestorView model = new IpRequestorView();
-            thisEmp = model.GetRequestor(EmpID);
+            IpRequestorViewData requestor;
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            requestor = ipRequestorView.GetRequestor(EmpID);
+            data.RequestorId = requestor.IpRequestorId;
+            ViewData["EmpID"] = requestor.EmpID; ;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
+            return View(data);
+        }
 
+        public ActionResult ReSubmit(String EmpID, String LapTopDeviceId)
+        {
+            IpRequestorViewData requestor;
+            IpRequestorView model = new IpRequestorView();
+            if (String.IsNullOrEmpty(EmpID))
+            {
+                return RedirectToAction("Index", "UsersView", null);
+            }
+            LapTopView lapTopView = new LapTopView();
+            LapTopViewData data = null;
+            data = lapTopView.GetLapTopRequest(LapTopDeviceId);
+            if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
+            {
+                return RedirectToAction("Details", new { EmpID = EmpID, LapTopDeviceId = LapTopDeviceId });
+            }
+            requestor = model.GetRequestor(EmpID);
             ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            ViewData["FullName"] = requestor.FullName;
+
+            ViewBag.requestor = requestor;
             return View(data);
         }
 
         //
-        // GET: /LapTopRequest/Delete/5
-
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /LapTopRequest/Delete/5
+        // POST: /CdDvdRequest/Edit/5
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult ReSubmit(String EmpID, LapTopViewData data, FormCollection col, String submitButton)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+            data.BusJustType = col["RadBtnRenownOwnedType"];
 
-                return RedirectToAction("Index");
-            }
-            catch
+            LapTopView lapTopView = new LapTopView();
+            lapTopView.ValidateRenownOwned(data, ModelState);
+            if (ModelState.IsValid)
             {
-                return View();
+                ipApprovalRequestView.ReSubmit(data);
+                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
+            IpRequestorViewData requestor;
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            requestor = ipRequestorView.GetRequestor(EmpID);
+            data.RequestorId = requestor.IpRequestorId;
+            ViewData["EmpID"] = requestor.EmpID; ;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
+            return View(data);
+        }
+
+        public ActionResult Print(String EmpID, String LapTopDeviceId)
+        {
+            LapTopView lapTopView = new LapTopView();
+            LapTopViewData data = lapTopView.GetLapTopRequest(LapTopDeviceId);
+            IpRequestorView Model = new IpRequestorView();
+            IpRequestorViewData requestor = Model.GetRequestor(EmpID);
+            ViewBag.requestor = requestor;
+            return View(data);
         }
     }
 }

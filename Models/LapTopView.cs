@@ -61,11 +61,20 @@ namespace InformationProtection.Models
 
             foreach (LapTopViewData item in retData)
             {
-                IpApprovalRequestView.AddOtherProperties(item);               
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&LapTopDeviceId={3}\">Details</a>", 
-                    Controller, "Details", requestor.EmpID, item.LapTopDeviceId);
-                item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&LapTopDeviceId={3}\">Edit</a>", 
-                    Controller, "Edit", requestor.EmpID, item.LapTopDeviceId);
+                IpApprovalRequestView.AddOtherProperties(item);
+                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&LapTopDeviceId={2}\">Details</a>",
+                    Controller, requestor.EmpID, item.LapTopDeviceId);
+                item.RequestEditLink = String.Empty;
+                if (item.RequestStatus == IpApprover.ApproveState.saved.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&LapTopDeviceId={2}\">Edit</a>",
+                        Controller, requestor.EmpID, item.LapTopDeviceId);
+                }
+                if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&LapTopDeviceId={2}\">ReSubmit</a>",
+                        Controller, requestor.EmpID, item.LapTopDeviceId);
+                }
             }
             return retData;
         }

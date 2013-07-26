@@ -7,6 +7,6 @@ C:\MyCoding\CSharp2012\InformationProtection\IpModelData\obj\Debug\IpModelData.c
 C:\MyCoding\CSharp2012\InformationProtectionNew\IpModelData\bin\Debug\IpModelData.dll.config
 C:\MyCoding\CSharp2012\InformationProtectionNew\IpModelData\bin\Debug\IpModelData.dll
 C:\MyCoding\CSharp2012\InformationProtectionNew\IpModelData\bin\Debug\IpModelData.pdb
+C:\MyCoding\CSharp2012\InformationProtectionNew\IpModelData\obj\Debug\IpModelData.csprojResolveAssemblyReference.cache
 C:\MyCoding\CSharp2012\InformationProtectionNew\IpModelData\obj\Debug\IpModelData.dll
 C:\MyCoding\CSharp2012\InformationProtectionNew\IpModelData\obj\Debug\IpModelData.pdb
-C:\MyCoding\CSharp2012\InformationProtectionNew\IpModelData\obj\Debug\IpModelData.csprojResolveAssemblyReference.cache

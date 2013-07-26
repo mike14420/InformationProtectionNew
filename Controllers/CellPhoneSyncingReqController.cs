@@ -125,5 +125,64 @@ namespace InformationProtection.Controllers
             ViewData["FullName"] = thisEmp.FullName;
             return View(data);
         }
+
+
+        public ActionResult ReSubmit(String EmpID, String CellPhoneSyncDeviceId)
+        {
+            IpRequestorViewData requestor;
+            IpRequestorView model = new IpRequestorView();
+            if (String.IsNullOrEmpty(EmpID))
+            {
+                return RedirectToAction("Index", "UsersView", null);
+            }
+            CellPhoneSyncMdl cellPhoneSyncMdl = new CellPhoneSyncMdl();
+            CellPhoneSyncMdlData data = null;
+            data = cellPhoneSyncMdl.GetDevice(CellPhoneSyncDeviceId);
+            if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
+            {
+                return RedirectToAction("Details", new { EmpID = EmpID, CellPhoneSyncDeviceId = CellPhoneSyncDeviceId });
+            }
+            requestor = model.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+
+            ViewBag.requestor = requestor;
+            return View(data);
+        }
+
+        //
+        // POST: /CdDvdRequest/Edit/5
+
+        [HttpPost]
+        public ActionResult ReSubmit(String EmpID, CellPhoneSyncMdlData data, FormCollection col, String submitButton)
+        {
+            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+            data.PersonOwnedType = col["RadBtnPersonOwnedType"];
+
+            CellPhoneSyncMdl cellPhoneSyncMdl = new CellPhoneSyncMdl();
+            cellPhoneSyncMdl.ValidateRenownOwned(data, ModelState);
+            if (ModelState.IsValid)
+            {
+                ipApprovalRequestView.ReSubmit(data);
+                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
+            }
+            IpRequestorViewData thisEmp;
+            IpRequestorView model = new IpRequestorView();
+            thisEmp = model.GetRequestor(EmpID);
+
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = thisEmp.FullName;
+            return View(data);
+        }
+
+        public ActionResult Print(String EmpID, String CellPhoneSyncDeviceId)
+        {
+            CellPhoneSyncMdl cellPhoneSyncMdl = new CellPhoneSyncMdl();
+            CellPhoneSyncMdlData data = cellPhoneSyncMdl.GetDevice(CellPhoneSyncDeviceId);
+            IpRequestorView Model = new IpRequestorView();
+            IpRequestorViewData requestor = Model.GetRequestor(EmpID);
+            ViewBag.requestor = requestor;
+            return View(data);
+        }
     }
 }

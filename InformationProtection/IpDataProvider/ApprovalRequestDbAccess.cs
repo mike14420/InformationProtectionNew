@@ -619,7 +619,7 @@ namespace IpDataProvider
                 p13.Value = newState;
                 cmd.Parameters.Add(p13);
 
-                SqlParameter p14 = new SqlParameter("@RetVal", SqlDbType.VarChar);
+                SqlParameter p14 = new SqlParameter("@RetVal", SqlDbType.Int);
                 p14.Direction = ParameterDirection.Output;
                 cmd.Parameters.Add(p14);
 

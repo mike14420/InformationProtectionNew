@@ -71,33 +71,40 @@ namespace InformationProtection.Controllers
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             // Data not valid so redisplay allowing errors to be corrected
-            IpRequestorViewData thisEmp;
+            IpRequestorViewData requestor;
             IpRequestorView model = new IpRequestorView();
-            thisEmp = model.GetRequestor(EmpID);
+            requestor = model.GetRequestor(EmpID);
             ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
             return View(data);
         }
 
         public ActionResult Edit(String EmpID, String RemoteAccessId)
         {
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
             if (String.IsNullOrEmpty(EmpID))
             {
                 return RedirectToAction("Index", "UsersView", null);
             }
-            requestor = model.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
+            IpRequestorViewData requestor;
+            IpRequestorView model = new IpRequestorView();
             RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
             RemoteAccessMdlData data = remoteAccessMdl.GetRemoteAccessRequest(RemoteAccessId);
-            if (data == null)
+
+            if (data.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
             {
-                return RedirectToAction("Index", "UsersView" , new {EmpID=EmpID});
+                return RedirectToAction("ReSubmit", new { EmpID = EmpID, RemoteAccessId = RemoteAccessId });
             }
-            ViewBag.requestor = requestor;
-            return View(data);
+            if (data.RequestStatus == IpApprover.ApproveState.saved.ToString())
+            {
+                requestor = model.GetRequestor(EmpID);
+                ViewData["EmpID"] = EmpID;
+                ViewData["FullName"] = requestor.FullName;
+
+                ViewBag.requestor = requestor;
+                return View(data);
+            }
+            return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
         }
 
         //
@@ -122,39 +129,72 @@ namespace InformationProtection.Controllers
                 remoteAccessMdl.Update(data);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            IpRequestorViewData thisEmp;
+            IpRequestorViewData requestor;
             IpRequestorView model = new IpRequestorView();
-            thisEmp = model.GetRequestor(EmpID);
+            requestor = model.GetRequestor(EmpID);
 
             ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
+            data.RequestorId = requestor.IpRequestorId;
+            return View(data);
+        }
+
+        public ActionResult ReSubmit(String EmpID, String RemoteAccessId)
+        {
+            IpRequestorViewData requestor;
+            IpRequestorView model = new IpRequestorView();
+            if (String.IsNullOrEmpty(EmpID))
+            {
+                return RedirectToAction("Index", "UsersView", null);
+            }
+            RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
+            RemoteAccessMdlData data = remoteAccessMdl.GetRemoteAccessRequest(RemoteAccessId);
+            if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
+            {
+                return RedirectToAction("Details", new { EmpID = EmpID, RemoteAccessId = RemoteAccessId });
+            }
+            requestor = model.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
             return View(data);
         }
 
         //
-        // GET: /RemoteAccess/Delete/5
-
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /RemoteAccess/Delete/5
+        // POST: /CdDvdRequest/Edit/5
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult ReSubmit(String EmpID, RemoteAccessMdlData data, FormCollection col, String submitButton)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+            data.RemoteConnectionType = col["RadBtnConnectionType"];
 
-                return RedirectToAction("Index");
-            }
-            catch
+            RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
+            remoteAccessMdl.ValidateConnectionType(data, ModelState);
+            if (ModelState.IsValid)
             {
-                return View();
+                ipApprovalRequestView.ReSubmit(data);
+                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
+            IpRequestorViewData requestor;
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            requestor = ipRequestorView.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
+            return View(data);
         }
+
+        public ActionResult Print(String EmpID, String RemoteAccessId)
+        {
+            RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
+            RemoteAccessMdlData data = remoteAccessMdl.GetRemoteAccessRequest(RemoteAccessId);
+            IpRequestorView Model = new IpRequestorView();
+            IpRequestorViewData requestor = Model.GetRequestor(EmpID);
+            ViewBag.requestor = requestor;
+            return View(data);
+        }
+
     }
 }

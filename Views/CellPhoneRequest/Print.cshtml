@@ -1,0 +1,31 @@
+﻿@model InformationProtection.Models.CellPhoneViewData
+@{
+    ViewBag.Title = "Print";
+    Layout = "~/Views/Shared/_PrintView.cshtml";
+}
+    @Styles.Render("~/Content/css")
+<fieldset>
+    <legend>Requestor Information</legend>
+    @{
+        InformationProtection.Models.IpRequestorViewData requestor = (InformationProtection.Models.IpRequestorViewData)(ViewData["requestor"]);
+
+        @Html.Hidden("EmpID", requestor.EmpID, new { id = requestor.EmpID });
+        var id = requestor.EmpID;
+    }
+    <table style="width: 50%;">
+        <tr>
+            <td>
+                <p>User Form for Employee ID:</p>
+            </td>
+            <td>@Html.Label(requestor.EmpID as string)</td>
+        </tr>
+        <tr>
+            <td>
+                <p>Employee Name:</p>
+            </td>
+            <td>@Html.Label(requestor.FullName as string)</td>
+        </tr>
+   </table>
+
+</fieldset>
+@RenderPage("~/Views/Shared/_CellPhoneDetails.cshtml")

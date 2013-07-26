@@ -1,8 +1,14 @@
 ﻿@model InformationProtection.Models.CellPhoneViewData
 <fieldset>
-    <legend>CellPhone Request:@Html.DisplayFor(model => model.CellPhoneReqId)</legend>
-
+    <legend>CellPhone Request</legend>
     <table class="Table1Format">
+                <tr>
+            <td>Request Number:
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.CellPhoneReqId)
+            </td>
+        </tr>
         <tr style="height: 100px">
             <td class="Request" colspan="4">This form is a request for mobile device use and/or syncing to internal Renown 
                     Health information for a Renown Health exempt employee who requires this access to fulfill 

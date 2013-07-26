@@ -40,10 +40,19 @@ namespace InformationProtection.Models
             foreach (RemoteAccessMdlData item in retData)
             {
                 IpApprovalRequestView.AddOtherProperties(item);
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&RemoteAccessReqId={2}\">Details</a>",
+                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&RemoteAccessId={2}\">Details</a>",
                     Controller, requestor.EmpID, item.RemoteAccessId);
-                item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&RemoteAccessReqId={2}\">Edit</a>",
-                    Controller, requestor.EmpID, item.RemoteAccessId);
+                item.RequestEditLink = String.Empty;
+                if (item.RequestStatus == IpApprover.ApproveState.saved.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&RemoteAccessId={2}\">Edit</a>",
+                        Controller, requestor.EmpID, item.RemoteAccessId);
+                }
+                if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&RemoteAccessId={2}\">ReSubmit</a>",
+                        Controller, requestor.EmpID, item.RemoteAccessId);
+                }
             }
             return retData;
         }

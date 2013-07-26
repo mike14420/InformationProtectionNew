@@ -1,9 +1,16 @@
 ﻿@model InformationProtection.Models.WirelessMdlData
 
 <fieldset style="width: 96%">
-    <legend>Wireless RequestRequest:@Html.DisplayFor(model => model.WirelessDeviceId)</legend>
+    <legend>Wireless RequestRequest</legend>
 
     <table class="Table1Format">
+        <tr>
+            <td>Request Number:
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.WirelessDeviceId)
+            </td>
+        </tr>
         <tr style="width: 98%">
             <td class="Request" colspan="4">This form is to request and utilize a 
                This form is to request and utilize a 

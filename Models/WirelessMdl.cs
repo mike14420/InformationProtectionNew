@@ -41,7 +41,7 @@ namespace InformationProtection.Models
             return IpApprovalRequestView.AddOtherProperties(Convert(device));
         }
 
-        public List<WirelessMdlData> GetWirelessFor(String EmpId, String Controller, String Action, String EditAction)
+        public List<WirelessMdlData> GetWirelessFor(String EmpId, String Controller)
         {
             // FIRST Get the requestor ID
             IpRequestorView Model = new IpRequestorView();
@@ -56,10 +56,19 @@ namespace InformationProtection.Models
             foreach (WirelessMdlData item in retData)
             {
                 IpApprovalRequestView.AddOtherProperties(item);    
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Details</a>",
-                    Controller, Action, requestor.EmpID, item.WirelessDeviceId);
-                item.RequestEditLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&WirelessDeviceId={3}\">Edit</a>",
-                    Controller, EditAction, requestor.EmpID, item.WirelessDeviceId);
+                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&WirelessDeviceId={2}\">Details</a>",
+                    Controller, requestor.EmpID, item.WirelessDeviceId);
+                item.RequestEditLink = String.Empty;
+                if (item.RequestStatus == IpApprover.ApproveState.saved.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&WirelessDeviceId={2}\">Edit</a>",
+                        Controller, requestor.EmpID, item.WirelessDeviceId);
+                }
+                if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    item.RequestEditLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&WirelessDeviceId={2}\">ReSubmit</a>",
+                        Controller, requestor.EmpID, item.WirelessDeviceId);
+                }
             }
             return retData;
         }

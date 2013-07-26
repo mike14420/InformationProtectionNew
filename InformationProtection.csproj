@@ -1288,6 +1288,18 @@
     <Content Include="Views\CdDvdRequest\Print.cshtml" />
     <Content Include="Views\Shared\_remoteAccessDetials.cshtml" />
     <Content Include="Views\CdDvdRequest\ReSubmit.cshtml" />
+    <Content Include="Views\CellPhoneRequest\ReSubmit.cshtml" />
+    <Content Include="Views\CellPhoneRequest\Print.cshtml" />
+    <Content Include="Views\CellPhoneSyncingReq\ReSubmit.cshtml" />
+    <Content Include="Views\CellPhoneSyncingReq\Print.cshtml" />
+    <Content Include="Views\LapTopRequest\ReSubmit.cshtml" />
+    <Content Include="Views\LapTopRequest\Print.cshtml" />
+    <Content Include="Views\RemoteAccess\ReSubmit.cshtml" />
+    <Content Include="Views\RemoteAccess\Print.cshtml" />
+    <Content Include="Views\UsbRequest\ReSubmit.cshtml" />
+    <Content Include="Views\UsbRequest\Print.cshtml" />
+    <Content Include="Views\WirelessRequest\ReSubmit.cshtml" />
+    <Content Include="Views\WirelessRequest\Print.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

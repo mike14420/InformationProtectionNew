@@ -160,5 +160,7 @@ namespace InformationProtection.Models
         public int RequestId { get; set; }
 
         public string RequestorsName { get; set; }
+
+        public string RequestReSubmitLink { get; set; }
     }
 }

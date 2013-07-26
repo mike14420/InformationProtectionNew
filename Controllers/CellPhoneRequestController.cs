@@ -84,20 +84,31 @@ namespace InformationProtection.Controllers
         [HttpGet]
         public ActionResult Edit(String EmpID, String CellPhoneReqId)
         {
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
             if (String.IsNullOrEmpty(EmpID))
             {
                 return RedirectToAction("Index", "UsersView", null);
             }
-            requestor = model.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
+
             CellPhoneView cellPhoneView = new CellPhoneView();
             CellPhoneViewData data = null;
+            IpRequestorViewData requestor;
+            IpRequestorView model = new IpRequestorView();
+
             data = cellPhoneView.GetDevice(CellPhoneReqId);
-            ViewBag.requestor = requestor;
-            return View(data);
+            if (data.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+            {
+                return RedirectToAction("ReSubmit", new  {EmpID= EmpID, CellPhoneReqId=CellPhoneReqId });
+            }
+            if (data.RequestStatus == IpApprover.ApproveState.saved.ToString())
+            {
+                requestor = model.GetRequestor(EmpID);
+                ViewData["EmpID"] = EmpID;
+                ViewData["FullName"] = requestor.FullName;
+
+                ViewBag.requestor = requestor;
+                return View(data);
+            }
+            return RedirectToAction("Index", "UsersView", null);
         }
 
         //
@@ -132,5 +143,62 @@ namespace InformationProtection.Controllers
             return View(data);
         }
 
+        public ActionResult ReSubmit(String EmpID, String CellPhoneReqId)
+        {
+            IpRequestorViewData requestor;
+            IpRequestorView model = new IpRequestorView();
+            if (String.IsNullOrEmpty(EmpID))
+            {
+                return RedirectToAction("Index", "UsersView", null);
+            }
+            CellPhoneView cellPhoneView = new CellPhoneView();
+            CellPhoneViewData data = null;
+            data = cellPhoneView.GetDevice(CellPhoneReqId);
+            if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
+            {
+                return RedirectToAction("Details", new { EmpID = EmpID, CellPhoneReqId = CellPhoneReqId });
+            }
+            requestor = model.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+
+            ViewBag.requestor = requestor;
+            return View(data);
+        }
+
+        //
+        // POST: /CdDvdRequest/Edit/5
+
+        [HttpPost]
+        public ActionResult ReSubmit(String EmpID, CellPhoneViewData data, FormCollection col, String submitButton)
+        {
+            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+            data.RenownOwnedType = col["RadBtnRenownOwned"];
+
+            CellPhoneView cellPhoneView = new CellPhoneView();
+            cellPhoneView.ValidateRenownOwned(data, ModelState);
+            if (ModelState.IsValid)
+            {
+                ipApprovalRequestView.ReSubmit(data);
+                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
+            }
+            IpRequestorViewData thisEmp;
+            IpRequestorView model = new IpRequestorView();
+            thisEmp = model.GetRequestor(EmpID);
+
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = thisEmp.FullName;
+            return View(data);
+        }
+
+        public ActionResult Print(String EmpID, String CellPhoneReqId)
+        {
+            CellPhoneView ourModel = new CellPhoneView();
+            CellPhoneViewData data = ourModel.GetDevice(CellPhoneReqId);
+            IpRequestorView Model = new IpRequestorView();
+            IpRequestorViewData requestor = Model.GetRequestor(EmpID);
+            ViewBag.requestor = requestor;
+            return View(data);
+        }
     }
 }

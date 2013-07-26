@@ -1,11 +1,18 @@
 ﻿@model InformationProtection.Models.UsbViewData
 
-<h2 class="RenownHeader1">USB/REQUEST FORM</h2>
+
 
 <fieldset style="width: 96%">
-    <legend>USB IP Request:@Html.DisplayFor(model => model.UsbDeviceId)</legend>
+    <legend>USB IP Request</legend>
 
     <table class="Table1Format">
+        <tr>
+            <td>Request Number:
+            </td>
+            <td>
+            @Html.DisplayFor(model => model.UsbDeviceId)
+        </tr>
+           
         <tr style="width: 98%">
             <td class="Request" colspan="4">This form is a request for 
                     <strong>

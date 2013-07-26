@@ -10,7 +10,10 @@
     $(document).ready(function () {
         $('#approversTable').jtable({
             title: 'Approvers',
-            sorting: false,
+            sorting: true,
+            pageSize: 20,
+            paging: true,
+            defaultSorting: 'EmpID',
             selecting: false,
             multiselect: false, 
             selectingCheckboxes: false, 
@@ -44,7 +47,8 @@
                 }
                 ,RequestDetailsLink: {
                     title: '',
-                    width: '15%'
+                    width: '15%',
+                    sorting: false
                 }
             }
         });

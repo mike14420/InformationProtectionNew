@@ -1,8 +1,15 @@
 ﻿@model InformationProtection.Models.LapTopViewData
 
 <fieldset>
-    <legend>LapTop Request:@Html.DisplayFor(model => model.LapTopDeviceId)</legend>
+    <legend>LapTop Request</legend>
     <table class="Table1Format">
+        <tr>
+            <td>Request Number:
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.LapTopDeviceId)
+            </td>
+        </tr>
         <tr style="height: 100px">
             <td class="Request" colspan="2">This form is a request for <strong>Renown Laptop use</strong> for a Renown Health employee who requires this equipment to fulfill his/her 
                 professional responsibilities on behalf of Renown. In order to obtain Renown Health laptop use, the employee must 
