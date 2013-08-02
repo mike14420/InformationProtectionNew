@@ -10,12 +10,12 @@
 }
 
 
-<table style="font-size:medium">
+<table style="font-size: medium">
     <tr>
         @if (ourRequestor != null && (ourRequestor.IsApprover || ourRequestor.IsAdmin))
         {
             <td>
-            @Html.ActionLink("Approvers View", "Index", "ApproversRequest", null, null)
+                @Html.ActionLink("Approvers View", "Index", "ApproversRequest", null, null)
             </td>
         }
     </tr>
@@ -27,11 +27,29 @@
             </td>
         }
     </tr>
-        <tr>
+    <tr>
         @if (ourRequestor != null && ourRequestor.IsAdmin)
         {
             <td>
                 @Html.ActionLink("View Pending", "ViewPendingRequest", "AdminView", null, null)
+            </td>
+          
+        }
+    </tr>
+    <tr>
+        @if (ourRequestor != null && ourRequestor.IsAdmin)
+        {
+            <td>
+                @Html.ActionLink("View Rejected", "ViewRejectedRequest", "AdminView", null, null)
+            </td>
+          
+        }
+    </tr>
+    <tr>
+        @if (ourRequestor != null && ourRequestor.IsAdmin)
+        {
+            <td>
+                @Html.ActionLink("View Approved", "ViewApprovedRequest", "AdminView", null, null)
             </td>
           
         }

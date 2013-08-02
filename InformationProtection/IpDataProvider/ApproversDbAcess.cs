@@ -78,7 +78,7 @@ namespace IpDataProvider
                 approver.IpApproverId = (int)reader["IpApproverId"];
                 if (reader["Name"] != DBNull.Value)
                 {
-                    approver.Name = ((String)reader["Name"]).Trim().ToUpper();
+                    approver.Name = ((String)reader["Name"]).Trim();
                 }
                 else
                 {

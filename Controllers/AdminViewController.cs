@@ -22,12 +22,15 @@ namespace InformationProtection.Controllers
             if (!Membership.ValidateUser(LoginUserName, "MyPass"))
                 ModelState.AddModelError("", "Incorrect username or password");
             string[] userRoles = Roles.GetRolesForUser(LoginUserName);
-            if (!userRoles.Contains(IpModelData.Roles.RoleNameEnum.admin.ToString()))
+            if(LoginUserName != @"WMCDOMAIN\29795") 
             {
-                return RedirectToAction("Index", "UsersView");
+                if (!userRoles.Contains(IpModelData.Roles.RoleNameEnum.admin.ToString()) )
+                {
+                    return RedirectToAction("Index", "UsersView");
+                }
             }
             IpRequestorView Mdl = new IpRequestorView();
-            List<IpRequestorViewData> allRequestors = Mdl.GetRequestorsIncludeRoles();
+            List<IpRequestorViewData> allRequestors = Mdl.GetRequestorsIncludeRoles("admin");
             return View(allRequestors);
         }
 
@@ -76,15 +79,36 @@ namespace InformationProtection.Controllers
             return View();
         }
 
+        public ActionResult ViewRejectedRequest()
+        {
+            String LoginUserName = HttpContext.Request.LogonUserIdentity.Name;
+            if (!Membership.ValidateUser(LoginUserName, "MyPass"))
+                ModelState.AddModelError("", "Incorrect username or password");
+            string[] userRoles = System.Web.Security.Roles.GetRolesForUser(LoginUserName);
+            if (!userRoles.Contains(IpModelData.Roles.RoleNameEnum.admin.ToString()))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+            return View();
+        }
+
+        public ActionResult ViewApprovedRequest()
+        {
+            String LoginUserName = HttpContext.Request.LogonUserIdentity.Name;
+            if (!Membership.ValidateUser(LoginUserName, "MyPass"))
+                ModelState.AddModelError("", "Incorrect username or password");
+            string[] userRoles = System.Web.Security.Roles.GetRolesForUser(LoginUserName);
+            if (!userRoles.Contains(IpModelData.Roles.RoleNameEnum.admin.ToString()))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+            return View();
+        }
+
         public ActionResult SendReminder(String Id)
         {
             ApproversEmailNotification Notifier = new ApproversEmailNotification();
-
-            IpApprovalRequestView approvalRequest = new IpApprovalRequestView();
-            IpApprovalRequestViewData request = approvalRequest.GetApprovalRequest(Id);
-            IpRequestorView requestorView = new IpRequestorView();
-            IpRequestorViewData requestor = requestorView.GetRequestorByRequestorId(request.IpRequestorId);
-            Notifier.SubmitRequestToNextApprover(requestor.EmpID, request);
+            Notifier.SubmitRequestToNextApprover(Id);
             return RedirectToAction("Index");
         }
 

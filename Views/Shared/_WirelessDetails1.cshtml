@@ -4,12 +4,13 @@
     @{
         WirelessMdlData data = (WirelessMdlData)ViewBag.ourData;
     }
+    <h2 class="RenownHeader1">WIRELESS INTERNET DEVICE REQUEST FORM</h2>
     <table class="Table1Format">
         <tr style="width: 98%">
             <td class="Request" colspan="4">This form is to request and utilize a 
                This form is to request and utilize a 
-               <strong><u>Renown-provided wireless Internet device</u></strong> 
-               for a Health employee who requires this equipment to fufill his/her professional responsibilities on behalf of Renown. 
+               <strong><u>Renown-provided wireless Internet device</u></strong>
+                for a Health employee who requires this equipment to fufill his/her professional responsibilities on behalf of Renown. 
                To obtain a renow Health provided wireless Internet device for business use, the employee must complete this form, 
                have it approved by his/her management, the Renown Health, Chief Financial Officer, Information Protection,
                and Chief Information Officer. Once all approvals have been received, the document will be contained in the employee's HR file and
@@ -96,7 +97,7 @@
                 <table class="box1">
                     <tr>
                         <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
-                            @Html.CheckBox("Ack1", data.SecuredAck1, new {  disabled="true" })
+                            @Html.CheckBox("Ack1", data.SecuredAck1, new { disabled = "true" })
 
                             I verify that everything written 
                                herein is true to the best of my knowledge. 
@@ -108,7 +109,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
-                            @Html.CheckBox("Ack2", data.SecuredAck2, new {  disabled="true" })
+                            @Html.CheckBox("Ack2", data.SecuredAck2, new { disabled = "true" })
                             I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
                                Laptop usage. 
                                In addition, this action may occur with Renown Health employment termination.
@@ -116,7 +117,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
-                             @Html.CheckBox("Actk", data.SecuredAck3, new {  disabled="true" })
+                            @Html.CheckBox("Actk", data.SecuredAck3, new { disabled = "true" })
                             @*<asp:checkbox id="Chk_ack3" runat="server" />*@
                             I understand I am responsible for: 
                         </td>
@@ -124,15 +125,15 @@
                     <tr>
                         <td style="width: 10px"></td>
                         <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
-                             @Html.CheckBox("Ack4", data.SecuredAck4, new {  disabled="true" })
+                            @Html.CheckBox("Ack4", data.SecuredAck4, new { disabled = "true" })
                             Logical security </td>
 
                         <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
-                             @Html.CheckBox("Ack5", data.SecuredAck5, new {  disabled="true" })
+                            @Html.CheckBox("Ack5", data.SecuredAck5, new { disabled = "true" })
                             Physical security</td>
 
                         <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
-                             @Html.CheckBox("Ack6", data.SecuredAck6, new {  disabled="true" })
+                            @Html.CheckBox("Ack6", data.SecuredAck6, new { disabled = "true" })
                             Immediate Notification: loss/theft</td>
                     </tr>
                 </table>
@@ -150,50 +151,50 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                             @Html.CheckBox("SecurityAck1", data.SecurityAck1, new {  disabled="true" })
+                            @Html.CheckBox("SecurityAck1", data.SecurityAck1, new { disabled = "true" })
                             Business Use Only
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck2", data.SecurityAck2, new {  disabled="true" })
+                            @Html.CheckBox("SecurityAck2", data.SecurityAck2, new { disabled = "true" })
                             Must have Renown network account (UserID)
                         </td>
                     </tr>
 
                     <tr>
                         <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck3", data.SecurityAck3, new {  disabled="true" })
+                            @Html.CheckBox("SecurityAck3", data.SecurityAck3, new { disabled = "true" })
                             Assigned to individual, not to a Department
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck4", data.SecurityAck4, new {  disabled="true" })
+                            @Html.CheckBox("SecurityAck4", data.SecurityAck4, new { disabled = "true" })
                             Do not disable any security or technical configurations
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck5", data.SecurityAck5, new {  disabled="true" })
+                            @Html.CheckBox("SecurityAck5", data.SecurityAck5, new { disabled = "true" })
                             Physically secure device
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck6", data.SecurityAck6, new {  disabled="true" })
+                            @Html.CheckBox("SecurityAck6", data.SecurityAck6, new { disabled = "true" })
                             Upon transfer or termination of employement, submit wireless Internet device to Inforrmation Resources
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck7", data.SecurityAck7, new {  disabled="true" })
-                            Do not store information on laptop; backup all information to network drive
+                            @Html.CheckBox("SecurityAck7", data.SecurityAck7, new { disabled = "true" })
+                            Only Connect it to Renown-owned, authorized equipment
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck8", data.SecurityAck8, new {  disabled="true" })
+                            @Html.CheckBox("SecurityAck8", data.SecurityAck8, new { disabled = "true" })
                             Do not allow others to use this device
                         </td>
                     </tr>

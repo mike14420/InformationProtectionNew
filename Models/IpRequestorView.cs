@@ -297,19 +297,33 @@ namespace InformationProtection.Models
         }
 
 
-        public List<IpRequestorViewData> GetRequestorsIncludeRoles()
+        public List<IpRequestorViewData> GetRequestorsIncludeRoles(String controllerType)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             RequestorDbReqAccess RequestorDbAcess = new RequestorDbReqAccess(connectionString);
-            List<IpRequestor> ourDbData  = RequestorDbAcess.GetRequestorsIncludeRoles();
+            List<IpRequestor> ourDbData = RequestorDbAcess.GetRequestorsIncludeRoles();
             List<IpRequestorViewData> outData = CombineRoles(ourDbData);
-         
+
+            foreach (IpRequestorViewData item in outData)
+            {
+                if (controllerType == "admin")
+                {
+                    item.RequestDetailsLink = String.Format("<a href=\"AdminView/Edit?EmpID={0}\">Edit</a>",
+                        item.EmpID);
+                }
+                else
+                {
+                    item.RequestDetailsLink = String.Format("<a href=\"UsersView?EmpID={0}\">UsersView</a>",
+                        item.EmpID);
+                }
+
+            }
+
             return outData;
         }
 
         public List<IpRequestorViewData> GetRequestorsInRole(String RoleName)
         {
-
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             RequestorDbReqAccess RequestorDbAcess = new RequestorDbReqAccess(connectionString);
             List<IpRequestor> reqtor = RequestorDbAcess.GetRequestorsInRole(RoleName);

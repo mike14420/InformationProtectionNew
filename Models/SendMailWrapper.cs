@@ -54,6 +54,24 @@ namespace InformationProtection.Models
                 bool.TryParse(WebConfigurationManager.AppSettings["SendUserMessage"].ToString(), out SendUserMessage);
             }
 
+            // SEND the staff the message
+            try
+            {
+                if (!String.IsNullOrEmpty(AdminEmailAddress))
+                {
+                    message.Bcc.Add(new MailAddress(AdminEmailAddress));
+                }
+
+                if (SendUserMessage)
+                {
+                    client.Send(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("SendMailWrapper: Email Send Exception " + ex.Message);
+            }
+
             if (useDevCode)
             {
                 try
@@ -100,18 +118,7 @@ namespace InformationProtection.Models
                 }
             }
 
-            // SEND the staff the message
-            try
-            {
-                if (SendUserMessage)
-                {
-                    client.Send(message);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("SendMailWrapper: Email Send Exception " + ex.Message);
-            }
+
         }
     }
 }

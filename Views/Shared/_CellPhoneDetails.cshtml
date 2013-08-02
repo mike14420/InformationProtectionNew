@@ -2,7 +2,7 @@
 <fieldset>
     <legend>CellPhone Request</legend>
     <table class="Table1Format">
-                <tr>
+        <tr>
             <td>Request Number:
             </td>
             <td>
@@ -10,18 +10,18 @@
             </td>
         </tr>
         <tr style="height: 100px">
-            <td class="Request" colspan="4">This form is a request for mobile device use and/or syncing to internal Renown 
-                    Health information for a Renown Health exempt employee who requires this access to fulfill 
-                    their professional responsibilities on behalf of Renown.  
+
+
+            <td class="Request" colspan="4">This form is a request for mobile device use and/or syncing to internal Renown Health information 
+                    for a Renown Health <u>exempt</u> employee who requires this access to fulfill their professional responsibilities on behalf of Renown. 
                     In order to obtain mobile device use and/or syncing access, 
                     the employee must complete this form, have it approved by his/her management, 
-                    and submit it to the Renown Health VP of Human Resources, Chief Financial Officer, 
-                    Information Protection, and Chief Information Officer for approval.  
-                    Once all approvals have been received, 
-                    the document will be contained in the employee’s HR file and a copy resident in the 
-                    immediate supervisor’s employee file.  
+                    and submit it to the Renown Health Chief Financial Officer, Information Protection Director, 
+                    and Chief Information Officer for approval. Once all approvals have been received, 
+                    the document will be contained in the employee’s HR file and a copy resident in the immediate supervisor’s employee file. 
                     All access is subject to Renown Health policies and procedures.
             </td>
+
         </tr>
 
         <tr>
@@ -66,7 +66,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="24 style="text-align: left; vertical-align: top">
+            <td colspan="24" style="text-align: left; vertical-align: top">
                 @Html.DisplayFor(model => model.SecuredAck1)
                 I verify that everything written 
                    herein is true to the best of my knowledge. 
@@ -87,27 +87,24 @@
             </td>
         </tr>
 
-                      <tr>
-                <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
-                    @Html.DisplayFor(model => model.SecuredAck3)
-                    I understand I am responsible for: 
-                </td>
-            </tr>
-            <tr>
-                 <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 150px">
-                   Logical security 
+        <tr>
+            <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                @Html.DisplayFor(model => model.SecuredAck3)
+                I understand I am responsible for: 
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 150px">Logical security 
                      @Html.DisplayFor(model => model.SecuredAck4)
-                    </td>
-                <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
-                    Physical security
+            </td>
+            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">Physical security
                     @Html.DisplayFor(model => model.SecuredAck5)
-                    </td>
+            </td>
 
-                <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">
-                    Immediate Notification: loss/theft
+            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">Immediate Notification: loss/theft
                     @Html.DisplayFor(model => model.SecuredAck6)
-                    </td>
-            </tr>
+            </td>
+        </tr>
 
 
 

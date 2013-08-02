@@ -39,7 +39,7 @@ namespace InformationProtection.Models
         IpApprovalRequestViewData CreateRequest(String EmpID, IpApprover.ApproveState state)
         {
             IpApprovalRequestViewData Request = new IpApprovalRequestViewData();
-
+            Request.RequuestorsEmpId = EmpID;
             IpRequestorView Mdl = new IpRequestorView();
             IpRequestorViewData requestor = Mdl.GetRequestor(EmpID);
             Request.IpRequestorId = requestor.IpRequestorId;
@@ -476,6 +476,14 @@ namespace InformationProtection.Models
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
             // Update the Request
             retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
+
+            // NOW Send notification to next approver
+            ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
+            IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
+            ApproversEmailNotification Notification = new ApproversEmailNotification();
+            IpApprovalRequestViewData ourRequest = Convert(request);
+            AddOtherProperties(ourRequest);
+            approversEmailNotification.SubmitRequestToNextApprover(ourRequest);
             return retValue;
         }
         public static WirelessMdlData AddOtherProperties(WirelessMdlData data)
@@ -508,11 +516,10 @@ namespace InformationProtection.Models
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString();
             int retValue = Create(ref Request);
             // Now Submit it
-            if (state == IpApprover.ApproveState.not_submitted)
-            {
-                SubmitRequest(Request);
-            }
-            return retValue;
+             SubmitRequest(Request);
+             ApproversEmailNotification Notification = new ApproversEmailNotification();
+             Notification.SubmitRequestToNextApprover(Request);
+             return retValue;
         }
 
         public bool Update(RemoteAccessMdlData data, IpApprover.ApproveState state)
@@ -524,6 +531,7 @@ namespace InformationProtection.Models
             bool retValue = model.InitApprovalRequest(data.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString(), state.ToString());
             return retValue;
         }
+
         // move state from resubmit to pending
         public bool ReSubmit(RemoteAccessMdlData data)
         {
@@ -535,6 +543,12 @@ namespace InformationProtection.Models
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
             // Update the Request
             retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
+            IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
+            ApproversEmailNotification Notification = new ApproversEmailNotification();
+            IpApprovalRequestViewData ourRequest = Convert(request);
+            AddOtherProperties(ourRequest);
+            Notification.SubmitRequestToNextApprover(ourRequest);
+            
             return retValue;
         }
         public static RemoteAccessMdlData AddOtherProperties(RemoteAccessMdlData data)
@@ -554,7 +568,7 @@ namespace InformationProtection.Models
         /// </summary>
         /// <param name="EmpID"></param>
         /// <returns></returns>
-        public List<IpApprovalRequestViewData> GetApproversData(String ApproverEmpID, String action)
+        public List<IpApprovalRequestViewData> GetApproversData(String ApproverEmpID)
         {
             int intApproverEmpID = 0;
             int.TryParse(ApproverEmpID, out intApproverEmpID);
@@ -567,32 +581,31 @@ namespace InformationProtection.Models
             {
                 if (item.IsPending(intApproverEmpID))
                 {
-                    IpRequestorView requestorModel = new IpRequestorView();
-                    IpRequestorViewData requestor = requestorModel.GetRequestorByRequestorId(item.IpRequestorId);
-                    item.RequuestorsEmpId = requestor.EmpID;
-                    item.RequestorsName = requestor.FullName;
+                    AddOtherProperties(item);
                     PendingList.Add(item);
                 }
             }
             foreach (IpApprovalRequestViewData item in PendingList)
             {
-                item.RequestDetailsLink = String.Format("<a href=\"{0}?Id={1}&ApproverEmpID={2}\">Details</a>",
-                    action, item.Id, ApproverEmpID);
+                item.RequestDetailsLink = String.Format("<a href=\"Details?Id={0}&ApproverEmpID={1}\">Details</a>",
+                    item.Id, ApproverEmpID);
+
             }
             return PendingList.OrderBy(P => P.RequuestorsEmpId).ToList();
         }
+
 
         /// <summary>
         /// STATE=IpApprover.ApproveState.not_submitted.ToString();
         /// </summary>
         /// <returns></returns>
-        public List<IpApprovalRequestViewData> GetRequestByState(String state, String action)
+        public List<IpApprovalRequestViewData> GetRequestByState(String state, String action, string jtsorting = null)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess ApprovalReqReqDbAcess = new ApprovalRequestDbAccess(connectionString);
 
             List<IpApprovalRequest> data = ApprovalReqReqDbAcess.GetRequestByState(state);
-            List<IpApprovalRequestViewData> request = Convert(data);
+            IEnumerable<IpApprovalRequestViewData> request = Convert(data);
 
             IpRequestorView RequestorsView = new IpRequestorView();
             foreach (IpApprovalRequestViewData item in request)
@@ -602,12 +615,88 @@ namespace InformationProtection.Models
                 {
                     item.RequestorsName = String.Format("{0} {1}", ourRequestor.Fname, ourRequestor.Lname);
                 }
-                item.RequestDetailsLink = String.Format("<a href=\"{0}?Id={1}\">Reminder</a>",
-                    action, item.Id);
-            }
-            return request.OrderBy(P => P.RequestorsName).ToList();
-        }
 
+                 item.RequestDetailsLink = String.Format("<a href=\"{0}?Id={1}\">Reminder</a>",
+                        action, item.Id);
+                 AddOtherProperties(item);
+            }
+
+            if (string.IsNullOrEmpty(jtsorting) || jtsorting.Equals("SubmitDate ASC"))
+            {
+                request = request.OrderBy(p => p.SubmitDate);
+            }
+            else if (jtsorting.Equals("SubmitDate DESC"))
+            {
+                request = request.OrderByDescending(p => p.SubmitDate);
+            }
+            else if (jtsorting.Equals("RequestType ASC"))
+            {
+                request = request.OrderBy(p => p.RequestType);
+            }
+            else if (jtsorting.Equals("RequestType DESC"))
+            {
+                request = request.OrderByDescending(p => p.RequestType);
+            }
+            else if (jtsorting.Equals("RequestorsName ASC"))
+            {
+                request = request.OrderBy(p => p.RequestorsName);
+            }
+            else if (jtsorting.Equals("RequestorsName DESC"))
+            {
+                request = request.OrderByDescending(p => p.RequestorsName);
+            }
+            else if (jtsorting.Equals("FirstSupName ASC"))
+            {
+                request = request.OrderBy(p => p.FirstSupName);
+            }
+            else if (jtsorting.Equals("FirstSupName DESC"))
+            {
+                request = request.OrderByDescending(p => p.FirstSupName);
+            }
+            else if (jtsorting.Equals("SecondSupName ASC"))
+            {
+                request = request.OrderBy(p => p.SecondSupName);
+            }
+            else if (jtsorting.Equals("SecondSupName DESC"))
+            {
+                request = request.OrderByDescending(p => p.SecondSupName);
+            }
+            else if (jtsorting.Equals("VpHrName ASC"))
+            {
+                request = request.OrderBy(p => p.VpHrName);
+            }
+            else if (jtsorting.Equals("VpHrName DESC"))
+            {
+                request = request.OrderByDescending(p => p.VpHrName);
+            }
+            else if (jtsorting.Equals("RhCfoName ASC"))
+            {
+                request = request.OrderBy(p => p.RhCfoName);
+            }
+            else if (jtsorting.Equals("RhCfoName DESC"))
+            {
+                request = request.OrderByDescending(p => p.RhCfoName);
+            }
+            else if (jtsorting.Equals("IpdName ASC"))
+            {
+                request = request.OrderBy(p => p.IpdName);
+            }
+            else if (jtsorting.Equals("IpdName DESC"))
+            {
+                request = request.OrderByDescending(p => p.IpdName);
+            }
+            else if (jtsorting.Equals("CioName ASC"))
+            {
+                request = request.OrderBy(p => p.CioName);
+            }
+            else if (jtsorting.Equals("CioName DESC"))
+            {
+                request = request.OrderByDescending(p => p.CioName);
+            }
+
+            return request.ToList();
+        }
+        
         public List<IpApprovalRequestViewData> GetRequest(String EmpID)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
@@ -618,11 +707,14 @@ namespace InformationProtection.Models
 
             List<IpApprovalRequest> data = ApprovalReqReqDbAcess.GetRequestFor(requestor.IpRequestorId.ToString());
             List<IpApprovalRequestViewData> retData = Convert(data);
-
+            foreach (IpApprovalRequestViewData item in retData)
+            {
+                AddOtherProperties(item);
+            }
             return retData;
         }
 
-        public List<IpApprovalRequestViewData> GetRequestFor(String EmpId, String Controller, String Action)
+        public List<IpApprovalRequestViewData> GetRequestFor(String EmpId, String Controller)
         {
             List<IpApprovalRequestViewData> retData = new List<IpApprovalRequestViewData>();
             IpRequestorView Model = new IpRequestorView();
@@ -640,25 +732,44 @@ namespace InformationProtection.Models
 
             foreach (IpApprovalRequestViewData item in retData)
             {
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/{1}?EmpID={2}&ApprovalRequestId={3}\">Details</a>",
-                    Controller, Action, EmpId, item.Id);
+                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&ApprovalRequestId={2}\">Details</a>",
+                    Controller, EmpId, item.Id);
+                AddOtherProperties(item);
             }
             return retData;
         }
 
-
-
         public IpApprovalRequestViewData GetApprovalRequest(String ApprovalRequestId)
+        {
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            IpApprovalRequest request = null;
+            request = approvalRequestDbAccess.GetApprovalRequest(ApprovalRequestId);
+            IpApprovalRequestViewData retData = IpApprovalRequestView.Convert(request);
+            AddOtherProperties(retData);
+            return retData;
+        }
+
+        private void AddOtherProperties(IpApprovalRequestViewData ipApprovalRequestViewData)
+        {
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData requestor = ipRequestorView.GetRequestorByRequestorId(ipApprovalRequestViewData.IpRequestorId);
+            ipApprovalRequestViewData.RequestorsName = requestor.FullName;
+            ipApprovalRequestViewData.RequuestorsEmpId = requestor.EmpID;
+        }
+
+        public IpApprovalRequestViewData GetApprovalRequest(String deviceId, IpApprovalRequest.RequestTypeEnum DeviceType)
         {
             IpApprovalRequestViewData retData = new IpApprovalRequestViewData();
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
             IpApprovalRequest request = null;
-            request = model.GetApprovalRequest(ApprovalRequestId);
+            request = model.GetApprovalRequest(deviceId);
 
             retData = IpApprovalRequestView.Convert(request);
             return retData;
         }
+
 
         private void AddRequestItem(IpRequestorViewData item, Dictionary<string, IpRequestorViewData> DictionaryOfRequestors, string controller, string action)
         {
@@ -677,17 +788,7 @@ namespace InformationProtection.Models
         }
 
 
-        public IpApprovalRequestViewData GetApprovalRequest(String deviceId, IpApprovalRequest.RequestTypeEnum DeviceType)
-        {
-            IpApprovalRequestViewData retData = new IpApprovalRequestViewData();
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            IpApprovalRequest request = null;
-            request = model.GetApprovalRequest(deviceId);
 
-            retData = IpApprovalRequestView.Convert(request);
-            return retData;
-        }
 
         public static List<IpApprovalRequestViewData> Convert(List<IpApprovalRequest> ourData)
         {
@@ -920,26 +1021,26 @@ namespace InformationProtection.Models
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalReqDb = new ApprovalRequestDbAccess(connectionString);
-            ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
+
 
             int intApproversEmpID = 0;
             int.TryParse(ApproversEmpID, out intApproversEmpID);
-            string statusUpdate = String.Empty;
+            IpApprover.ApproveState statusUpdate = IpApprover.ApproveState.not_submitted;
 
             if (ApproveOrReject == "Approve")
             {
-                statusUpdate = IpApprover.ApproveState.approved.ToString();
+                statusUpdate = IpApprover.ApproveState.approved;
             }
             if (ApproveOrReject == "Reject")
             {
-                statusUpdate = IpApprover.ApproveState.rejected.ToString();
+                statusUpdate = IpApprover.ApproveState.rejected;
             }
             if (ApproveOrReject == "Re-Submit with changes")
             {
-                statusUpdate = IpApprover.ApproveState.resubmit.ToString();
+                statusUpdate = IpApprover.ApproveState.resubmit;
             }
 
-            if (!String.IsNullOrEmpty(statusUpdate) && intApproversEmpID > 0)
+            if (intApproversEmpID > 0)
             {
                 foreach (int index in approvalList)
                 {
@@ -948,49 +1049,53 @@ namespace InformationProtection.Models
                     {
                         if (request.FirstSupEmpId == intApproversEmpID)
                         {
-                            request.FirstSupApproval = statusUpdate;
+                            request.FirstSupApproval = statusUpdate.ToString();
                             request.FirstSupApprovalDate = DateTime.Now.Date;
                             request.FirstSupComment = Comment;
                             approvalReqDb.UpdateFirstSupRequest(request);
                         }
                         if (request.SecondSupEmpId == intApproversEmpID)
                         {
-                            request.SecondSupApproval = statusUpdate;
+                            request.SecondSupApproval = statusUpdate.ToString();
                             request.SecondSupApprovalDate = DateTime.Now.Date;
                             request.SecondSupComment = Comment;
                             approvalReqDb.UpdateSecondSupRequest(request);
                         }
                         if (request.VpHrApproverEmpId == intApproversEmpID)
                         {
-                            request.VpHrApproval = statusUpdate;
+                            request.VpHrApproval = statusUpdate.ToString();
                             request.VpHrApprovalDate = DateTime.Now.Date;
                             request.VpHrComment = Comment;
                             approvalReqDb.UpdateVphrRequest(request);
                         }
                         if (request.RhCfoApproverEmpId == intApproversEmpID)
                         {
-                            request.RhCfoApproval = statusUpdate;
+                            request.RhCfoApproval = statusUpdate.ToString();
                             request.RhCfoApprovalDate = DateTime.Now.Date;
                             request.RhCfoComment = Comment;
                             approvalReqDb.UpdateRhCfoRequest(request);
                         }
                         if (request.CioApproverEmpId == intApproversEmpID)
                         {
-                            request.CioApproval = statusUpdate;
+                            request.CioApproval = statusUpdate.ToString();
                             request.CioApprovalDate = DateTime.Now.Date;
                             request.CioComment = Comment;
                             approvalReqDb.UpdateCioRequest(request);
                         }
                         if (request.IpdApproverEmpId == intApproversEmpID)
                         {
-                            request.IpdApproval = statusUpdate;
+                            request.IpdApproval = statusUpdate.ToString();
                             request.IpdApprovalDate = DateTime.Now.Date;
                             request.IpdComment = Comment;
                             approvalReqDb.UpdateIpdRequest(request);
                         }
                     }
                     IpApprovalRequestViewData req = Convert(request);
-                    approversEmailNotification.SubmitRequestToNextApprover(ApproversEmpID, req);
+                    AddOtherProperties(req);
+
+                    ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
+                    approversEmailNotification.SubmitRequestToNextApprover(req);
+                    approversEmailNotification.SendNotificationRequestApproved(req);
                 }
 
             }
@@ -1007,56 +1112,76 @@ namespace InformationProtection.Models
             return reSubmitted.ToList();
         }
 
-        public bool UpdateFirstSupRequest(IpApprovalRequestViewData item)
+        public bool UpdateFirstSupRequest(IpApprovalRequestViewData request)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalReqDb = new ApprovalRequestDbAccess(connectionString);
-            IpApprovalRequest data = Convert(item);
+            IpApprovalRequest data = Convert(request);
             bool result = approvalReqDb.UpdateFirstSupRequest(data);
+
+            // notify user if rejected or need to resubmit
+            IpApprover.ApproveState approveState;
+            Enum.TryParse(request.FirstSupApproval, out approveState);
+            if (approveState == IpApprover.ApproveState.rejected
+                || approveState == IpApprover.ApproveState.resubmit)
+            {
+                ApproversEmailNotification notifier = new ApproversEmailNotification();
+                notifier.SendNotificationRequestApproved(request);
+            }
+
             return result;
         }
 
-        public bool UpdateSecondSupRequest(IpApprovalRequestViewData item)
+        public bool UpdateSecondSupRequest(IpApprovalRequestViewData request)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalReqDb = new ApprovalRequestDbAccess(connectionString);
-            IpApprovalRequest data = Convert(item);
+            IpApprovalRequest data = Convert(request);
             bool result = approvalReqDb.UpdateSecondSupRequest(data);
             return result;
         }
 
-        internal bool UpdateVphrRequest(IpApprovalRequestViewData item)
+        internal bool UpdateVphrRequest(IpApprovalRequestViewData request)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalReqDb = new ApprovalRequestDbAccess(connectionString);
-            IpApprovalRequest data = Convert(item);
+            IpApprovalRequest data = Convert(request);
             bool result = approvalReqDb.UpdateVphrRequest(data);
             return result;
         }
 
-        public bool UpdateRhCfoRequest(IpApprovalRequestViewData item)
+        public bool UpdateRhCfoRequest(IpApprovalRequestViewData request)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalReqDb = new ApprovalRequestDbAccess(connectionString);
-            IpApprovalRequest data = Convert(item);
+            IpApprovalRequest data = Convert(request);
             bool result = approvalReqDb.UpdateRhCfoRequest(data);
             return result;
         }
 
-        public bool UpdateIpdRequest(IpApprovalRequestViewData item)
+        public bool UpdateIpdRequest(IpApprovalRequestViewData request)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalReqDb = new ApprovalRequestDbAccess(connectionString);
-            IpApprovalRequest data = Convert(item);
+            IpApprovalRequest data = Convert(request);
             bool result = approvalReqDb.UpdateIpdRequest(data);
             return result;
         }
 
-        public bool UpdateCioRequest(IpApprovalRequestViewData item)
+        public bool UpdateCioRequest(IpApprovalRequestViewData request)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalReqDb = new ApprovalRequestDbAccess(connectionString);
-            IpApprovalRequest data = Convert(item);
+            IpApprovalRequest data = Convert(request);
+            // notify user if rejected or need to resubmit
+            IpApprover.ApproveState approveState;
+            Enum.TryParse(request.FirstSupApproval, out approveState);
+            if (approveState == IpApprover.ApproveState.rejected
+                || approveState == IpApprover.ApproveState.resubmit)
+            {
+                ApproversEmailNotification notifier = new ApproversEmailNotification();
+                notifier.SendNotificationRequestApproved(request);
+            }
             bool result = approvalReqDb.UpdateCioRequest(data);
             return result;
         }
@@ -1078,9 +1203,6 @@ namespace InformationProtection.Models
             model.UpdateRhCfoRequest(request);
             model.UpdateIpdRequest(request);
             model.UpdateCioRequest(request);
-
-            ApproversEmailNotification Notification = new ApproversEmailNotification();
-            Notification.SubmitRequestToNextApprover(request.RequuestorsEmpId, request);
             return;
         }
 
@@ -1126,7 +1248,7 @@ namespace InformationProtection.Models
             ApproversEmailNotification Notification = new ApproversEmailNotification();
             foreach (IpApprovalRequestViewData item in notSubmited)
             {
-                Notification.SubmitRequestToNextApprover(EmpID, item);
+                Notification.SubmitRequestToNextApprover(item);
             }
 
             return notSubmited.Count;

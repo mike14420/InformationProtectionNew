@@ -13,81 +13,176 @@ namespace InformationProtection.Models
 {
     public class ApproversEmailNotification
     {
-        public void SubmitRequest(String toEmail, String toName, String fromEmpID)
+        private void SubmitRequest(String requestorsEmpId, String toEmail, String toName, String ApproverEmpID)
         {
+            
+            IpRequestorView ipRequestorView = new Models.IpRequestorView();
+            IpRequestorViewData Requestor = ipRequestorView.GetRequestor(requestorsEmpId);
+            String requestorsName = Requestor.FullName;
+
             MailMessage EmailMessage = new MailMessage();
             SendMailWrapper mailWrapper = new SendMailWrapper(true);
 
-            EmployeeView EmpModel = new EmployeeView();
-            Employee emp = EmpModel.DbGetEmployeeByEmpId(fromEmpID);
-            if (emp != null)
+            String MikesComputer = WebConfigurationManager.AppSettings["MikesComputer"].ToString().ToLower();
+            String ServerName = WebConfigurationManager.AppSettings["ServerName"].ToString().ToLower();
+            String WebSiteName = WebConfigurationManager.AppSettings["WebSiteName"].ToString().ToLower();
+            String WebmasterEmail = WebConfigurationManager.AppSettings["WebmasterEmail"].ToString().ToLower();
+            Boolean SendDevMessage = false;
+            SendDevMessage = bool.Parse(WebConfigurationManager.AppSettings["SendDevMessage"].ToString().ToLower());
+            String ComputerName = System.Environment.MachineName.ToLower();
+
+            // ADDRESSES
+            EmailMessage.To.Add(toEmail);
+            EmailMessage.From = new MailAddress(WebmasterEmail);
+            EmailMessage.Subject = String.Format("Information Protection Form from {0} EmpID={1}",
+                toName, toEmail);
+
+            StringBuilder sbUri = new StringBuilder();
+            if (ComputerName.ToLower() == MikesComputer)
             {
-                EmailMessage.To.Add(toEmail);
-                EmailMessage.From = new MailAddress(emp.Email);
-                EmailMessage.Subject = String.Format("Information Protection Form from {0} EmpID={1}",
-                   toName, toEmail);
+                //String HostName = System.Net.Dns.GetHostName();
+                //string url = HttpContext.Current.Request.Url.AbsoluteUri;
+                //string path = HttpContext.Current.Request.Url.AbsolutePath;
+                //string ServerNamX = HttpContext.Current.Request.RawUrl;
 
-                String MikesComputer = WebConfigurationManager.AppSettings["MikesComputer"].ToString().ToLower();
-                String ServerName = WebConfigurationManager.AppSettings["ServerName"].ToString().ToLower();
-                String WebSiteName = WebConfigurationManager.AppSettings["WebSiteName"].ToString().ToLower();
-
-                String ComputerName = System.Environment.MachineName.ToLower();
-                Boolean SendDevMessage = false;
-
-                SendDevMessage = bool.Parse(WebConfigurationManager.AppSettings["SendDevMessage"].ToString().ToLower());
-
-
-                if (ComputerName.ToLower() == MikesComputer)
-                {
-                    String HostName = System.Net.Dns.GetHostName();
-                    string url = HttpContext.Current.Request.Url.AbsoluteUri;
-                    string path = HttpContext.Current.Request.Url.AbsolutePath;
-                    ServerName = HttpContext.Current.Request.Url.Authority;
-                    string ServerNamX = HttpContext.Current.Request.RawUrl;
-                }
-
-                StringBuilder sbUri = new StringBuilder(String.Format("http://{0}/{1}/ApproversView?Approver=firstsup&EmpID={2}", ServerName, WebSiteName, toEmail));
-
-                StringBuilder sb = new StringBuilder();
-                sb.Append(String.Format("{0} has submitted a new Information Protection request form(s). The user id is {1}",
-                    emp.Display_name, emp.Display_name));
-                sb.Append(String.Format("To view/approve this request,<br><a href=\"{0}\"> Please click here</a>",
-                    sbUri.ToString()));
-
-                EmailMessage.Body = sb.ToString();
-
+                ServerName = HttpContext.Current.Request.Url.Authority;
+                sbUri = new StringBuilder(String.Format("http://{0}/ApproversRequest/Approvers?ApproverEmpID={1}", 
+                    ServerName, ApproverEmpID));
             }
+            else
+            {
+                sbUri = new StringBuilder(String.Format("http://{0}/{1}/ApproversRequest/Approvers?ApproverEmpID={2}", 
+                    ServerName, WebSiteName, ApproverEmpID));
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(String.Format("{0} has submitted a new Information Protection request form(s). The user id is {1}. ",
+                requestorsName, requestorsEmpId));
+            sb.Append(String.Format("To view/approve this request,<br><a href=\"{0}\"> Please click here</a>",
+                sbUri.ToString()));
+            EmailMessage.IsBodyHtml = true;
+            EmailMessage.Body = sb.ToString();
+
             mailWrapper.SendMessage(EmailMessage, String.Empty);
 
         }
 
 
-        public bool SubmitRequestToNextApprover(String EmpID, IpApprovalRequestViewData request)
+        public bool SubmitRequestToNextApprover(IpApprovalRequestViewData request)
         {
             bool retValue = false;
+            String requestorsEmpId = request.RequuestorsEmpId;
             if (request.IsFirstSupApprovalNextPending())
             {
-                SubmitRequest(request.FirstSupEmail, request.FirstSupName, EmpID);
+                SubmitRequest(requestorsEmpId, request.FirstSupEmail, request.FirstSupName, request.FirstSupEmpId.ToString());
             }
             if (request.IsSecondSupApprovalNextPending())
             {
-                SubmitRequest(request.SecondSupEmail, request.FirstSupName, EmpID);
+                SubmitRequest(requestorsEmpId, request.SecondSupEmail, request.SecondSupName, request.SecondSupEmpId.ToString());
             }
             if (request.IsVpHrApprovalNextPending())
             {
-                SubmitRequest(request.VphrEmail, request.FirstSupName, EmpID);
+                SubmitRequest(requestorsEmpId, request.VphrEmail, request.VpHrName, request.VpHrApproval.ToString());
             }
             if (request.IsRhCfoApprovalNextPending())
             {
-                SubmitRequest(request.RhCfoEmail, request.FirstSupName, EmpID);
+                SubmitRequest( requestorsEmpId, request.RhCfoEmail, request.RhCfoName, request.RhCfoApproverEmpId.ToString());
             }
             if (request.IsIpdApprovalNextPending())
             {
-                SubmitRequest(request.IpdEmail, request.FirstSupName, EmpID);
+                SubmitRequest(requestorsEmpId, request.IpdEmail, request.IpdName, request.IpdApproverEmpId.ToString());
             }
             if (request.IsCioApprovalNextPending())
             {
-                SubmitRequest(request.CioEmail, request.FirstSupName, EmpID);
+                SubmitRequest(requestorsEmpId, request.CioEmail, request.CioName, request.CioEmpId.ToString());
+            }
+            return retValue;
+        }
+
+        public bool SubmitRequestToNextApprover(String requestId)
+        {
+            bool retValue = false;
+
+            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+            IpApprovalRequestViewData request = ipApprovalRequestView.GetApprovalRequest(requestId);
+            SubmitRequestToNextApprover(request);
+
+            return retValue;
+        }
+
+
+        private void SendApprovedEmail(String toEmail, String subject, String body)
+        {
+
+
+            MailMessage EmailMessage = new MailMessage();
+            SendMailWrapper mailWrapper = new SendMailWrapper(true);
+            String WebmasterEmail = WebConfigurationManager.AppSettings["WebmasterEmail"].ToString().ToLower();
+            String ComputerName = System.Environment.MachineName.ToLower();
+            // ADDRESSES
+            EmailMessage.To.Add(toEmail);
+            EmailMessage.From = new MailAddress(WebmasterEmail);
+            EmailMessage.Body = body;
+            EmailMessage.IsBodyHtml = true;
+            mailWrapper.SendMessage(EmailMessage, String.Empty);
+
+        }
+
+        public bool SendNotificationRequestApproved(IpApprovalRequestViewData request)
+        {
+            bool retValue = false;
+            int requestorsId = request.IpRequestorId;
+            String requestorsEmpId = request.RequuestorsEmpId;
+            StringBuilder messageBody = new StringBuilder();
+            StringBuilder sbUri = new StringBuilder();
+
+            IpRequestorView ipRequestorView = new Models.IpRequestorView();
+            IpRequestorViewData Requestor = ipRequestorView.GetRequestor(requestorsEmpId);
+
+            if (requestorsId > 0)
+            {
+                String newState = request.ApprovedStatus;
+                IpApprover.ApproveState newStateEnum;
+                Enum.TryParse(newState, out newStateEnum);
+
+                String MikesComputer = WebConfigurationManager.AppSettings["MikesComputer"].ToString().ToLower();
+                String ServerName = WebConfigurationManager.AppSettings["ServerName"].ToString().ToLower();
+                String WebSiteName = WebConfigurationManager.AppSettings["WebSiteName"].ToString().ToLower();
+                String WebmasterEmail = WebConfigurationManager.AppSettings["WebmasterEmail"].ToString().ToLower();
+                String ComputerName = System.Environment.MachineName.ToLower();
+                // SUBJET
+                String subject = String.Format("Information Protection Form from {0} EmpID={1}", Requestor.FullName, Requestor.EmpID);
+
+                // BODY
+                if (newStateEnum == IpApprover.ApproveState.approved)
+                {
+                    messageBody.Append(String.Format("Your Information Protection Request has been approved for a {0} request type: ",
+                        request.RequestType));
+                }
+                if (newStateEnum == IpApprover.ApproveState.resubmit)
+                {
+                    messageBody.Append(String.Format("Regarding your Information Protection Requestrequest type: {0}. ",
+                        request.RequestType));
+                    messageBody.Append(String.Format("You have been asked to resubmit."));
+
+                }
+
+                // build link for the body
+                if (ComputerName.ToLower() == MikesComputer)
+                {
+                    ServerName = HttpContext.Current.Request.Url.Authority;
+                    sbUri = new StringBuilder(String.Format("http://{0}/UsersView?ApproverEmpID={1}",
+                        ServerName, Requestor.EmpID));
+                }
+                else
+                {
+                    sbUri = new StringBuilder(String.Format("http://{0}/{1}/UsersView?ApproverEmpID={2}",
+                        ServerName, WebSiteName, Requestor.EmpID));
+                }
+                messageBody.Append(String.Format("<br/> To view,<br><a href=\"{0}\"> Please click here</a>",
+                    sbUri.ToString()));
+
+                SendApprovedEmail(Requestor.Email, subject, messageBody.ToString());
             }
             return retValue;
         }

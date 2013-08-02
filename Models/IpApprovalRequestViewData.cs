@@ -322,14 +322,98 @@ namespace InformationProtection.Models
         {
             get
             {
-                return FirstSupApproval.Substring(0, 1);
+                String result = "p";
+                if (FirstSupApproval == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    result = "fb";
+                }
+                else
+                {
+                    result = FirstSupApproval.Substring(0, 1);
+                }
+                return result;
             }
         }
-        public string SecondSupStatus { get { return SecondSupApproval.Substring(0, 1); } }
-        public string VpHrStatus { get { return VpHrApproval.Substring(0, 1); } }
-        public string RhCfoStatus { get { return RhCfoApproval.Substring(0, 1); } }
-        public string IpdStatus { get { return ipdApproval.Substring(0, 1); } }
-        public string CioStatus { get { return CioApproval.Substring(0, 1); } }
+        public string SecondSupStatus 
+        { 
+            get 
+            {
+                String result = "p";
+                if (SecondSupApproval == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    result = "fb";
+                }
+                else
+                {
+                    result = SecondSupApproval.Substring(0, 1);
+                }
+                return result;
+            } 
+        }
+        public string VpHrStatus 
+        { 
+            get 
+            {
+                String result = "p";
+                if (VpHrApproval == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    result = "fb";
+                }
+                else
+                {
+                    result = VpHrApproval.Substring(0, 1);
+                }
+                return result;
+            } 
+        }
+        public string RhCfoStatus 
+        { 
+            get 
+            {
+                String result = "p";
+                if (RhCfoApproval == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    result = "fb";
+                }
+                else
+                {
+                    result = RhCfoApproval.Substring(0, 1);
+                }
+                return result;
+            } 
+        }
+        public string IpdStatus 
+        { 
+            get 
+            {
+                String result = "p";
+                if (ipdApproval == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    result = "fb";
+                }
+                else
+                {
+                    result = ipdApproval.Substring(0, 1);
+                }
+                return result;
+            } 
+        }
+        public string CioStatus 
+        { 
+            get 
+            {
+                String result = "p";
+                if (CioApproval == IpApprover.ApproveState.resubmit.ToString())
+                {
+                    result = "fb";
+                }
+                else
+                {
+                    result = CioApproval.Substring(0, 1);
+                }
+                return result; 
+            } 
+        }
 
         public bool IsFirstSupApprovalNextPending()
         {
@@ -372,8 +456,9 @@ namespace InformationProtection.Models
             return FirstSupApproval == IpApprover.ApproveState.approved.ToString()
                 && SecondSupApproval == IpApprover.ApproveState.approved.ToString()
                 && VpHrApproval == IpApprover.ApproveState.approved.ToString()
-                && rhCfoApproval == IpApprover.ApproveState.approved.ToString()
-                && ipdApproval == IpApprover.ApproveState.pending.ToString();
+                && RhCfoApproval == IpApprover.ApproveState.approved.ToString()
+                && IpdApproval == IpApprover.ApproveState.approved.ToString()
+                && CioApproval == IpApprover.ApproveState.pending.ToString();
         }
 
         internal bool IsPending(int EmpID)

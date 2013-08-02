@@ -11,7 +11,7 @@
     @Html.Hidden("WirelessDeviceId", Model.WirelessDeviceId);
     @Html.ValidationSummary()
     <fieldset class="Table1Format" style="width: 96%">
-        <legend>Wireless RequestRequest</legend>
+        <legend>Wireless Request</legend>
 
         <table class="Table1Format">
             <tr style="width: 98%">
@@ -232,7 +232,7 @@
                             <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
                                 @Html.CheckBoxFor(model => model.SecurityAck7)
                                 @Html.ValidationMessageFor(model => model.SecurityAck7, "*")
-                                Do not store information on laptop; backup all information to network drive
+                                Only Connect it to Renown-owned, authorized equipment
                             </td>
                         </tr>
                         <tr>

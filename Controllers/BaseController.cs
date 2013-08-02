@@ -49,7 +49,7 @@ namespace InformationProtection.Controllers
             {
                 IpApprovalRequestView ourRespository = new IpApprovalRequestView();
 
-                IEnumerable<IpApprovalRequestViewData> outData = ourRespository.GetApproversData(ApprsEmpID, "Details");
+                IEnumerable<IpApprovalRequestViewData> outData = ourRespository.GetApproversData(ApprsEmpID);
 
                 if (string.IsNullOrEmpty(jtsorting) || jtsorting.Equals("RequestType ASC"))
                 {
@@ -219,7 +219,7 @@ namespace InformationProtection.Controllers
                 IpApprovalRequestView Model = new IpApprovalRequestView();
                 List<IpApprovalRequestViewData> outData = null;
 
-                outData = Model.GetRequestFor(EmpId, "IpApprovalRequest", "Details");
+                outData = Model.GetRequestFor(EmpId, "IpApprovalRequest");
 
                 outData = (from item in outData
                            where item.ApprovedStatus == IpApprover.ApproveState.not_submitted.ToString()
@@ -240,7 +240,7 @@ namespace InformationProtection.Controllers
                 IpApprovalRequestView Model = new IpApprovalRequestView();
                 List<IpApprovalRequestViewData> outData = null;
 
-                outData = Model.GetRequestFor(EmpId, "IpApprovalRequest", "Details");
+                outData = Model.GetRequestFor(EmpId, "IpApprovalRequest");
 
                 return Json(new { Result = "OK", Records = outData });
             }
@@ -250,7 +250,7 @@ namespace InformationProtection.Controllers
             }
         }
 
-        public JsonResult GetPendingRequests(int jtStartIndex = 0, int jtPageSize = 0, string jtsorting = null)
+        public JsonResult GetByRequestsState(string state, int jtStartIndex = 0, int jtPageSize = 0, string jtsorting = null)
         {
             try
             {
@@ -258,84 +258,9 @@ namespace InformationProtection.Controllers
 
                 IpApprovalRequestView request = new IpApprovalRequestView();
                 IEnumerable<IpApprovalRequestViewData> outData = null;
-                outData = request.GetRequestByState(IpApprover.ApproveState.pending.ToString(), "SendReminder");
-
-                if (string.IsNullOrEmpty(jtsorting) || jtsorting.Equals("SubmitDate ASC"))
-                {
-                    outData = outData.OrderBy(p => p.SubmitDate);
-                }
-                else if (jtsorting.Equals("SubmitDate DESC"))
-                {
-                    outData = outData.OrderByDescending(p => p.SubmitDate);
-                }
-                else if (jtsorting.Equals("RequestType ASC"))
-                {
-                    outData = outData.OrderBy(p => p.RequestType);
-                }
-                else if (jtsorting.Equals("RequestType DESC"))
-                {
-                    outData = outData.OrderByDescending(p => p.RequestType);
-                }
-                else if (jtsorting.Equals("RequestorsName ASC"))
-                {
-                    outData = outData.OrderBy(p => p.RequestorsName);
-                }
-                else if (jtsorting.Equals("RequestorsName DESC"))
-                {
-                    outData = outData.OrderByDescending(p => p.RequestorsName);
-                }
-                else if (jtsorting.Equals("FirstSupName ASC"))
-                {
-                    outData = outData.OrderBy(p => p.FirstSupName);
-                }
-                else if (jtsorting.Equals("FirstSupName DESC"))
-                {
-                    outData = outData.OrderByDescending(p => p.FirstSupName);
-                }
-                else if (jtsorting.Equals("SecondSupName ASC"))
-                {
-                    outData = outData.OrderBy(p => p.SecondSupName);
-                }
-                else if (jtsorting.Equals("SecondSupName DESC"))
-                {
-                    outData = outData.OrderByDescending(p => p.SecondSupName);
-                }
-                else if (jtsorting.Equals("VpHrName ASC"))
-                {
-                    outData = outData.OrderBy(p => p.VpHrName);
-                }
-                else if (jtsorting.Equals("VpHrName DESC"))
-                {
-                    outData = outData.OrderByDescending(p => p.VpHrName);
-                }
-                else if (jtsorting.Equals("RhCfoName ASC"))
-                {
-                    outData = outData.OrderBy(p => p.RhCfoName);
-                }
-                else if (jtsorting.Equals("RhCfoName DESC"))
-                {
-                    outData = outData.OrderByDescending(p => p.RhCfoName);
-                }
-                else if (jtsorting.Equals("IpdName ASC"))
-                {
-                    outData = outData.OrderBy(p => p.IpdName);
-                }
-                else if (jtsorting.Equals("IpdName DESC"))
-                {
-                    outData = outData.OrderByDescending(p => p.IpdName);
-                }
-                else if (jtsorting.Equals("CioName ASC"))
-                {
-                    outData = outData.OrderBy(p => p.CioName);
-                }
-                else if (jtsorting.Equals("CioName DESC"))
-                {
-                    outData = outData.OrderByDescending(p => p.CioName);
-                }
-
+                outData = request.GetRequestByState(state, "SendReminder", jtsorting);
                 List<IpApprovalRequestViewData> outData1 = outData.Skip(jtStartIndex).Take(jtPageSize).ToList();
                 return Json(new { Result = "OK", Records = outData1, TotalRecordCount = outData.Count() });
-
             }
             catch (Exception ex)
             {
@@ -411,20 +336,40 @@ namespace InformationProtection.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetRequestors()
+        public JsonResult GetRequestors(int jtStartIndex = 0, int jtPageSize = 0, string jtsorting = null)
         {
             try
             {
                 IpRequestorView Mdl = new IpRequestorView();
-                List<IpRequestorViewData> allRequestors = Mdl.GetRequestorsIncludeRoles();
-                // add the link for approvers details
-                foreach (IpRequestorViewData item in allRequestors)
+                IEnumerable<IpRequestorViewData> allRequestors = Mdl.GetRequestorsIncludeRoles("requestor");
+
+                if (string.IsNullOrEmpty(jtsorting) || jtsorting.Equals("FullName ASC"))
                 {
-                    item.RequestDetailsLink = String.Format("<a href=\"AdminView/Edit?EmpID={0}\">Edit</a>",
-                        item.EmpID);
+                    allRequestors = allRequestors.OrderBy(p => p.FullName);
+                }
+                else if (jtsorting.Equals("FullName DESC"))
+                {
+                    allRequestors = allRequestors.OrderByDescending(p => p.FullName);
+                }
+                else if (jtsorting.Equals("EmpID ASC"))
+                {
+                    allRequestors = allRequestors.OrderBy(p => p.EmpID);
+                }
+                else if (jtsorting.Equals("EmpID DESC"))
+                {
+                    allRequestors = allRequestors.OrderByDescending(p => p.EmpID);
+                }
+                else if (jtsorting.Equals("Email ASC"))
+                {
+                    allRequestors = allRequestors.OrderBy(p => p.Email);
+                }
+                else if (jtsorting.Equals("Email DESC"))
+                {
+                    allRequestors = allRequestors.OrderByDescending(p => p.Email);
                 }
 
-                return Json(new { Result = "OK", Records = allRequestors });
+                List<IpRequestorViewData> outData1 = allRequestors.Skip(jtStartIndex).Take(jtPageSize).ToList();
+                return Json(new { Result = "OK", Records = allRequestors, TotalRecordCount = allRequestors.Count() });
             }
             catch (Exception ex)
             {
@@ -432,51 +377,50 @@ namespace InformationProtection.Controllers
             }
         }
 
-        //[HttpPost]
-        //public JsonResult GetRequestorsIncludeRoles()
-        //{
-        //    try
-        //    {
-        //        IpRequestorView Mdl = new IpRequestorView();
-        //        List<IpRequestorViewData> allRequestors = Mdl.GetRequestorsIncludeRoles();
-        //        // add the link for approvers details
-        //        foreach (IpRequestorViewData item in allRequestors)
-        //        {
-        //            item.RequestDetailsLink = String.Format("<a href=\"Requestor/Edit?EmpID={0}\">Edit</a>",
-        //                item.EmpID);
-        //        }
-
-        //        return Json(new { Result = "OK", Records = allRequestors });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { Result = "ERROR", Message = ex.Message });
-        //    }
-        //}
-
-        public JsonResult GetRequestorsIncludeRoles(int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
+        public JsonResult GetRequestorsIncludeRoles(String controllerType, int jtStartIndex = 0, int jtPageSize = 0, string jtsorting = null)
         {
             try
             {
                 IpRequestorView Mdl = new IpRequestorView();
-                List<IpRequestorViewData> allRequestors = Mdl.GetRequestorsIncludeRoles();
-                int Count = allRequestors.Count;
+                IEnumerable<IpRequestorViewData> allRequestors;
+                allRequestors = Mdl.GetRequestorsIncludeRoles(controllerType);
 
-                // sort by last name add the link for approvers details 
-                List<IpRequestorViewData> allRequestors1 = allRequestors.OrderBy(P => P.Lname).ToList();
-                foreach (IpRequestorViewData item in allRequestors1)
+
+                if (string.IsNullOrEmpty(jtsorting) || jtsorting.Equals("FullName ASC"))
                 {
-                    item.RequestDetailsLink = String.Format("<a href=\"/UsersView?EmpID={0}\">UsersView</a>",
-                        item.EmpID);
-                }
+                    allRequestors = allRequestors.OrderBy(p => p.FullName);
+                }
+                else if (jtsorting.Equals("FullName DESC"))
+                {
+                    allRequestors = allRequestors.OrderByDescending(p => p.FullName);
+                }
+                else if (jtsorting.Equals("EmpID ASC"))
+                {
+                    allRequestors = allRequestors.OrderBy(p => p.EmpID);
+                }
+                else if (jtsorting.Equals("EmpID DESC"))
+                {
+                    allRequestors = allRequestors.OrderByDescending(p => p.EmpID);
+                }
+                else if (jtsorting.Equals("Email ASC"))
+                {
+                    allRequestors = allRequestors.OrderBy(p => p.Email);
+                }
+                else if (jtsorting.Equals("Email DESC"))
+                {
+                    allRequestors = allRequestors.OrderByDescending(p => p.Email);
+                }
+                else if (jtsorting.Equals("JobTitle ASC"))
+                {
+                    allRequestors = allRequestors.OrderBy(p => p.JobTitle);
+                }
+                else if (jtsorting.Equals("JobTitle DESC"))
+                {
+                    allRequestors = allRequestors.OrderByDescending(p => p.JobTitle);
+                }
+                List<IpRequestorViewData> outData = allRequestors.Skip(jtStartIndex).Take(jtPageSize).ToList();
 
-
-
-
-
-                List<IpRequestorViewData> PageRequestor = allRequestors1.Skip(jtStartIndex).Take(jtPageSize).ToList();
-                
-                return Json(new { Result = "OK", Records = PageRequestor, TotalRecordCount = Count });
+                return Json(new { Result = "OK", Records = outData, TotalRecordCount = outData.Count });
             }
             catch (Exception ex)
             {

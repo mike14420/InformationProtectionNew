@@ -70,12 +70,13 @@ namespace InformationProtection.Controllers
                 return RedirectToAction("Index", "UsersView", new  { EmpID=EmpID });
             }
 
-            IpRequestorViewData thisEmp;
+            IpRequestorViewData requestor;
             IpRequestorView model = new IpRequestorView();
-            thisEmp = model.GetRequestor(EmpID);
+            requestor = model.GetRequestor(EmpID);
 
             ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
             return View(data);
         }
 

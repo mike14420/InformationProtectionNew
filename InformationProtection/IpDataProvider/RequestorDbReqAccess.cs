@@ -91,6 +91,7 @@ namespace IpDataProvider
             }
             catch (Exception e)
             {
+                String Message = e.Message;
                 throw e;
             }
             finally
@@ -210,6 +211,7 @@ namespace IpDataProvider
             p1.Direction = ParameterDirection.Output;
             // should be requestor id
             cmd.Parameters.Add(p1);
+
 
             try
             {

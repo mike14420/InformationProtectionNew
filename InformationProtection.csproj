@@ -1300,6 +1300,8 @@
     <Content Include="Views\UsbRequest\Print.cshtml" />
     <Content Include="Views\WirelessRequest\ReSubmit.cshtml" />
     <Content Include="Views\WirelessRequest\Print.cshtml" />
+    <Content Include="Views\AdminView\ViewRejectedRequest.cshtml" />
+    <Content Include="Views\AdminView\ViewApprovedRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

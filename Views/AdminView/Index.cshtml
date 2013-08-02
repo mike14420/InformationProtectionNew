@@ -5,19 +5,19 @@
 }
     
 <div id="AdminTable" style="width: 100%; margin: auto;"></div>
-<form>
-<input type="button" value="Print this page" onClick="window.print()">
-</form>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#AdminTable').jtable({
             title: 'Admin View',
-            sorting: false,
+            pageSize: 20,
+            paging: true,
+            sorting: true,
+            defaultSorting: 'FullName ASC',
             selecting: false,
             multiselect: false, 
             selectingCheckboxes: false, 
             actions: {
-                listAction: 'AdminView/GetRequestors'
+                listAction: 'AdminView/GetRequestorsIncludeRoles?controllerType=admin'
             },
             fields: {
                 IpRequestorId: {
@@ -36,10 +36,12 @@
                     title: 'Name'
                 },
                 RequestorsRoles: {
-                    title: 'Roles'
+                    title: 'Roles',
+                    sorting: false
                 },
                 RequestDetailsLink: {
-                    title: ''
+                    title: '',
+                    sorting: false
                 }
             }
         });

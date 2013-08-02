@@ -11,20 +11,21 @@
         $('#AllUsersTable').jtable({
             title: 'IP Users',
             paging: true,
-            pageSize: 10,
-            sorting: false,
+            sorting: true,
+            defaultSorting: 'Name ASC',
+            pageSize: 20,
             selecting: false,
             multiselect: false, 
             selectingCheckboxes: false, 
             actions: {
-                listAction: 'AdminView/GetRequestorsIncludeRoles'
+                listAction: 'Requestor/GetRequestorsIncludeRoles?controllerType=requestor'
             },
             fields: {
                 IpRequestorId: {
                     key: true,
                     create: false,
                     edit: false,
-                    list: true
+                    list: false
                 }, 
                 EmpID: {
                     title: 'EmpID'
@@ -35,11 +36,16 @@
                 FullName: {
                     title: 'Name'
                 },
+                JobTitle: {
+                    title: 'Job Title'
+                },
                 RequestorsRoles: {
-                    title: 'Roles'
+                    title: 'Roles',
+                    sorting: false
                 },
                 RequestDetailsLink: {
-                    title: ''
+                    title: '',
+                    sorting: false
                 }
             }
         });
