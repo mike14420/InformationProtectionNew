@@ -1,12 +1,13 @@
 ﻿@model InformationProtection.Models.CellPhoneViewData
 <fieldset>
     <legend>CellPhone Request</legend>
+    <h2 class="RenownHeader1">CELL PHONE USE/REQUEST FORM</h2>
     <table class="Table1Format">
         <tr>
             <td>Request Number:
             </td>
             <td>
-                @Html.DisplayFor(model => model.CellPhoneReqId)
+                @Html.TextBox("CellPhoneReqId", Model.CellPhoneReqId, new { style = "width:50px", disabled = "true" })
             </td>
         </tr>
         <tr style="height: 100px">
@@ -23,28 +24,6 @@
             </td>
 
         </tr>
-
-        <tr>
-            <td colspan="1">
-                @Html.DisplayNameFor(model => model.Make)
-            </td>
-            <td colspan="1" style="text-align: left">
-                @Html.DisplayFor(model => model.Make)
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <div class="editor-label">
-                    @Html.DisplayNameFor(model => model.Model)
-                </div>
-            </td>
-            <td colspan="1" style="text-align: left">
-                <div class="editor-field">
-                    @Html.DisplayFor(model => model.Model)
-                </div>
-            </td>
-        </tr>
-
         <tr>
             <td colspan="4">
                 <table class="box1">
@@ -109,8 +88,8 @@
 
 
         <tr>
-            <td style="text-align: left; vertical-align: top; text-wrap: none">
-                <strong>I request use of Cellular/Smart Phone:
+            <td style="text-align: left; vertical-align: top; text-wrap: none; width: auto">
+                <strong>I request use of Cellular/Smart Phone
                 </strong>
             </td>
         </tr>
@@ -119,41 +98,66 @@
 
                 <table class="box1">
                     <tr>
+                        <td colspan="1">
+                            <div class="editor-label">
+                                <strong>
+                                    @Html.DisplayNameFor(model => model.Make)
+                                </strong>
+                            </div>
+                        </td>
+
+                        <td style="width: 200px">
+                            @Html.TextBox("Make", Model.Make, new { style = "width:200px", disabled = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            <div class="editor-label">
+                                <strong>
+                                    @Html.DisplayNameFor(model => model.Model)
+                                </strong>
+                            </div>
+                        </td>
+                        <td style="width: 200px">
+                            @Html.TextBox("Model", Model.Model, new { style = "width:200px", disabled = "true" })
+                        </td>
+                    </tr>
+
+
+                    <tr>
                         <td style="text-align: left" colspan="1">
                             <strong>Renown-Owned Type (New or Used)
                             </strong>
                         </td>
-                        <td>
-                            @Html.DisplayFor(model => model.RenownOwnedType)
+                        <td style="width: 200px">
+                            @Html.TextBox("RenownOwnedType", Model.RenownOwnedType, new { style = "width:200px", disabled = "true" })
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: left" colspan="1">
-                            <strong>Renown-Owned (Paid by Renown)
+                            <strong>Phone Number (Paid by Renown)
                             </strong>
                         </td>
-                        <td>
-                            @Html.DisplayFor(model => model.RenownOwnedPhone)
+                        <td style="width: 200px">
+                            @Html.TextBox("RenownOwnedPhone", Model.RenownOwnedPhone, new { style = "width:200px", disabled = "true" })
                         </td>
                     </tr>
-
                     <tr>
                         <td style="text-align: left" colspan="1">
                             <strong>Carrier:
                             </strong>
                         </td>
                         <td>
-                            @Html.DisplayFor(model => model.RenownOwnedCarrier)
+                            @Html.TextBox("RenownOwnedCarrier", Model.RenownOwnedCarrier, new { style = "width:200px", disabled = "true" })
+
                         </td>
                     </tr>
-
-
                     <tr>
                         <td style="width: 200px">
-                            <strong>Employee Signature:</strong>
+                            @Html.DisplayFor(model => model.EmployeeSignature)
                         </td>
                         <td style="width: 200px">
-                            @Html.DisplayFor(model => model.EmployeeSignature)
+                            @Html.TextBox("EmployeeSignature", Model.EmployeeSignature, new { style = "width:200px", disabled = "true" })
                         </td>
                     </tr>
                 </table>

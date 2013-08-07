@@ -2,13 +2,13 @@
 
 <fieldset style="width: 96%">
     <legend>CD/DVD Burner Request</legend>
-
+        <h2 class="RenownHeader1">Request For CD/DVD Writer</h2>
     <table class="Table1Format">
         <tr>
             <td>Request Number:
             </td>
             <td>
-                @Html.DisplayFor(model => model.CdburnerDeviceId)
+                @Html.TextBox("CdburnerDeviceId", Model.CdburnerDeviceId, new { style = "width:50px", disabled = "true" })
             </td>
         </tr>
         <tr style="height: 100px">
@@ -26,53 +26,62 @@
             </td>
         </tr>
         <tr>
-            <td colspan="1">
-                <div class="editor-label">
-                    @Html.DisplayNameFor(model => model.SerialNumber)
-                </div>
+            <td colspan="4">
+                <table class="box1">
+                    <tr>
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <strong>Business justification: </strong>
+                            Please specify the job duties that require 
+                                mobile device use and/or syncing to Renown information, 
+                                how this access will support your work, 
+                                and how your work will be impacted without it.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: antiquewhite; text-align: left" colspan="4">
+                            @Html.DisplayFor(model => model.BusJustification)
+                        </td>
+                    </tr>
+                </table>
             </td>
-            <td colspan="1" style="text-align: left">
-                <div class="editor-field">
-                    @Html.DisplayFor(model => model.SerialNumber)
-                </div>
+        </tr>
+        <tr>
+            <td style="width: 200px"><strong>SerialNumber:</strong>
+            </td>
+            <td style="width: 200px">
+                @Html.TextBox("SerialNumber", Model.SerialNumber, new { style = "width:200px", disabled = "true" })
             </td>
         </tr>
         <tr>
             <td colspan="1">
-                <div class="editor-label">
-                    @Html.DisplayNameFor(model => model.Access2Computer)
-                </div>
+                <strong>Who has Access to Computer :</strong>
             </td>
-            <td colspan="1" style="text-align: left">
-                <div class="editor-field">
-                    @Html.DisplayFor(model => model.Access2Computer)
-                </div>
+            <td style="width: 200px">
+                @Html.TextBox("Access2Computer", Model.Access2Computer, new { style = "width:200px", disabled = "true" })
             </td>
         </tr>
         <tr>
             <td colspan="1">
-                <div class="editor-label">
-                    @Html.DisplayNameFor(model => model.Access2Media)
-                </div>
+                <strong>Who Has Access To Media:
+                </strong>
             </td>
-            <td colspan="1" style="text-align: left">
-                <div class="editor-field">
-                    @Html.DisplayFor(model => model.Access2Media)
-                </div>
+            <td style="width: 200px">
+                @Html.TextBox("Access2Media", Model.Access2Media, new { style = "width:200px", disabled = "true" })
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <strong>Type:
+                </strong>
+            </td>
+            <td style="width: 200px">
+                @Html.TextBox("BusJustType", Model.BusJustType, new { style = "width:200px", disabled = "true" })
             </td>
         </tr>
         <tr>
             <td colspan="4">
                 <table class="box1">
-                    <tr>
-                        <td style="text-align: center" colspan="1">
-                            <strong>Type:
-                            </strong>
-                        </td>
-                        <td style="text-align: left" colspan="1">
-                            @Html.DisplayFor(model => model.BusJustType)
-                        </td>
-                    </tr>
+
                     <tr>
                         <td style="background-color: #D4D0C8; text-align: left" colspan="2">
                             <strong>Identify physical location of the computer (please include building, room #:
@@ -95,19 +104,8 @@
                             @Html.DisplayFor(model => model.MediaStorLocation, new { style = "width:700px" })
                         </td>
                     </tr>
-                    <tr>
-                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
-                            <strong>Business justification: </strong>
-                            Please specify the job duties that require 
-                                CD/DVD use to Create portable media, how this access will support your
-                                work, and how your work will be impacted without it.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="background-color: antiquewhite; text-align: left" colspan="2">
-                            @Html.DisplayFor(model => model.BusJustification, new { style = "width:700px" })
-                        </td>
-                    </tr>
+
+
 
                     <tr>
                         <td style="background-color: #D4D0C8; text-align: left" colspan="2">

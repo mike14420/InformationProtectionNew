@@ -10,7 +10,7 @@
             <td>Request Number:
             </td>
             <td>
-                @Html.Label("CellPhoneReqId")
+                @Html.TextBox("CellPhoneReqId", data.CellPhoneReqId, new { style = "width:50ps", disabled = "true" })
             </td>
         </tr>
         <tr style="height: 100px">
@@ -28,18 +28,7 @@
 
         <tr>
         </tr>
-        <tr>
-            <td colspan="1">
-                <div class="editor-label">
-                    <strong>Model:</strong>
-                </div>
-            </td>
-            <td colspan="1" style="text-align: left">
-                <div class="editor-field">
-                    @Html.Label("Model")
-                </div>
-            </td>
-        </tr>
+
 
         <tr>
             <td colspan="4">
@@ -55,7 +44,7 @@
                     </tr>
                     <tr>
                         <td style="background-color: antiquewhite; text-align: left" colspan="4">
-                            @Html.Label("BusJustification")
+                            @Html.TextBox("BusJustification", data.BusJustification, new { style = "width:98%", disabled = "true" })
                         </td>
                     </tr>
 
@@ -89,19 +78,16 @@
                 @Html.CheckBox("data.SecuredAck1", true, new { disabled = "true" })
                 I understand I am responsible for: 
             </td>
-            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 150px">Logical security 
-                     @Html.CheckBox("data.SecuredAck4", true, new { disabled = "true" })
-            </td>
         </tr>
         <tr>
             <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 150px">Logical security 
                      @Html.CheckBox("data.SecuredAck4", true, new { disabled = "true" })
             </td>
-            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">Physical security
+            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">Physical security
                     @Html.CheckBox("data.SecuredAck5", true, new { disabled = "true" })
             </td>
 
-            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">Immediate Notification: loss/theft
+            <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 300px">Immediate Notification: loss/theft
                     @Html.CheckBox("data.SecuredAck6", true, new { disabled = "true" })
             </td>
         </tr>
@@ -109,31 +95,54 @@
 
 
         <tr>
-            <td style="text-align: left; vertical-align: top; text-wrap: none">
-                <strong>I request use of Cellular/Smart Phone:
+            <td style="text-align: left; vertical-align: top; text-wrap: none; width: 300px">
+                <strong>I request use of Cellular/Smart Phone
                 </strong>
             </td>
         </tr>
         <tr>
             <td colspan="4" style="border: groove">
-
                 <table class="box1">
+                    <tr>
+                        <td colspan="1">
+                            <div class="editor-label">
+                                <strong>Make:</strong>
+                            </div>
+                        </td>
+                        <td colspan="1" style="text-align: left">
+                            <div class="editor-field">
+                                @Html.TextBox("Make", data.Make, new { style = "width:200px", disabled = "true" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            <div class="editor-label">
+                                <strong>Model:</strong>
+                            </div>
+                        </td>
+                        <td colspan="1" style="text-align: left">
+                            <div class="editor-field">
+                                @Html.TextBox("Model", data.Model, new { style = "width:200px", disabled = "true" })
+                            </div>
+                        </td>
+                    </tr>
                     <tr>
                         <td style="text-align: left" colspan="1">
                             <strong>Renowned Type:
                             </strong>
                         </td>
                         <td style="text-align: left" colspan="1">
-                            @Html.Label("RenownOwnedType")
+                            @Html.TextBox("RenownOwnedType", data.RenownOwnedType, new { style = "width:200px", disabled = "true" })
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: left" colspan="1">
-                            <strong>Renown-Owned (Paid by Renown)
+                            <strong>Phone Number (Paid by Renown)
                             </strong>
                         </td>
                         <td>
-                            @Html.Label("RenownOwnedPhone")
+                            @Html.TextBox("RenownOwnedPhone", data.RenownOwnedPhone, new { style = "width:200px", disabled = "true" })
                         </td>
                     </tr>
 
@@ -143,7 +152,7 @@
                             </strong>
                         </td>
                         <td>
-                        @Html.Label("RenownOwnedCarrier")
+                        @Html.TextBox("RenownOwnedCarrier", data.RenownOwnedCarrier, new { style = "width:200px", disabled = "true" })
                     </tr>
 
 
@@ -152,7 +161,7 @@
                             <strong>Employee Signature:</strong>
                         </td>
                         <td style="width: 200px">
-                            @Html.Label("EmployeeSignature")
+                            @Html.TextBox("EmployeeSignature", data.EmployeeSignature, new { style = "width:200px", disabled = "true" })
                         </td>
                     </tr>
                 </table>

@@ -95,10 +95,11 @@
                         <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
                             @Html.CheckBox("Ac2", data.SecuredAck2, new { disabled = "true" })
                             I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
-                               Laptop usage. 
+                               USB device usage. 
                                In addition, this action may occur with Renown Health employment termination.
                         </td>
-                    </tr>
+            </td>
+            </tr>
                     <tr>
                         <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
                             @Html.CheckBox("Ac3", data.SecuredAck3, new { disabled = "true" })
@@ -106,21 +107,21 @@
                             I understand I am responsible for: 
                         </td>
                     </tr>
-                    <tr>
-                        <td style="width: 10px"></td>
-                        <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
-                            @Html.CheckBox("Ac4", data.SecuredAck4, new { disabled = "true" })
-                            Logical security </td>
+            <tr>
+                <td style="width: 10px"></td>
+                <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                    @Html.CheckBox("Ac4", data.SecuredAck4, new { disabled = "true" })
+                    Logical security </td>
 
-                        <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
-                            @Html.CheckBox("Ac5", data.SecuredAck5, new { disabled = "true" })
-                            Physical security</td>
+                <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                    @Html.CheckBox("Ac5", data.SecuredAck5, new { disabled = "true" })
+                    Physical security</td>
 
-                        <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
-                            @Html.CheckBox("Ac6", data.SecuredAck6, new { disabled = "true" })
-                            Immediate Notification: loss/theft</td>
-                    </tr>
-                </table>
+                <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                    @Html.CheckBox("Ac6", data.SecuredAck6, new { disabled = "true" })
+                    Immediate Notification: loss/theft</td>
+            </tr>
+            </table>
             </td>
         </tr>
     </table>

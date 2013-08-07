@@ -135,12 +135,12 @@ namespace InformationProtection.Controllers
                 ourModel.Update(data, IpApprover.ApproveState.not_submitted);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            IpRequestorViewData thisEmp;
+            
             IpRequestorView model = new IpRequestorView();
-            thisEmp = model.GetRequestor(EmpID);
-
+            IpRequestorViewData requestor = model.GetRequestor(EmpID);
+            ViewData["requestor"] = requestor;
             ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            ViewData["FullName"] = requestor.FullName;
             return View(data);
         }
 
@@ -183,12 +183,13 @@ namespace InformationProtection.Controllers
                 ipApprovalRequestView.ReSubmit(data);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            IpRequestorViewData thisEmp;
-            IpRequestorView model = new IpRequestorView();
-            thisEmp = model.GetRequestor(EmpID);
+            
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData requestor = ipRequestorView.GetRequestor(EmpID);
 
+            ViewBag.requestor = requestor;
             ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            ViewData["FullName"] = requestor.FullName;
             return View(data);
         }
 

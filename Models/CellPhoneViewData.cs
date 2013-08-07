@@ -31,8 +31,7 @@ namespace InformationProtection.Models
         [Display(Name = "Business Justification")]
         public String BusJustification { get; set; }
 
-        //[Required]
-        //[StringLength(160, MinimumLength = 3)]
+        // new or used
         [Display(Name = "Renowned Owned Type")]
         public String RenownOwnedType { get; set; }
         
@@ -41,32 +40,37 @@ namespace InformationProtection.Models
         [Display(Name = "Renown Owned Carrier")]
         public String RenownOwnedCarrier { get; set; }
        
-        [StringLength(20, MinimumLength = 3)]
+        [StringLength(20, MinimumLength = 4)]
         [Display(Name = "Phone Number")]
+        [Required]
         public String RenownOwnedPhone { get; set; }
-
-        
+    
         public String radButLstROwned { get; set; }
 
-
         [BooleanRequiredToBeTrue]
+        [Display(Name = "Secured Question 1")]
         public bool SecuredAck1 { get; set; }
+        [Display(Name = "Secured Question 2")]
         [BooleanRequiredToBeTrue]
         public bool SecuredAck2 { get; set; }
         [BooleanRequiredToBeTrue]
+        [Display(Name = "Secured Question 3")]
         public bool SecuredAck3 { get; set; }
         [BooleanRequiredToBeTrue]
+        [Display(Name = "Secured Question 4")]
         public bool SecuredAck4 { get; set; }
         [BooleanRequiredToBeTrue]
+        [Display(Name = "Secured Question 5")]
         public bool SecuredAck5 { get; set; }
         [BooleanRequiredToBeTrue]
+        [Display(Name = "Secured Question 6")]
         public bool SecuredAck6 { get; set; }
 
         public bool SecuredAck
         {
             get
             {
-                if (SecuredAck1 && SecuredAck2 && SecuredAck3 && SecuredAck4 && SecuredAck5)
+                if (SecuredAck1 && SecuredAck2 && SecuredAck3 && SecuredAck4 && SecuredAck5 && SecuredAck6)
                     return true;
                 else
                     return false;

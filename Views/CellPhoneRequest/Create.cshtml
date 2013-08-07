@@ -7,9 +7,8 @@
     InformationProtection.Models.IpRequestorViewData requestor = (InformationProtection.Models.IpRequestorViewData)(ViewData["requestor"]);
 
     @Html.Hidden("EmpID", requestor.EmpID, new { id = requestor.EmpID });
-    var id = requestor.EmpID;
+                                                                        var id = requestor.EmpID;
 }
-<h2 class="RenownHeader1">CELL PHONE USE/REQUEST FORM</h2>
 <fieldset>
     <legend>Requestor Information</legend>
 
@@ -29,13 +28,12 @@
 
     </table>
 </fieldset>
- @RenderPage(myViewsShared + "_CellPhoneEdit.cshtml", new { SubmitType = OurSubmitType })
-<table class="Table1Format" style="width: 98%; border: 2px solid">
-    <tr>
-        <td style="font-size: 20px; font-weight: bold; text-align: left">
-            @Html.ActionLink("Back To Users View", "Index", "UsersView", new { EmpId = id }, null)
-        </td>
-    </tr>
-</table>
-<br />
-<br />
+@RenderPage(myViewsShared + "_CellPhoneEdit.cshtml", new { SubmitType = OurSubmitType })
+    <table class="Table1Format" style="width: 98%; border: 2px solid;">
+        <tr>
+            <td style="font-size: 20px; font-weight: bold; text-align: left">
+                @Html.ActionLink("Back To Users View", "Index", "UsersView", new { EmpId = id }, null)
+            </td>
+        </tr>
+    </table>
+<br /><br />

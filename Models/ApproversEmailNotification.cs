@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Routing;
+using IpDataProvider;
 using IpModelData;
 using WMC.Core.Employees.BusObj2008;
 
@@ -34,8 +35,7 @@ namespace InformationProtection.Models
             // ADDRESSES
             EmailMessage.To.Add(toEmail);
             EmailMessage.From = new MailAddress(WebmasterEmail);
-            EmailMessage.Subject = String.Format("Information Protection Form from {0} EmpID={1}",
-                toName, toEmail);
+            EmailMessage.Subject = String.Format("Information Protection Form from {0}", toName);
 
             StringBuilder sbUri = new StringBuilder();
             if (ComputerName.ToLower() == MikesComputer)
@@ -68,47 +68,58 @@ namespace InformationProtection.Models
         }
 
 
-        public bool SubmitRequestToNextApprover(IpApprovalRequestViewData request)
+        public bool SubmitRequestToNextApprover(String RequestId)
         {
+            // NOW Send notification to next approver
+            ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(RequestId);
+            ApproversEmailNotification Notification = new ApproversEmailNotification();
+            IpApprovalRequestViewData ourRequest = IpApprovalRequestView.Convert(request);
+            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+
+            ipApprovalRequestView.AddOtherProperties(ourRequest);
+
             bool retValue = false;
-            String requestorsEmpId = request.RequuestorsEmpId;
-            if (request.IsFirstSupApprovalNextPending())
+            String requestorsEmpId = ourRequest.RequuestorsEmpId;
+            if (ourRequest.IsFirstSupApprovalNextPending())
             {
                 SubmitRequest(requestorsEmpId, request.FirstSupEmail, request.FirstSupName, request.FirstSupEmpId.ToString());
             }
-            if (request.IsSecondSupApprovalNextPending())
+            if (ourRequest.IsSecondSupApprovalNextPending())
             {
                 SubmitRequest(requestorsEmpId, request.SecondSupEmail, request.SecondSupName, request.SecondSupEmpId.ToString());
             }
-            if (request.IsVpHrApprovalNextPending())
+            if (ourRequest.IsVpHrApprovalNextPending())
             {
-                SubmitRequest(requestorsEmpId, request.VphrEmail, request.VpHrName, request.VpHrApproval.ToString());
+                SubmitRequest(requestorsEmpId, request.VphrEmail, request.VpHrName, request.VpHrApproverEmpId.ToString());
             }
-            if (request.IsRhCfoApprovalNextPending())
+            if (ourRequest.IsRhCfoApprovalNextPending())
             {
                 SubmitRequest( requestorsEmpId, request.RhCfoEmail, request.RhCfoName, request.RhCfoApproverEmpId.ToString());
             }
-            if (request.IsIpdApprovalNextPending())
+            if (ourRequest.IsIpdApprovalNextPending())
             {
                 SubmitRequest(requestorsEmpId, request.IpdEmail, request.IpdName, request.IpdApproverEmpId.ToString());
             }
-            if (request.IsCioApprovalNextPending())
+            if (ourRequest.IsCioApprovalNextPending())
             {
-                SubmitRequest(requestorsEmpId, request.CioEmail, request.CioName, request.CioEmpId.ToString());
+                SubmitRequest(requestorsEmpId, request.CioEmail, request.CioName, request.CioApproverEmpId.ToString());
             }
             return retValue;
         }
 
-        public bool SubmitRequestToNextApprover(String requestId)
-        {
-            bool retValue = false;
+        //public bool SubmitRequestToNextApprover(String requestId)
+        //{
+        //    bool retValue = false;
 
-            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
-            IpApprovalRequestViewData request = ipApprovalRequestView.GetApprovalRequest(requestId);
-            SubmitRequestToNextApprover(request);
+        //    IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+        //    IpApprovalRequestViewData request = ipApprovalRequestView.GetApprovalRequest(requestId);
+        //    SubmitRequestToNextApprover(request);
 
-            return retValue;
-        }
+        //    return retValue;
+        //}
 
 
         private void SendApprovedEmail(String toEmail, String subject, String body)
@@ -156,14 +167,28 @@ namespace InformationProtection.Models
                 // BODY
                 if (newStateEnum == IpApprover.ApproveState.approved)
                 {
-                    messageBody.Append(String.Format("Your Information Protection Request has been approved for a {0} request type: ",
+                    messageBody.Append(String.Format("Your Information Protection Request has been approved for a request type of: {0}",
                         request.RequestType));
                 }
                 if (newStateEnum == IpApprover.ApproveState.resubmit)
                 {
-                    messageBody.Append(String.Format("Regarding your Information Protection Requestrequest type: {0}. ",
+                    messageBody.Append(String.Format("Regarding your Information Protection Request of type: {0}. ",
                         request.RequestType));
                     messageBody.Append(String.Format("You have been asked to resubmit."));
+
+                }
+                if (newStateEnum == IpApprover.ApproveState.rejected)
+                {
+                    messageBody.Append(String.Format("Regarding your Information Protection Request of type: {0}. ",
+                        request.RequestType));
+                    messageBody.Append(String.Format("The Request has been rejected."));
+
+                }
+                if (newStateEnum == IpApprover.ApproveState.pending)
+                {
+                    messageBody.Append(String.Format("Regarding your Information Protection Request of type: {0}. ",
+                        request.RequestType));
+                    messageBody.Append(String.Format("The Request has been submitted."));
 
                 }
 

@@ -489,5 +489,14 @@ namespace InformationProtection.Models
             }
             return false;
         }
+        public String Identifier
+        {
+            get
+            {
+                String retValue = String.Empty;
+                retValue = String.Format("({0},{1})", Id, DeviceId);
+                return retValue;
+            }
+        }
     }
 }

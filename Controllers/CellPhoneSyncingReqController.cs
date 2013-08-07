@@ -70,11 +70,11 @@ namespace InformationProtection.Controllers
                 // Data saved ok
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            IpRequestorViewData thisEmp;
-            IpRequestorView model = new IpRequestorView();
-            thisEmp = model.GetRequestor(EmpID);
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData requestor = ipRequestorView.GetRequestor(EmpID);
             ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
             return View(data);
 
         }
@@ -117,12 +117,12 @@ namespace InformationProtection.Controllers
                 ourModel.Update(data, IpApprover.ApproveState.not_submitted);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            IpRequestorViewData thisEmp;
-            IpRequestorView model = new IpRequestorView();
-            thisEmp = model.GetRequestor(EmpID);
-
+            IpRequestorViewData requestor;
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            requestor = ipRequestorView.GetRequestor(EmpID);
             ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
             return View(data);
         }
 
@@ -145,7 +145,6 @@ namespace InformationProtection.Controllers
             requestor = model.GetRequestor(EmpID);
             ViewData["EmpID"] = EmpID;
             ViewData["FullName"] = requestor.FullName;
-
             ViewBag.requestor = requestor;
             return View(data);
         }
@@ -166,12 +165,11 @@ namespace InformationProtection.Controllers
                 ipApprovalRequestView.ReSubmit(data);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            IpRequestorViewData thisEmp;
             IpRequestorView model = new IpRequestorView();
-            thisEmp = model.GetRequestor(EmpID);
-
+            IpRequestorViewData requestor = model.GetRequestor(EmpID);
             ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = thisEmp.FullName;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
             return View(data);
         }
 

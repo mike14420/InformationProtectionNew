@@ -18,15 +18,16 @@ $(document).ready(function () {
             RequestType: {
                 title: 'Request Type'
             },
-            DeviceId: {
-                title: 'Device Id'
-            },
+            //Identifier: {
+            //    title: '(id,devId)'
+            //},
             ApprovedStatus: {
                 title: 'Status'
             },
             SubmitDate: {
-                title: 'Submited',
-                type: 'date'
+                title: 'Submitted',
+                type: 'date',
+                displayFormat: 'mm/dd/yy'
             },
             RequestDetailsLink: {
                 title: 'Details'

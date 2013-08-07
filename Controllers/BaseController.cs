@@ -211,27 +211,27 @@ namespace InformationProtection.Controllers
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
         }
-        [HttpPost]
-        public JsonResult GetRequestsNotSubmitted(string EmpId)
-        {
-            try
-            {
-                IpApprovalRequestView Model = new IpApprovalRequestView();
-                List<IpApprovalRequestViewData> outData = null;
+        //[HttpPost]
+        //public JsonResult GetRequestsNotSubmitted(string EmpId)
+        //{
+        //    try
+        //    {
+        //        IpApprovalRequestView Model = new IpApprovalRequestView();
+        //        List<IpApprovalRequestViewData> outData = null;
 
-                outData = Model.GetRequestFor(EmpId, "IpApprovalRequest");
+        //        outData = Model.GetRequestFor(EmpId, "IpApprovalRequest");
 
-                outData = (from item in outData
-                           where item.ApprovedStatus == IpApprover.ApproveState.not_submitted.ToString()
-                           select item).ToList();
+        //        outData = (from item in outData
+        //                   where item.ApprovedStatus == IpApprover.ApproveState.not_submitted.ToString()
+        //                   select item).ToList();
 
-                return Json(new { Result = "OK", Records = outData });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { Result = "ERROR", Message = ex.Message });
-            }
-        }
+        //        return Json(new { Result = "OK", Records = outData });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { Result = "ERROR", Message = ex.Message });
+        //    }
+        //}
         [HttpPost]
         public JsonResult GetRequestsAll(string EmpId)
         {

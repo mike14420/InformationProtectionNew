@@ -107,14 +107,17 @@
 
 @DisplayDetails(Model)
 
-<p>
-    @Html.ActionLink("Approvers View", "Approvers", "ApproversRequest", new { ApproverEmpID = ApproverEmpID }, null)
-</p>
-<br />
-<br />
-<br />
-<br />
-<br />
+
+<table class="Table1Format" style="width: 98%;border:2px solid">
+    <tr>
+        <td style = "font-size:20px;font-weight:bold;text-align:left" >
+            @Html.ActionLink("Approvers View", "Approvers", "ApproversRequest", new { ApproverEmpID = ApproverEmpID }, null)
+        </td>
+
+    </tr>
+</table>
+
+<br /><br /><br /><br /><br />
 
 
 

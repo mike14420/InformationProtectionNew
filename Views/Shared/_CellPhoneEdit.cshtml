@@ -16,7 +16,7 @@
     
     <fieldset style="width: 96%">
         <legend>CellPhone Request</legend>
-
+        <h2 class="RenownHeader1">CELL PHONE USE/REQUEST FORM</h2>
         <table class="Table1Format">
             <tr style="height: 100px">
                 <td class="Request" colspan="4">This form is a request for mobile device use and/or syncing to internal Renown Health information 
@@ -27,33 +27,6 @@
                     and Chief Information Officer for approval. Once all approvals have been received, 
                     the document will be contained in the employee’s HR file and a copy resident in the immediate supervisor’s employee file. 
                     All access is subject to Renown Health policies and procedures.
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="1">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Make)
-                    </div>
-                </td>
-                <td colspan="1" style="text-align: left">
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Make)
-                        @Html.ValidationMessageFor(model => model.Make, "*")
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Model)
-                    </div>
-                </td>
-                <td colspan="1" style="text-align: left">
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Model)
-                        @Html.ValidationMessageFor(model => model.Model, "*")
-                    </div>
                 </td>
             </tr>
             <tr>
@@ -70,7 +43,7 @@
                         </tr>
                         <tr>
                             <td style="background-color: antiquewhite; text-align: left" colspan="2">
-                                @Html.TextArea("BusJustification", new { style = "width:700px" })
+                                @Html.TextArea("BusJustification", new { style = "width:98%" })
                                 @Html.ValidationMessageFor(model => model.BusJustification, "*")
                             </td>
                         </tr>
@@ -80,6 +53,7 @@
             <tr>
                 <td colspan="4" style="text-align: left; vertical-align: top">
                     @Html.CheckBox("SecuredAck1")
+                    @Html.ValidationMessageFor(model => model.SecuredAck1, "*")
                     I verify that everything written 
                    herein is true to the best of my knowledge. 
                     I realize that mobile device use and access to Renown Health computer systems and information assets are a privilege and are monitored and subject to 
@@ -92,6 +66,7 @@
             <tr>
                 <td colspan="4" style="text-align: left; vertical-align: top">
                     @Html.CheckBox("SecuredAck2")
+                    @Html.ValidationMessageFor(model => model.SecuredAck2, "*")
                     I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
                    Cell device usage. 
                    In addition, this action may occur with Renown Health employment termination.
@@ -101,27 +76,31 @@
             <tr>
                 <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
                     @Html.CheckBox("SecuredAck3")
+                    @Html.ValidationMessageFor(model => model.SecuredAck3, "*")
                     I understand I am responsible for: 
                 </td>
             </tr>
             <tr>
                 <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 150px">Logical security 
                      @Html.CheckBox("SecuredAck4")
+                    @Html.ValidationMessageFor(model => model.SecuredAck4, "*")
                 </td>
-                <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">Physical security
+                <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">Physical security
                     @Html.CheckBox("SecuredAck5")
+                    @Html.ValidationMessageFor(model => model.SecuredAck5, "*")
                 </td>
 
-                <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">Immediate Notification: loss/theft
+                <td colspan="1" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 400px">Immediate Notification: loss/theft
                     @Html.CheckBox("SecuredAck6")
+                    @Html.ValidationMessageFor(model => model.SecuredAck6, "*")
                 </td>
             </tr>
 
 
             <tr></tr>
             <tr>
-                <td style="text-align: left; vertical-align: top; text-wrap: none">
-                    <strong>I request use of Cellular/Smart Phone:
+                <td style="text-align: left; vertical-align: top; text-wrap: none; width: 400px">
+                    <strong>I request use of Cellular/Smart Phone
                     </strong>
                 </td>
             </tr>
@@ -151,21 +130,52 @@
                             </td>
                         </tr>
                         <tr>
+                            <td colspan="1">
+                                <div class="editor-label">
+                                    <strong>
+                                        @Html.LabelFor(model => model.Make)</strong>
+                                </div>
+                            </td>
+                            <td colspan="1" style="text-align: left">
+                                <div class="editor-field">
+                                    @Html.TextBox("Make", null, new { style = "width:200px" })
+                                    @Html.ValidationMessageFor(model => model.Make, "*")
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <div class="editor-label">
+                                    <strong>
+                                        @Html.LabelFor(model => model.Model)</strong>
+                                </div>
+                            </td>
+                            <td colspan="1" style="text-align: left">
+                                <div class="editor-field">
+                                    @Html.TextBox("Model", null, new { style = "width:200px" })
+                                    @Html.ValidationMessageFor(model => model.Model, "*")
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 75px">
+                                <strong>@Html.DisplayNameFor(model => model.RenownOwnedPhone)</strong>
+                            </td>
+                            <td style="width: 200px">
+                                @Html.TextBox("RenownOwnedPhone", null, new { style = "width:200px" })
+                                @Html.ValidationMessageFor(model => model.RenownOwnedPhone, "*")
+                            </td>
+
+                        </tr>
+                        <tr>
                             <td style="width: 75px">
                                 <strong>@Html.Label("Carrier:")</strong>
                             </td>
                             <td style="width: 200px">
                                 @Html.TextBox("RenownOwnedCarrier", null, new { style = "width:200px" })
+                                @Html.ValidationMessageFor(model => model.RenownOwnedCarrier, "*")
                             </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 75px">
-                                <strong>@Html.Label("Phone Number:")</strong>
-                            </td>
-                            <td style="width: 200px">
-                                @Html.TextBox("RenownOwnedPhone", null, new { style = "width:200px" })
-                            </td>
-
                         </tr>
                         <tr>
                             <td style="vertical-align: top; width: 75px">
@@ -173,6 +183,7 @@
                             </td>
                             <td>
                                 @Html.TextBox("EmployeeSignature", null, new { style = "width:200px" })
+                                @Html.ValidationMessageFor(model => model.EmployeeSignature, "*")
                             </td>
                         </tr>
                         <tr>

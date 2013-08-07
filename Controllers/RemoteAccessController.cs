@@ -14,10 +14,10 @@ namespace InformationProtection.Controllers
         //
         // GET: /RemoteAccess/Details/5
 
-        public ActionResult Details(String EmpID, String RemoteAccessReqId)
+        public ActionResult Details(String EmpID, String RemoteAccessId)
         {
             RemoteAccessMdl ourModel = new RemoteAccessMdl();
-            RemoteAccessMdlData data = ourModel.GetRemoteAccessRequest(RemoteAccessReqId);
+            RemoteAccessMdlData data = ourModel.GetRemoteAccessRequest(RemoteAccessId);
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;

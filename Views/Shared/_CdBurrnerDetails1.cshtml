@@ -5,8 +5,15 @@
 
 <fieldset style="width: 96%">
     <legend>CD/DVD Burner Request</legend>
-    <h2 class="RenownHeader1">CELL PHONE USE/REQUEST FORM</h2>
+        <h2 class="RenownHeader1">Request For CD/DVD Writer</h2>
     <table class="Table1Format">
+        <tr>
+            <td>Request Number:
+            </td>
+            <td>
+                @Html.TextBox("CdburnerDeviceId", data.CdburnerDeviceId, new { style = "width:50px", disabled = "true" })
+            </td>
+        </tr>
         <tr style="height: 100px">
             <td class="Request" colspan="2">This form is a request for CD/DVD for a
                     Renown Health exempt employee who requires this access to fulfill 
@@ -21,40 +28,62 @@
                     All access is subject to Renown Health policies and procedures.
             </td>
         </tr>
+
         <tr>
-            <td>SerialNumber:
+            <td colspan="4">
+                <table class="box1">
+                    <tr>
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <strong>Business justification: </strong>
+                            Please specify the job duties that require 
+                                mobile device use and/or syncing to Renown information, 
+                                how this access will support your work, 
+                                and how your work will be impacted without it.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: antiquewhite; text-align: left" colspan="4">
+                            @Html.TextBox("BusJustification", data.BusJustification, new { style = "width:98%", disabled = "true" })
+                        </td>
+                    </tr>
+                </table>
             </td>
-            <td>
-                @Html.Label(data.SerialNumber)
+        </tr>
+        <tr>
+            <td style="width: 200px"><strong>SerialNumber:</strong>
+            </td>
+            <td style="width: 200px">
+                @Html.TextBox("SerialNumber", data.SerialNumber, new { style = "width:200px", disabled = "true" })
             </td>
         </tr>
         <tr>
             <td colspan="1">
-                <div class="editor-label">
-                    Access 2 Computer :
-                </div>
+                <strong>Who has Access to Computer :</strong>
             </td>
-            <td colspan="1" style="text-align: left">
-                @Html.Label("Access2Computer", data.Access2Computer)
+            <td style="width: 200px">
+                @Html.TextBox("Access2Computer", data.Access2Computer, new { style = "width:200px", disabled = "true" })
             </td>
         </tr>
         <tr>
-            <td colspan="1">Access 2 Media:
+            <td colspan="1"><strong>Who has Access to Media:</strong>
             </td>
-            <td colspan="1" style="text-align: left">
-                @Html.Label("Access2Computer", data.Access2Media)
+            <td style="width: 200px">
+                @Html.TextBox("Access2Media", data.Access2Media, new { style = "width:200px", disabled = "true" })
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <strong>Type:
+                </strong>
+            </td>
+            <td style="width: 200px">
+                @Html.TextBox("BusJustType", data.BusJustType, new { style = "width:200px", disabled = "true" })
             </td>
         </tr>
         <tr>
             <td colspan="4">
                 <table class="box1">
-                    <tr>
-                        <td style="text-align: center" colspan="1">
 
-                            <strong>Justification:</strong>
-                            @Html.Label(data.BusJustification, new { style = "width:500px" })
-                        </td>
-                    </tr>
                     <tr>
                         <td style="background-color: #D4D0C8; text-align: left" colspan="2">
                             <strong>Identify physical location of the computer (please include building, room #:
@@ -63,11 +92,11 @@
                         </td>
                     </tr>
                     <tr>
-                         <td style="text-align: left" colspan="4">
-                            <strong>Secured Physical Location of Laptop:</strong>
-                            @Html.Label(data.ComputerLocation, new { style = "width:500px" })
+                        <td style="background-color: antiquewhite; text-align: left" colspan="2">
+                            @Html.DisplayFor(model => data.ComputerLocation, new { style = "width:700px" })
                         </td>
                     </tr>
+
                     <tr>
                         <td style="background-color: #D4D0C8; text-align: left" colspan="2">
                             <strong>Identify where the media will be stored and/ or sent</strong>
@@ -78,24 +107,15 @@
                             @Html.Label(data.MediaStorLocation, new { style = "width:700px" })
                         </td>
                     </tr>
-                    <tr>
-                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
-                            <strong>Business justification: </strong>
-                            Please specify the job duties that require 
-                                CD/DVD use to Create portable media, how this access will support your
-                                work, and how your work will be impacted without it.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: left" colspan="4">
-                            <strong>Justification:</strong>
-                            @Html.Label(data.BusJustification, new { style = "width:500px" })
-                        </td>
-                    </tr>
+
+
+
 
                     <tr>
-                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">Provide detail of the Security Controls to be taken to protect Renown Health information 
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <strong>Provide detail of the Security Controls to be taken to protect Renown Health information 
                                 on the media:
+                            </strong>
                         </td>
                     </tr>
                     <tr>
@@ -104,8 +124,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">Identify the type of information to be placed on the CD/DVD media (Restricted Confidential, Confidential,
+                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                            <strong>Identify the type of information to be placed on the CD/DVD media (Restricted Confidential, Confidential,
                                 Internal Proprietary, Internal Financial, or Public)
+                            </strong>
                         </td>
                     </tr>
                     <tr>
@@ -115,7 +137,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
-                            @Html.CheckBox("IsMediaAttached", data.IsMediaAttached, new {  disabled="true" })
+                            @Html.CheckBox("IsMediaAttached", data.IsMediaAttached, new { disabled = "true" })
                             Sample of information must be included with the request, indicate the sample is attached:
                         </td>
                     </tr>
@@ -130,7 +152,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td style="vertical-align: top; width: 75px">
+                        <td style="vertical-align: top; width: 200px">
                             <strong>Employee Signature:</strong>
                         </td>
                         <td>
