@@ -11,8 +11,10 @@
     @Html.Hidden("RequestId", Model.RequestId);
     @Html.Hidden("UsbDeviceId", Model.UsbDeviceId);
     <fieldset style="width: 96%">
+        <h2 class="RenownHeader1">USB/REQUEST FORM</h2>
         <legend>USB IP Request</legend>
 
+    
         <table class="Table1Format">
             <tr style="width: 98%">
 
@@ -26,32 +28,7 @@
             All access is subject to Renown Health policies and procedures.
                 </td>
             </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Model)
-                    </div>
-                </td>
-                <td colspan="1" style="text-align: left">
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Model)
-                        @Html.ValidationMessageFor(model => model.Model, "*")
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.SerialNumber)
-                    </div>
-                </td>
-                <td>
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.SerialNumber)
-                        @Html.ValidationMessageFor(model => model.SerialNumber, "*")
-                    </div>
-                </td>
-            </tr>
+
             <tr style="width: 98%">
                 <td colspan="4" style="text-align: left; border: groove">
                     <table class="box">
@@ -63,35 +40,10 @@
                                 and how your work will be impacted without it.
                             </td>
                         </tr>
-                        <tr>
-                            <td style="text-align: center" colspan="3">
-                                @Html.ValidationMessageFor(model => model.RenownOwned, "*")
-                                @{
-                                                  bool newOpt = false;
-                                                  bool existingOpt = false;
-                                                  if (Model.RenownOwned != null)
-                                                  {
-                                                      newOpt = Model.RenownOwned == "New";
-                                                      existingOpt = Model.RenownOwned == "Existing";
-                                                  }
-                                }
-                                <strong>
-                                    <br />
-                                    @Html.Label("New:")
-                                    @Html.RadioButton("RadBtnRenownOwned", "New", newOpt)
-                                    @Html.Label("Existing:")
-                                    @Html.RadioButton("RadBtnRenownOwned", "Existing", existingOpt)
-                                </strong>
-                            </td>
-                        </tr>
-
 
                         <tr>
-                            <td style="text-align: left" colspan="1">
-                                <strong>Justification:</strong>
-                            </td>
                             <td style="background-color: antiquewhite; text-align: left" colspan="3">
-                                @Html.TextArea("BusJustification", new { style = "width:500px" })
+                                @Html.TextArea("BusJustification", new { style = "width:98%" })
                                 @Html.ValidationMessageFor(model => model.BusJustification, "*")
                             </td>
                         </tr>
@@ -226,12 +178,73 @@
                                 Scan the device for malicious software prior to opening files
                             </td>
                         </tr>
+                    </table>
+                    <table class="Table1Format">
+                        <tr>
+                            <td colspan="1" style="width: 250px">
+                                <strong>Renowned Owned Type:</strong>
+                            </td>
+                            <td style="text-align: left" colspan="1">
+
+                                @Html.ValidationMessageFor(model => model.RenownOwned, "*")
+                                @{
+                                                  bool newOpt = false;
+                                                  bool existingOpt = false;
+                                                  if (Model.RenownOwned != null)
+                                                  {
+                                                      newOpt = Model.RenownOwned == "New";
+                                                      existingOpt = Model.RenownOwned == "Existing";
+                                                  }
+                                }
+                                <strong>
+
+                                    @Html.Label("New:")
+                                    @Html.RadioButton("RadBtnRenownOwned", "New", newOpt)
+                                    @Html.Label("Existing:")
+                                    @Html.RadioButton("RadBtnRenownOwned", "Existing", existingOpt)
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <div class="editor-label">
+                                    <strong>
+                                        @Html.LabelFor(model => model.Model)
+
+                                    </strong>
+
+                                </div>
+                            </td>
+                            <td colspan="1" style="text-align: left">
+                                <div class="editor-field">
+                                    @Html.TextBox("Model", Model.Model, new { style = "width:300px" })
+                                    @Html.ValidationMessageFor(model => model.Model, "*")
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="editor-label">
+                                    <strong>
+                                        @Html.LabelFor(model => model.SerialNumber)
+
+                                    </strong>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div class="editor-field">
+                                    @Html.TextBox("SerialNumber", Model.SerialNumber, new { style = "width:300px" })
+                                    @Html.ValidationMessageFor(model => model.SerialNumber, "*")
+                                </div>
+                            </td>
+                        </tr>
                         <tr>
                             <td style="vertical-align: top; width: 75px">
                                 <strong>Employee Signature:</strong>
                             </td>
                             <td>
-                                @Html.TextBox("EmployeeSignature", null, new { style = "width:200px" })
+                                @Html.TextBox("EmployeeSignature", null, new { style = "width:300px" })
                                 @Html.ValidationMessageFor(model => model.EmployeeSignature, "*")
                             </td>
                         </tr>

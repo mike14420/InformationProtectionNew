@@ -10,7 +10,6 @@
            "Print",
            new { EmpId = id, WirelessDeviceId = Model.WirelessDeviceId },
            null)
-<h2 class="RenownHeader1">WIRELESS INTERNET DEVICE REQUEST FORM</h2>
 @Html.Hidden("EmpID", requestor.EmpID, new { id = requestor.EmpID });
 <fieldset>
     <legend>Requestor Information</legend>
@@ -31,7 +30,7 @@
 
     </table>
 </fieldset>
-@RenderPage("~/Views/Shared/_WirelessDetails.cshtml")
+@RenderPage("~/Views/Shared/_WirelessDetails1.cshtml")
 <table class="Table1Format" style="width: 98%;border:2px solid">
     <tr>
         <td style="font-size: 20px; font-weight: bold; text-align: left">

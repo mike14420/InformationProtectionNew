@@ -1,13 +1,13 @@
 ﻿@model InformationProtection.Models.LapTopViewData
-
 <fieldset>
     <legend>LapTop Request</legend>
+        <h2 class="RenownHeader1">LAP TOP USE/REQUEST FORM</h2>
     <table class="Table1Format">
         <tr>
             <td>Request Number:
             </td>
             <td>
-                @Html.DisplayFor(model => model.LapTopDeviceId)
+                @Html.TextBox("RenownOwnedPhone", Model.LapTopDeviceId, new { style = "width:50px", disabled = "true" })
             </td>
         </tr>
         <tr style="height: 100px">

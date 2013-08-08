@@ -14,7 +14,7 @@
     
     <fieldset style="width: 96%">
         <legend>Remote Access Request</legend>
-
+        <h2 class="RenownHeader1">REMOTE ACCESS REQUEST FORM</h2>
         @Html.Hidden("EmpID", ViewData["EmpID"])
         @Html.ValidationSummary()
         <table class="Table1Format">
@@ -31,17 +31,32 @@
                 <td colspan="4">
                     <div class="editor-label">
                         @Html.CheckBox("NonExemptEmployee")
+                        <strong>I am a non-exempt (hourly) Renown Health employee
+                        </strong>
 
-                        I am a non-exempt (hourly) Renown Health employee
                     </div>
                 </td>
             </tr>
+
+            <tr>
+                <td class="Request" colspan="4">Please specify the job duties that require you to have remote access to the 
+                        listed applications/systems, 
+                        how this access would support your work, 
+                        and how your work would be impacted without it.
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: antiquewhite; text-align: left; width: 500px" colspan="4">
+                    @Html.TextAreaFor(model => model.JobDuties, new { style = "width:700px" })
+                    @Html.ValidationMessageFor(model => model.JobDuties, "*")
+                </td>
+            </tr>
+
             <tr>
                 <td colspan="4">
                     <div class="editor-label">
                         @Html.CheckBox("AccessToServer")
-                        I need access to:         
-                        Servers (Please specify IP Address(es) AND Server name(s))
+                        <strong>I need access to: Servers</strong> (Please specify IP Address(es) AND Server name(s))
                     </div>
                 </td>
             </tr>
@@ -57,8 +72,7 @@
                 <td colspan="4">
                     <div class="editor-label">
                         @Html.CheckBox("AccessToApp")
-                        I need access to:         
-                        Applications (Please specify the name(s) of the executable file to be used)
+                        <strong>I need access to: Applications</strong> (Please specify the name(s) of the executable file to be used)
                     </div>
                 </td>
             </tr>
@@ -74,8 +88,8 @@
                 <td colspan="4">
                     <div class="editor-label">
                         @Html.CheckBox("AccessToLanShares")
-                        I need access to:         
-                        LAN Shares (Please specify Share name(s), not just drive letter)
+                        <strong>I need access to:         
+                        LAN Shares</strong> (Please specify Share name(s), not just drive letter)
                     </div>
                 </td>
             </tr>
@@ -92,7 +106,7 @@
                 <td colspan="4" style="width: 200px; text-align: left">
                     <div class="editor-label">
                         @Html.CheckBox("AccessToMyWorkStation")
-                        My Workstation (please specify the full computer name or S/N)
+                        <strong>I need access to: My Workstation or S/N</strong>(Please specify the full computer name or S/N)
                     </div>
                 </td>
 
@@ -109,48 +123,34 @@
                 <td colspan="4" style="width: 200px; text-align: left">
                     <div class="editor-label">
                         @Html.CheckBox("ConnectFromHome")
-                        I need this access from my home, on the road and elsewhere.
+                        <strong>I need this access from my home, on the road and elsewhere.</strong>
                     </div>
                 </td>
 
             </tr>
-
-
-
             <tr>
-                <td colspan="1" style="width: 200px; text-align: left">
-                    <div class="editor-label">
-                        @Html.DisplayNameFor(model => model.WorkStationOS)
-                    </div>
+                <td colspan="3" style="text-align: left">
+                    <strong>My remote workstation has O/S:</strong>
                 </td>
-
-                <td colspan="3" style="width: 200px; text-align: left">
-                    <div class="editor-label">
-                        @Html.TextBoxFor(model => model.WorkStationOS, new { style = "width:300px;" })
-                    </div>
-                </td>
-
             </tr>
-
-
-
-        </table>
-
-        <table class="Table1Format">
-
+            <tr>
+                <td colspan="3" style="text-align: left">
+                    @Html.TextBoxFor(model => model.WorkStationOS, new { style = "width:500px;" })
+                </td>
+            </tr>
             <tr>
                 <td style="text-align: left" colspan="2">
                     @Html.ValidationMessageFor(model => model.RemoteConnectionType, "*")
                     @{
-                                            bool cableType = false;
-                                            bool dslType = false;
-                                            bool dialUpType = false;
-                                            if (Model.RemoteConnectionType != null)
-                                            {
-                                                cableType = Model.RemoteConnectionType.ToLower() == "cable";
-                                                dslType = Model.RemoteConnectionType.ToLower() == "dsl";
-                                                dialUpType = Model.RemoteConnectionType.ToLower() == "dialup";
-                                            }
+                                                        bool cableType = false;
+                                                        bool dslType = false;
+                                                        bool dialUpType = false;
+                                                        if (Model.RemoteConnectionType != null)
+                                                        {
+                                                            cableType = Model.RemoteConnectionType.ToLower() == "cable";
+                                                            dslType = Model.RemoteConnectionType.ToLower() == "dsl";
+                                                            dialUpType = Model.RemoteConnectionType.ToLower() == "dialup";
+                                                        }
                     }
                     <strong>My Remote Connection is:
                                     <br />
@@ -170,26 +170,7 @@
         </table>
 
 
-
-
-        <table class="Table1Format">
-
-            <tr>
-                <td class="Request" colspan="4">Please specify the job duties that require you to have remote access to the 
-                        listed applications/systems, 
-                        how this access would support your work, 
-                        and how your work would be impacted without it.
-                </td>
-            </tr>
-            <tr>
-                <td style="background-color: antiquewhite; text-align: left; width: 500px" colspan="4">
-                    @Html.TextAreaFor(model => model.JobDuties, new { style = "width:700px" })
-                    @Html.ValidationMessageFor(model => model.JobDuties, "*")
-                </td>
-            </tr>
-
-        </table>
-        <table class="Request" style="width: 700px">
+        <table class="Table1Format" style="width: 100%;border:groove">
 
             <tr>
                 <td colspan="4">
@@ -249,7 +230,7 @@
                 </td>
             </tr>
         </table>
-            </fieldset> 
+    </fieldset> 
     <table class="Table1Format" style="width: 98%; border: 2px solid">
         <tr>
             <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />

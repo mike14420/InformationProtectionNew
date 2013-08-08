@@ -34,6 +34,20 @@ namespace InformationProtection.Controllers
             return View(allRequestors);
         }
 
+
+        public ActionResult Details(String Id)
+        {
+
+            IpApprovalRequestView Model = new IpApprovalRequestView();
+            IpApprovalRequestViewData data = Model.GetApprovalRequest(Id);
+
+
+            IpRequestorView rModel = new IpRequestorView();
+            IpRequestorViewData requestor = rModel.GetRequestorByRequestorId(data.IpRequestorId);
+            ViewBag.requestor = requestor;
+            return View(data);
+        }
+
         public ActionResult Edit(String EmpID)
         {
             IpRequestorViewData requestor = new IpRequestorViewData();

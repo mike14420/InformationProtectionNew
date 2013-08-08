@@ -5,7 +5,7 @@
 
 <fieldset style="width: 96%">
     <legend>CD/DVD Burner Request</legend>
-        <h2 class="RenownHeader1">Request For CD/DVD Writer</h2>
+    <h2 class="RenownHeader1">Request For CD/DVD Writer</h2>
     <table class="Table1Format">
         <tr>
             <td>Request Number:
@@ -50,36 +50,39 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 200px"><strong>SerialNumber:</strong>
-            </td>
-            <td style="width: 200px">
-                @Html.TextBox("SerialNumber", data.SerialNumber, new { style = "width:200px", disabled = "true" })
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <strong>Who has Access to Computer :</strong>
-            </td>
-            <td style="width: 200px">
-                @Html.TextBox("Access2Computer", data.Access2Computer, new { style = "width:200px", disabled = "true" })
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1"><strong>Who has Access to Media:</strong>
-            </td>
-            <td style="width: 200px">
-                @Html.TextBox("Access2Media", data.Access2Media, new { style = "width:200px", disabled = "true" })
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
+            <td style="width:150px">
                 <strong>Type:
                 </strong>
             </td>
-            <td style="width: 200px">
-                @Html.TextBox("BusJustType", data.BusJustType, new { style = "width:200px", disabled = "true" })
+            <td style="width:200px">
+                @Html.TextBox("BusJustType", data.BusJustType, new { style = "width:98%", disabled = "true" })
             </td>
         </tr>
+        <tr>
+             <td style="width:150px"><strong>SerialNumber:</strong>
+            </td>
+            <td style="width: 200px">
+                @Html.TextBox("SerialNumber", data.SerialNumber, new { style = "width:98%", disabled = "true" })
+            </td>
+        </tr>
+        <tr>
+             <td style="width:150px">
+                <strong>Who has Access to Computer :</strong>
+            </td>
+            <td style="width: 200px">
+                @Html.TextBox("Access2Computer", data.Access2Computer, new { style = "width:98", disabled = "true" })
+            </td>
+        </tr>
+        <tr>
+             <td style="width:150px">
+                <strong>Who Has Access To Media:
+                </strong>
+            </td>
+            <td style="width: 200px">
+                @Html.TextBox("Access2Media", data.Access2Media, new { style = "width:98", disabled = "true" })
+            </td>
+        </tr>
+
         <tr>
             <td colspan="4">
                 <table class="box1">
@@ -155,8 +158,8 @@
                         <td style="vertical-align: top; width: 200px">
                             <strong>Employee Signature:</strong>
                         </td>
-                        <td>
-                            @Html.Label(data.EmployeeSignature)
+                        <td style="width: 200px">
+                            @Html.TextBox("EmployeeSignature", data.EmployeeSignature, new { style = "width:200px", disabled = "true" })
                         </td>
                     </tr>
                 </table>

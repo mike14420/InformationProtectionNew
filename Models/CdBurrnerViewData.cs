@@ -34,8 +34,9 @@ namespace InformationProtection.Models
         [Display(Name = "Type of Data:")]
         public String TypeOfData { get; set; }
 
-        [StringLength(20, MinimumLength = 8)]
+
         [Required]
+        [StringLength(20, MinimumLength = 8)]
         [Display(Name = "Serial Number")]
         public String SerialNumber { get; set; }
 

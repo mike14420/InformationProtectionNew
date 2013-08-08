@@ -317,6 +317,7 @@ namespace InformationProtection.Models
             }
         }
         public String RequestDetailsLink { get; set; }
+        public String RemindersLink { get; set; }
 
         public string FirstSupStatus 
         {

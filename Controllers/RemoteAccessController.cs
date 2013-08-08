@@ -21,6 +21,7 @@ namespace InformationProtection.Controllers
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
+            ViewBag.ourData = data;
             return View(data);
         }
 
@@ -67,7 +68,7 @@ namespace InformationProtection.Controllers
             }
             if (ModelState.IsValid)
             {
-                ourModel.Create(data, EmpID, IpApprover.ApproveState.not_submitted);
+                ourModel.Create(data, EmpID, IpApprover.ApproveState.pending);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             // Data not valid so redisplay allowing errors to be corrected

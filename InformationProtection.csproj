@@ -1302,6 +1302,7 @@
     <Content Include="Views\WirelessRequest\Print.cshtml" />
     <Content Include="Views\AdminView\ViewRejectedRequest.cshtml" />
     <Content Include="Views\AdminView\ViewApprovedRequest.cshtml" />
+    <Content Include="Views\AdminView\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,7 +12,7 @@ namespace InformationProtection.Models
     {
         public List<IpRequestor> requestors = new List<IpRequestor>();
 
-        public int Create(ref IpApprovalRequestViewData ourRequest)
+        public int Create(IpApprovalRequestViewData ourRequest)
         {
             IpApprovalRequest data = Convert(ourRequest);
 
@@ -140,20 +140,20 @@ namespace InformationProtection.Models
         public int Create(CdBurrnerViewData data, String EmpID, IpApprover.ApproveState state)
         {
 
-            IpRequestorView Mdl = new IpRequestorView();
-            IpRequestorViewData requestor = Mdl.GetRequestor(EmpID);
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData requestor = ipRequestorView.GetRequestor(EmpID);
             // add the forien key
             data.RequestorId = requestor.IpRequestorId;
 
-            CdBurnerView cMdl = new CdBurnerView();
-            int cdBurrnerId = cMdl.Create(data);
+            CdBurnerView cdBurnerView = new CdBurnerView();
+            int cdBurrnerId = cdBurnerView.Create(data);
 
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.CdburnerDeviceID = cdBurrnerId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.cdburnner.ToString();
             /// Now Write to DB
-            int retValue = Create(ref Request);
-            SubmitRequest(Request);
+            int retValue = Create(Request);
+            //SubmitRequest(Request);
 
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
@@ -242,8 +242,8 @@ namespace InformationProtection.Models
             Request.CellPhoneDeviceId = cellPhoneDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.cellphone.ToString();
             /// Now Write to DB
-            int retValue = Create(ref Request);
-            SubmitRequest(Request);
+            int retValue = Create(Request);
+            //SubmitRequest(Request);
 
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
@@ -325,9 +325,9 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.LapTopID = LaptopDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.laptop.ToString();
-            int retValue = Create(ref Request);
+            int retValue = Create(Request);
 
-            SubmitRequest(Request);
+            //SubmitRequest(Request);
 
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
@@ -408,9 +408,9 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.UsbDeviceID = UsbDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.usb.ToString();
-            int retValue = Create(ref Request);
+            int retValue = Create(Request);
 
-            SubmitRequest(Request);
+            //SubmitRequest(Request);
 
 
             // NOW Send notification to next approver
@@ -494,8 +494,8 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.CellPhoneSyncDeviceID = CellSyncDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString();
-            int retValue = Create(ref Request);
-            SubmitRequest(Request);
+            int retValue = Create(Request);
+            //SubmitRequest(Request);
 
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
@@ -573,9 +573,9 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.WirelessDeviceID = WirelessDevId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.wireless.ToString();
-            int retValue = Create(ref Request);
+            int retValue = Create(Request);
 
-            SubmitRequest(Request);
+            //SubmitRequest(Request);
 
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
@@ -660,9 +660,9 @@ namespace InformationProtection.Models
             IpApprovalRequestViewData Request = CreateRequest(EmpID, state);
             Request.RemoteAccessID = RemoteAccessId;
             Request.RequestType = IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString();
-            int retValue = Create(ref Request);
+            int retValue = Create(Request);
             // Now Submit it
-            SubmitRequest(Request);
+            //SubmitRequest(Request);
 
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
@@ -677,12 +677,11 @@ namespace InformationProtection.Models
             RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
             bool result = remoteAccessMdl.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequest(data.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString(), state.ToString());
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            bool retValue = approvalRequestDbAccess.InitApprovalRequest(data.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString(), state.ToString());
 
             /// Get Copy of Request for email notifications
             /// 
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
             IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
             IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
             AddOtherProperties(ipApprovalRequestViewData);
@@ -777,10 +776,15 @@ namespace InformationProtection.Models
                 {
                     item.RequestorsName = String.Format("{0} {1}", ourRequestor.Fname, ourRequestor.Lname);
                 }
-
-                 item.RequestDetailsLink = String.Format("<a href=\"{0}?Id={1}\">Reminder</a>",
+                AddOtherProperties(item);
+                String ReminderLnk = String.Format("<a href=\"{0}?Id={1}\">Reminder</a><br/><a href=\"Details?Id={1}\">Details</a>",
                         action, item.Id);
-                 AddOtherProperties(item);
+                String DetailsLnk = String.Format("<a href=\"Details?Id={0}\">Details</a>",
+                    item.Id);
+
+                item.RemindersLink = ReminderLnk;
+                item.RequestDetailsLink = DetailsLnk;
+                
             }
 
             if (string.IsNullOrEmpty(jtsorting) || jtsorting.Equals("SubmitDate ASC"))
@@ -892,81 +896,84 @@ namespace InformationProtection.Models
 
             retData = IpApprovalRequestView.Convert(requests);
 
-            
-            string devController = String.Empty;
             foreach (IpApprovalRequestViewData item in retData)
             {
                 AddOtherProperties(item);
-
-                // BUILD THE LINK FOR THE USER ACTION based on Controller (cdburner, cell, etc)
-                // and action type (Details, Edit, ReSubmit)
-                String requestType = item.RequestType;
-                String devIdStr = String.Empty;
-                int devIdInt = 0;
-                IpApprovalRequest.RequestTypeEnum requestTypeEnum;
-                Enum.TryParse(requestType, out requestTypeEnum);
-                switch (requestTypeEnum)
-                {
-                    case IpApprovalRequest.RequestTypeEnum.cdburnner:
-                        devController = "CdDvdRequest";
-                        devIdStr = "CdburnerDeviceID";
-                        devIdInt = item.CdburnerDeviceID;
-                        break;
-                    case IpApprovalRequest.RequestTypeEnum.cellphone:
-                        devController = "CellPhoneRequest";
-                        devIdStr = "CellPhoneReqId";
-                        devIdInt = item.CellPhoneDeviceId;
-                        break;
-                    case IpApprovalRequest.RequestTypeEnum.cellphonesync:
-                        devController = "CellPhoneSyncingReq";
-                        devIdStr = "CellPhoneSyncDeviceId";
-                        devIdInt = item.CellPhoneSyncDeviceID;
-                        break;
-                    case IpApprovalRequest.RequestTypeEnum.laptop:
-                        devController = "LapTopRequest";
-                        devIdStr = "LapTopDeviceId";
-                        devIdInt = item.LapTopID;
-                        break;
-                    case IpApprovalRequest.RequestTypeEnum.remoteaccess:
-                        devController = "RemoteAccess";
-                        devIdStr = "RemoteAccessID";
-                        devIdInt = item.RemoteAccessID;
-                        break;
-                     case IpApprovalRequest.RequestTypeEnum.usb:
-                        devController = "UsbRequest";
-                        devIdStr = "UsbDeviceID";
-                        devIdInt = item.UsbDeviceID;
-                        break;
-                   case IpApprovalRequest.RequestTypeEnum.wireless:
-                        devController = "WirelessRequest";
-                        devIdStr = "WirelessDeviceID";
-                        devIdInt = item.WirelessDeviceID;
-                        break;
-                }
-                IpApprover.ApproveState approveState;
-                Enum.TryParse(item.ApprovedStatus, out approveState);
-                switch (approveState)
-                {
-                    case IpApprover.ApproveState.approved:
-                    case IpApprover.ApproveState.not_submitted:
-                    case IpApprover.ApproveState.pending:
-                    case IpApprover.ApproveState.rejected:
-                        item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&{2}={3}\">Details</a>",
-                            devController, EmpId, devIdStr, devIdInt);
-                        break;
-                    case IpApprover.ApproveState.resubmit:
-                        item.RequestDetailsLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&{2}={3}\">ReSubmit</a>",
-                            devController, EmpId, devIdStr, devIdInt);
-                        break;
-                    case IpApprover.ApproveState.saved:
-                        item.RequestDetailsLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&{2}={3}\">Edit</a>",
-                            devController, EmpId, devIdStr, devIdInt);
-                        break;
-                }
+                BuildDetailsLink(EmpId, item);
             }
             return retData;
         }
 
+        public void BuildDetailsLink(String EmpId, IpApprovalRequestViewData ipApprovalRequest)
+        {
+
+            // BUILD THE LINK FOR THE USER ACTION based on Controller (cdburner, cell, etc)
+            // and action type (Details, Edit, ReSubmit)
+            String requestType = ipApprovalRequest.RequestType;
+            String devIdStr = String.Empty;
+            int devIdInt = 0;
+            IpApprovalRequest.RequestTypeEnum requestTypeEnum;
+            Enum.TryParse(requestType, out requestTypeEnum);
+            String devController = String.Empty;
+            switch (requestTypeEnum)
+            {
+                case IpApprovalRequest.RequestTypeEnum.cdburnner:
+                    devController = "CdDvdRequest";
+                    devIdStr = "CdburnerDeviceID";
+                    devIdInt = ipApprovalRequest.CdburnerDeviceID;
+                    break;
+                case IpApprovalRequest.RequestTypeEnum.cellphone:
+                    devController = "CellPhoneRequest";
+                    devIdStr = "CellPhoneReqId";
+                    devIdInt = ipApprovalRequest.CellPhoneDeviceId;
+                    break;
+                case IpApprovalRequest.RequestTypeEnum.cellphonesync:
+                    devController = "CellPhoneSyncingReq";
+                    devIdStr = "CellPhoneSyncDeviceId";
+                    devIdInt = ipApprovalRequest.CellPhoneSyncDeviceID;
+                    break;
+                case IpApprovalRequest.RequestTypeEnum.laptop:
+                    devController = "LapTopRequest";
+                    devIdStr = "LapTopDeviceId";
+                    devIdInt = ipApprovalRequest.LapTopID;
+                    break;
+                case IpApprovalRequest.RequestTypeEnum.remoteaccess:
+                    devController = "RemoteAccess";
+                    devIdStr = "RemoteAccessID";
+                    devIdInt = ipApprovalRequest.RemoteAccessID;
+                    break;
+                case IpApprovalRequest.RequestTypeEnum.usb:
+                    devController = "UsbRequest";
+                    devIdStr = "UsbDeviceID";
+                    devIdInt = ipApprovalRequest.UsbDeviceID;
+                    break;
+                case IpApprovalRequest.RequestTypeEnum.wireless:
+                    devController = "WirelessRequest";
+                    devIdStr = "WirelessDeviceID";
+                    devIdInt = ipApprovalRequest.WirelessDeviceID;
+                    break;
+            }
+            IpApprover.ApproveState approveState;
+            Enum.TryParse(ipApprovalRequest.ApprovedStatus, out approveState);
+            switch (approveState)
+            {
+                case IpApprover.ApproveState.approved:
+                case IpApprover.ApproveState.not_submitted:
+                case IpApprover.ApproveState.pending:
+                case IpApprover.ApproveState.rejected:
+                    ipApprovalRequest.RequestDetailsLink = String.Format("<a href=\"/{0}/Details?EmpID={1}&{2}={3}\">Details</a>",
+                        devController, EmpId, devIdStr, devIdInt);
+                    break;
+                case IpApprover.ApproveState.resubmit:
+                    ipApprovalRequest.RequestDetailsLink = String.Format("<a href=\"/{0}/ReSubmit?EmpID={1}&{2}={3}\">ReSubmit</a>",
+                        devController, EmpId, devIdStr, devIdInt);
+                    break;
+                case IpApprover.ApproveState.saved:
+                    ipApprovalRequest.RequestDetailsLink = String.Format("<a href=\"/{0}/Edit?EmpID={1}&{2}={3}\">Edit</a>",
+                        devController, EmpId, devIdStr, devIdInt);
+                    break;
+            }
+        }
         public IpApprovalRequestViewData GetApprovalRequest(String ApprovalRequestId)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
@@ -1158,8 +1165,6 @@ namespace InformationProtection.Models
             }
         }
 
-
-
         internal void SubmitRequest(IpApprovalRequestViewData request)
         {
 
@@ -1179,6 +1184,7 @@ namespace InformationProtection.Models
             model.UpdateCioRequest(request);
             return;
         }
+
         public bool UpdateFirstSupRequest(IpApprovalRequestViewData request)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;

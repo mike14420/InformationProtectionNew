@@ -5,7 +5,12 @@
         WirelessMdlData data = (WirelessMdlData)ViewBag.ourData;
     }
     <h2 class="RenownHeader1">WIRELESS INTERNET DEVICE REQUEST FORM</h2>
-    <table class="Table1Format">
+    <table class="Table1Format" style="border: groove">
+        <tr>
+            <td style="text-align: left">Request Number:
+                @Html.TextBox("WirelessDeviceId", data.WirelessDeviceId, new { style = "width:50px", disabled = "true" })
+            </td>
+        </tr>
         <tr style="width: 98%">
             <td class="Request" colspan="4">This form is to request and utilize a 
                This form is to request and utilize a 
@@ -18,42 +23,7 @@
                All access is subject to Renown Health polices and procedures. Thank you.
             </td>
         </tr>
-        <tr>
-            <td colspan="1">
-                <div class="editor-label">
-                    Model:
-                </div>
-            </td>
-            <td colspan="1" style="text-align: left">
-                <div class="editor-field">
-                    @Html.Label(data.Model)
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <div class="editor-label">
-                    Vendor:
-                </div>
-            </td>
-            <td colspan="1" style="text-align: left">
-                <div class="editor-field">
-                    @Html.Label(data.Vendor)
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    SerialNumber:
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.Label(data.SerialNumber)
-                </div>
-            </td>
-        </tr>
+
         <tr style="width: 98%">
             <td colspan="4" style="text-align: left; border: groove">
                 <table class="box">
@@ -65,28 +35,19 @@
                                 and how your work will be impacted without it.
                         </td>
                     </tr>
-                    <tr>
-                        <td style="text-align: center" colspan="4">
-                            <strong>Renown Owned Type :</strong>
-                            @Html.Label(data.RenownOwnedType)
 
-                        </td>
-                    </tr>
 
 
                     <tr>
-                        <td style="text-align: left" colspan="4">
-                            <strong>Justification:</strong>
-                            @Html.Label(data.BusJustification, new { style = "width:500px" })
 
+
+                        <td>
+                            <div class="editor-field">
+                                @Html.TextBox("BusJustification", data.BusJustification, new { style = "width:98%", disabled = "true" })
+                            </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td style="text-align: left" colspan="4">
-                            <strong>Secured Physical Location of Laptop:</strong>
-                            @Html.Label(data.PhysLocation, new { style = "width:500px" })
-                        </td>
-                    </tr>
+
                 </table>
             </td>
         </tr>
@@ -141,76 +102,134 @@
         </tr>
     </table>
 
-
-    <table style="width: 100%">
+    <table class="box1" style="border: groove">
         <tr>
-            <td colspan="2" style="border: groove">
-                <table class="box1">
-                    <tr>
-                        <td colspan="2" style="text-align: center"><strong>Security Requirements:</strong></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck1", data.SecurityAck1, new { disabled = "true" })
-                            Business Use Only
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck2", data.SecurityAck2, new { disabled = "true" })
-                            Must have Renown network account (UserID)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck3", data.SecurityAck3, new { disabled = "true" })
-                            Assigned to individual, not to a Department
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck4", data.SecurityAck4, new { disabled = "true" })
-                            Do not disable any security or technical configurations
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck5", data.SecurityAck5, new { disabled = "true" })
-                            Physically secure device
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck6", data.SecurityAck6, new { disabled = "true" })
-                            Upon transfer or termination of employement, submit wireless Internet device to Inforrmation Resources
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck7", data.SecurityAck7, new { disabled = "true" })
-                            Only Connect it to Renown-owned, authorized equipment
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                            @Html.CheckBox("SecurityAck8", data.SecurityAck8, new { disabled = "true" })
-                            Do not allow others to use this device
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align: top; width: 75px">
-                            <strong>Employee Signature:</strong>
-                        </td>
-                        <td>
-                            @Html.Label(data.EmployeeSignature, new { style = "width:200px" })
-                        </td>
-                    </tr>
-                </table>
-
+            <td colspan="2" style="text-align: center"><strong>Security Requirements:</strong></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                @Html.CheckBox("SecurityAck1", data.SecurityAck1, new { disabled = "true" })
+                Business Use Only
             </td>
         </tr>
+        <tr>
+            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                @Html.CheckBox("SecurityAck2", data.SecurityAck2, new { disabled = "true" })
+                Must have Renown network account (UserID)
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                @Html.CheckBox("SecurityAck3", data.SecurityAck3, new { disabled = "true" })
+                Assigned to individual, not to a Department
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                @Html.CheckBox("SecurityAck4", data.SecurityAck4, new { disabled = "true" })
+                Do not disable any security or technical configurations
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                @Html.CheckBox("SecurityAck5", data.SecurityAck5, new { disabled = "true" })
+                Physically secure device
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                @Html.CheckBox("SecurityAck6", data.SecurityAck6, new { disabled = "true" })
+                Upon transfer or termination of employement, submit wireless Internet device to Inforrmation Resources
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                @Html.CheckBox("SecurityAck7", data.SecurityAck7, new { disabled = "true" })
+                Only Connect it to Renown-owned, authorized equipment
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                @Html.CheckBox("SecurityAck8", data.SecurityAck8, new { disabled = "true" })
+                Do not allow others to use this device
+            </td>
+        </tr>
+
     </table>
+    <table class="Table1Format" style="border: groove">
+
+
+        <tr>
+            <td style="width: 250px">
+                <div class="editor-label">
+                    <strong>Renown Owned type
+                    </strong>
+
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.TextBox("RenownOwned", data.RenownOwnedType, new { style = "width:100px", disabled = "true" })
+                </div>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td colspan="1">
+                <div class="editor-label">
+                    <strong>Model
+                    </strong>
+                </div>
+            </td>
+            <td>
+                @Html.TextBox("Model", data.Model, new { style = "width:300px", disabled = "true" })
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="editor-label">
+                    <strong>Vendor
+                    </strong>
+                </div>
+            </td>
+            <td>
+                @Html.TextBox("Vendor", data.Vendor, new { style = "width:300px", disabled = "true" })
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="editor-label">
+                    <strong>Serial Number
+                    </strong>
+                </div>
+            </td>
+            <td>
+                @Html.TextBox("SerialNumber", data.SerialNumber, new { style = "width:300px", disabled = "true" })
+            </td>
+
+        </tr>
+        <tr>
+            <td style="width: 250px">
+                <strong>Secured Physical Location of Laptop</strong>
+            </td>
+            <td>
+                @Html.TextBox("PhysLocation", data.PhysLocation, new { style = "width:98%", disabled = "true" })
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top; width: 75px">
+                <strong>Employee Signature</strong>
+            </td>
+            <td>
+                @Html.TextBox("EmployeeSignature", data.EmployeeSignature, new { style = "width:300px", disabled = "true"  })
+            </td>
+        </tr>
+
+    </table>
+
 
 </fieldset>
 

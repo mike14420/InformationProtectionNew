@@ -14,7 +14,7 @@
     @Html.ValidationSummary()
     <fieldset style="width: 96%">
         <legend>LapTop IP Request</legend>
-
+        <h2 class="RenownHeader1">LAP TOP USE/REQUEST FORM</h2>
 
         <table class="Table1Format">
             <tr style="width: 98%">
@@ -33,90 +33,71 @@
                     All access is subject to Renown Health policies and procedures.
                 </td>
             </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Model)
-                    </div>
-                </td>
-                <td colspan="1" style="text-align: left">
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Model)
-                        @Html.ValidationMessageFor(model => model.Model, "*")
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.SerialNumber)
-                    </div>
-                </td>
-                <td>
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.SerialNumber)
-                        @Html.ValidationMessageFor(model => model.SerialNumber, "*")
-                    </div>
-                </td>
-            </tr>
+
             <tr style="width: 98%">
                 <td colspan="4" style="text-align: left; border: groove">
                     <table class="box">
+
+
                         <tr>
-                            <td style="background-color: #D4D0C8; text-align: left" colspan="2">
-                                <strong>Business justification: </strong>
-                                Please specify the job duties that require laptop use, 
+                            <td colspan="4">
+                                <table class="box1">
+                                    <tr>
+                                        <td style="text-align: center" colspan="2">
+                                            @Html.ValidationMessageFor(model => model.BusJustType, "*")
+                                            @{
+                                                          bool newType = false;
+                                                          bool existingType = false;
+                                                          if (Model.BusJustType != null)
+                                                          {
+                                                              newType = Model.BusJustType.ToLower() == "new";
+                                                              existingType = Model.BusJustType.ToLower() == "existing";
+                                                          }
+                                            }
+                                            <strong>
+                                                <br />
+                                                @Html.Label("New:")
+                                                @Html.RadioButton("RadBtnRenownOwnedType", "New", newType)
+                                                @Html.Label("Existing:")
+                                                @Html.RadioButton("RadBtnRenownOwnedType", "Existing", existingType)
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                                            <strong>Business justification: </strong>
+                                            Please specify the job duties that require 
+                                mobile device use and/or syncing to Renown information, 
                                 how this access will support your work, 
                                 and how your work will be impacted without it.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: center" colspan="3">
-                                @Html.ValidationMessageFor(model => model.BusJustType, "*")
-                                @{
-                                            bool newType = false;
-                                            bool existingType = false;
-                                            if (Model.BusJustType != null)
-                                            {
-                                                newType = Model.BusJustType.ToLower() == "new";
-                                                existingType = Model.BusJustType.ToLower() == "existing";
-                                            }
-                                }
-                                <strong>
-                                    <br />
-                                    @Html.Label("New:")
-                                    @Html.RadioButton("RadBtnRenownOwnedType", "New", newType)
-                                    @Html.Label("Existing:")
-                                    @Html.RadioButton("RadBtnRenownOwnedType", "Existing", existingType)
-                                </strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color: antiquewhite; text-align: left" colspan="2">
+                                            @Html.TextArea("BusJustification", new { style = "width:98%" })
+                                            @Html.ValidationMessageFor(model => model.BusJustification, "*")
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left" colspan="1">
+                                            <strong>Secured Physical Location of Laptop:</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color: antiquewhite; text-align: left" colspan="3">
+                                            @Html.TextBoxFor(model => model.PhysLocation, new { style = "width:98%" })
+                                            @Html.ValidationMessageFor(model => model.PhysLocation, "*")
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
 
-
-                        <tr>
-                            <td style="text-align: left" colspan="1">
-                                <strong>Justification:</strong>
-                            </td>
-                            <td style="background-color: antiquewhite; text-align: left" colspan="3">
-                                @Html.TextArea("BusJustification", new { style = "width:500px" })
-                                @Html.ValidationMessageFor(model => model.BusJustification, "*")
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left" colspan="1">
-                                <strong>Secured Physical Location of Laptop:</strong>
-                            </td>
-
-                            <td style="background-color: antiquewhite; text-align: left" colspan="3">
-                                @Html.TextBoxFor(model => model.PhysLocation, new { style = "width:500px" })
-                                @Html.ValidationMessageFor(model => model.PhysLocation, "*")
-                            </td>
-                        </tr>
                     </table>
                 </td>
             </tr>
         </table>
-        <table style="width: 100%">
+        <table class="Table1Format" style="width: 100%">
             <tr>
                 <td colspan="2" style="border: groove">
                     <table class="box1">
@@ -161,7 +142,7 @@
                                 @Html.CheckBox("SecuredAck5")
                                 Physical security</td>
 
-                            <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                            <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">
                                 @Html.ValidationMessageFor(model => model.SecuredAck6, "*")
                                 @Html.CheckBox("SecuredAck6")
                                 Immediate Notification: loss/theft</td>
@@ -172,7 +153,7 @@
         </table>
 
 
-        <table style="width: 100%">
+        <table class="Table1Format" style="width: 100%">
             <tr>
                 <td colspan="2" style="border: groove">
                     <table class="box1">
@@ -234,12 +215,42 @@
                                 Do not install any software or hardware
                             </td>
                         </tr>
+                    </table>
+                    <table class="Table1Format" style="border: groove">
+                        <tr>
+                            <td colspan="1">
+                                <div class="editor-label">
+                                    <strong>
+                                        @Html.LabelFor(model => model.Model)
+                                    </strong>
+                                </div>
+                            </td>
+                            <td colspan="1" style="text-align: left">
+                                <div class="editor-field">
+                                    @Html.TextBox("Model", Model.Model, new { style = "width:300px" })
+                                    @Html.ValidationMessageFor(model => model.Model, "*")
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="editor-label">
+                                    <strong>
+                                        @Html.LabelFor(model => model.SerialNumber)
+                                    </strong>
+                                </div>
+                            </td>
+                            <td>
+                                @Html.TextBox("SerialNumber", Model.SerialNumber, new { style = "width:300px" })
+
+                            </td>
+                        </tr>
                         <tr>
                             <td style="vertical-align: top; width: 75px">
                                 <strong>Employee Signature:</strong>
                             </td>
                             <td>
-                                @Html.TextBox("EmployeeSignature", null, new { style = "width:200px" })
+                                @Html.TextBox("EmployeeSignature", null, new { style = "width:300px" })
                             </td>
                         </tr>
                         <tr>
@@ -259,15 +270,15 @@
 
     </fieldset>
     
-        <table class="Table1Format" style="width: 98%; border: 2px solid">
-            <tr>
-                <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
-                </td>
+    <table class="Table1Format" style="width: 98%; border: 2px solid">
+        <tr>
+            <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+            </td>
 
-                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
-                </td>
-            </tr>
-        </table>
+            <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
+            </td>
+        </tr>
+    </table>
 
 }
 

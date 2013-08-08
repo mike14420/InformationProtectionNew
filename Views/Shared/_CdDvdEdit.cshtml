@@ -32,42 +32,17 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="1">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.SerialNumber)
-                    </div>
-                </td>
-                <td colspan="1" style="text-align: left">
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.SerialNumber)
-                        @Html.ValidationMessageFor(model => model.SerialNumber, "*")
-                    </div>
+                <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                    <strong>Business justification: </strong>
+                    Please specify the job duties that require 
+                                CD/DVD use to Create portable media, how this access will support your
+                                work, and how your work will be impacted without it.
                 </td>
             </tr>
             <tr>
-                <td colspan="1">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Access2Computer)
-                    </div>
-                </td>
-                <td colspan="1" style="text-align: left">
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Access2Computer)
-                        @Html.ValidationMessageFor(model => model.Access2Computer, "*")
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Access2Media)
-                    </div>
-                </td>
-                <td colspan="1" style="text-align: left">
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Access2Media)
-                        @Html.ValidationMessageFor(model => model.Access2Media, "*")
-                    </div>
+                <td style="background-color: antiquewhite; text-align: left" colspan="2">
+                    @Html.TextArea("BusJustification", new { style = "width:98%" })
+                    @Html.ValidationMessageFor(model => model.BusJustification, "*")
                 </td>
             </tr>
             <tr>
@@ -95,6 +70,33 @@
                             </td>
                         </tr>
                         <tr>
+                            <td style="width: 200px"><strong>SerialNumber:</strong>
+                            </td>
+                            <td colspan="1" style="text-align: left">
+                                @Html.TextBox("SerialNumber", Model.SerialNumber, new { style = "width:400px" })
+                                @Html.ValidationMessageFor(model => model.SerialNumber, "*")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 200px"><strong>Individual(s) who have access to the computer</strong>
+                            </td>
+                            <td colspan="1" style="text-align: left">
+                                @Html.TextBox("Access2Computer", Model.Access2Computer, new { style = "width:400px" })
+                                @Html.ValidationMessageFor(model => model.Access2Computer, "*")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 200px"><strong>Individual(s) who have access to the media</strong>
+                            </td>
+                            <td colspan="1" style="text-align: left">
+                                @Html.TextBox("Access2Media", Model.Access2Media, new { style = "width:400px" })
+                                @Html.ValidationMessageFor(model => model.Access2Media, "*")
+                            </td>
+                        </tr>
+
+                        <tr>
                             <td style="background-color: #D4D0C8; text-align: left" colspan="2">
                                 <strong>Identify physical location of the computer (please include building, room #:
                                     and any addition detailed information.)
@@ -118,24 +120,13 @@
                                 @Html.ValidationMessageFor(model => model.MediaStorLocation, "*")
                             </td>
                         </tr>
-                        <tr>
-                            <td style="background-color: #D4D0C8; text-align: left" colspan="2">
-                                <strong>Business justification: </strong>
-                                Please specify the job duties that require 
-                                CD/DVD use to Create portable media, how this access will support your
-                                work, and how your work will be impacted without it.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="background-color: antiquewhite; text-align: left" colspan="2">
-                                @Html.TextArea("BusJustification", new { style = "width:700px" })
-                                @Html.ValidationMessageFor(model => model.BusJustification, "*")
-                            </td>
-                        </tr>
+
 
                         <tr>
-                            <td style="background-color: #D4D0C8; text-align: left" colspan="2">Provide detail of the Security Controls to be taken to protect Renown Health information 
+                            <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                                <strong>Provide detail of the Security Controls to be taken to protect Renown Health information 
                                 on the media:
+                                </strong>
                             </td>
                         </tr>
                         <tr>
@@ -145,8 +136,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="background-color: #D4D0C8; text-align: left" colspan="2">Identify the type of information to be placed on the CD/DVD media (Restricted Confidential, Confidential,
+                            <td style="background-color: #D4D0C8; text-align: left" colspan="2">
+                                <strong>Identify the type of information to be placed on the CD/DVD media (Restricted Confidential, Confidential,
                                 Internal Proprietary, Internal Financial, or Public)
+                                </strong>
                             </td>
                         </tr>
                         <tr>

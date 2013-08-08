@@ -1,0 +1,110 @@
+﻿@model InformationProtection.Models.IpApprovalRequestViewData
+
+@{
+    ViewBag.Title = "Request Details";
+}
+@using InformationProtection.Models;
+@using IpModelData;
+@helper DisplayDetails( InformationProtection.Models.IpApprovalRequestViewData request) 
+{
+
+    if (request.RequestType == IpApprovalRequest.RequestTypeEnum.cellphone.ToString())
+    {
+         CellPhoneView ourModle = new CellPhoneView();
+         CellPhoneViewData data = ourModle.GetDevice(request.CellPhoneDeviceId.ToString());
+         ViewBag.ourData = data;
+         @RenderPage("~/Views/Shared/_CellPhoneDetails1.cshtml", data );
+    }  
+    if (request.RequestType == IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString())
+    {
+        RemoteAccessMdl ourModle = new RemoteAccessMdl();
+        RemoteAccessMdlData data = ourModle.GetRemoteAccessRequest(request.RemoteAccessID.ToString());
+         ViewBag.ourData = data;
+         @RenderPage("~/Views/Shared/_RemoteAccessDetails1.cshtml", data );
+    }
+    if (request.RequestType == IpApprovalRequest.RequestTypeEnum.wireless.ToString())
+    { 
+        WirelessMdl ourModle = new WirelessMdl();
+        WirelessMdlData data = ourModle.GetWirelessRequest(request.WirelessDeviceID);
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_WirelessDetails1.cshtml", data);
+    }
+    if (request.RequestType ==IpApprovalRequest.RequestTypeEnum.usb.ToString())
+    { 
+        UsbView ourModle = new UsbView();
+        UsbViewData data = ourModle.GetUsbRequest(request.UsbDeviceID);
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_UsbDetails1.cshtml", data);
+    }
+    if (request.RequestType == IpApprovalRequest.RequestTypeEnum.cdburnner.ToString())
+    { 
+        CdBurnerView ourModle = new CdBurnerView();
+        CdBurrnerViewData data = ourModle.GetCdBurnerRequest(request.CdburnerDeviceID.ToString());
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_CdBurrnerDetails1.cshtml", data);
+    }
+    if (request.RequestType == IpApprovalRequest.RequestTypeEnum.laptop.ToString())
+    {   
+        LapTopView ourModle = new LapTopView();
+        LapTopViewData data = ourModle.GetLapTopRequest(request.LapTopID.ToString());
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_LapTopDetails1.cshtml", data);
+    }
+    if (request.RequestType == IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString())
+    {
+        CellPhoneSyncMdl ourModle = new CellPhoneSyncMdl();
+        CellPhoneSyncMdlData data = ourModle.GetDevice(request.CellPhoneSyncDeviceID.ToString());
+        ViewBag.ourData = data;
+        @RenderPage("~/Views/Shared/_CellPhoneSyncDetails1.cshtml", data);
+    }
+}
+<fieldset>
+    <legend>Requestor Information</legend>
+    @{
+        InformationProtection.Models.IpRequestorViewData requestor = (InformationProtection.Models.IpRequestorViewData)(ViewData["requestor"]);
+        
+        @Html.Hidden("EmpID", requestor.EmpID, new { id = requestor.EmpID });
+        var id = requestor.EmpID;
+    }
+        <h2>Requestor</h2>
+    <table style="font-size:medium;width: 50%;">
+        <tr>
+            <td>
+                <p>User Form for Employee ID:</p>
+            </td>
+            <td>@Html.Label(requestor.EmpID as string)</td>
+        </tr>
+        <tr>
+            <td>
+                <p>Employee Name:</p>
+            </td>
+            <td>@Html.Label(requestor.FullName as string)</td>
+        </tr>
+
+
+    </table>
+</fieldset>
+
+@RenderPage("~/Views/Shared/_IpApprovalRequestDetails.cshtml")
+
+@DisplayDetails(Model)
+
+
+<table class="Table1Format" style="width: 98%;border:2px solid">
+    <tr>
+        <td style = "font-size:20px;font-weight:bold;text-align:left" >
+            @Html.ActionLink("View Pending", "ViewPendingRequest")
+        </td>
+
+    </tr>
+</table>
+
+<br /><br /><br /><br /><br />
+
+
+
+
+
+
+
+
