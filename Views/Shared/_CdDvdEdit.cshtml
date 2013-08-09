@@ -17,6 +17,16 @@
         <legend>CD/DVD Burner Request</legend>
 
         <table class="Table1Format">
+            @if (Model.CdburnerDeviceId != 0)
+            {
+                <tr>
+                    <td>Request Number:
+                    </td>
+                    <td>
+                        @Html.TextBox("CdburnerDeviceId", Model.CdburnerDeviceId, new { style = "width:50px", disabled = "true" })
+                    </td>
+                </tr>
+            }
             <tr style="height: 100px">
                 <td class="Request" colspan="2">This form is a request for CD/DVD for a
                     Renown Health exempt employee who requires this access to fulfill 
@@ -52,13 +62,13 @@
                             <td style="text-align: left" colspan="2">
                                 @Html.ValidationMessageFor(model => model.BusJustType, "*")
                                 @{
-                                                            var CdOnly = false;
-                                                            var CdAndDvd = false;
-                                                            if (Model.BusJustType != null)
-                                                            {
-                                                                CdOnly = Model.BusJustType.ToLower() == "cd writer only";
-                                                                CdAndDvd = Model.BusJustType.ToLower() == "cd/dvd writer";
-                                                            }
+            var CdOnly = false;
+            var CdAndDvd = false;
+            if (Model.BusJustType != null)
+            {
+                CdOnly = Model.BusJustType.ToLower() == "cd writer only";
+                CdAndDvd = Model.BusJustType.ToLower() == "cd/dvd writer";
+            }
                                 }
                                 <strong>Device being requested:
                                     <br />
@@ -192,11 +202,17 @@
     
     <table class="Table1Format" style="width: 98%; border: 2px solid">
         <tr>
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+            <td style="font-size: 20px; font-weight: bold; text-align: center">
+                <input type="submit" name="submitButton" value=@Page.SubmitType />
             </td>
 
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
-            </td>
+            @if (Model.CdburnerDeviceId == 0)
+            {
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
+                </td>
+            }
+
+
         </tr>
     </table>
 }

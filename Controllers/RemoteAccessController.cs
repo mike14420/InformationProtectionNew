@@ -22,6 +22,7 @@ namespace InformationProtection.Controllers
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
             ViewBag.ourData = data;
+            ViewBag.RequestId = data.RequestId;
             return View(data);
         }
 
@@ -87,25 +88,18 @@ namespace InformationProtection.Controllers
             {
                 return RedirectToAction("Index", "UsersView", null);
             }
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
             RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
             RemoteAccessMdlData data = remoteAccessMdl.GetRemoteAccessRequest(RemoteAccessId);
-
-            if (data.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+            if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
-                return RedirectToAction("ReSubmit", new { EmpID = EmpID, RemoteAccessId = RemoteAccessId });
+                return RedirectToAction("Details", new { EmpID = EmpID, RemoteAccessId = RemoteAccessId });
             }
-            if (data.RequestStatus == IpApprover.ApproveState.saved.ToString())
-            {
-                requestor = model.GetRequestor(EmpID);
-                ViewData["EmpID"] = EmpID;
-                ViewData["FullName"] = requestor.FullName;
-
-                ViewBag.requestor = requestor;
-                return View(data);
-            }
-            return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData requestor = ipRequestorView.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
+            return View(data);
         }
 
         //
@@ -113,7 +107,7 @@ namespace InformationProtection.Controllers
         [HttpPost]
         public ActionResult Edit(String EmpID, RemoteAccessMdlData data, FormCollection col, String submitButton)
         {
-            IpApprovalRequestView ourModel = new IpApprovalRequestView();
+            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
             data.RemoteConnectionType = col["RadBtnConnectionType"];
 
             RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
@@ -122,12 +116,12 @@ namespace InformationProtection.Controllers
             {
                 // save without checking model validataion
                 data.SaveInitialize();
-                ourModel.Update(data, IpApprover.ApproveState.saved);
+                ipApprovalRequestView.Update(data, IpApprover.ApproveState.saved);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             if (ModelState.IsValid)
             {
-                remoteAccessMdl.Update(data);
+                ipApprovalRequestView.Update(data, IpApprover.ApproveState.pending);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             IpRequestorViewData requestor;
@@ -141,51 +135,51 @@ namespace InformationProtection.Controllers
             return View(data);
         }
 
-        public ActionResult ReSubmit(String EmpID, String RemoteAccessId)
-        {
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
-            if (String.IsNullOrEmpty(EmpID))
-            {
-                return RedirectToAction("Index", "UsersView", null);
-            }
-            RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
-            RemoteAccessMdlData data = remoteAccessMdl.GetRemoteAccessRequest(RemoteAccessId);
-            if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
-            {
-                return RedirectToAction("Details", new { EmpID = EmpID, RemoteAccessId = RemoteAccessId });
-            }
-            requestor = model.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
-            ViewBag.requestor = requestor;
-            return View(data);
-        }
+        //public ActionResult ReSubmit(String EmpID, String RemoteAccessId)
+        //{
+        //    IpRequestorViewData requestor;
+        //    IpRequestorView model = new IpRequestorView();
+        //    if (String.IsNullOrEmpty(EmpID))
+        //    {
+        //        return RedirectToAction("Index", "UsersView", null);
+        //    }
+        //    RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
+        //    RemoteAccessMdlData data = remoteAccessMdl.GetRemoteAccessRequest(RemoteAccessId);
+        //    if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
+        //    {
+        //        return RedirectToAction("Details", new { EmpID = EmpID, RemoteAccessId = RemoteAccessId });
+        //    }
+        //    requestor = model.GetRequestor(EmpID);
+        //    ViewData["EmpID"] = EmpID;
+        //    ViewData["FullName"] = requestor.FullName;
+        //    ViewBag.requestor = requestor;
+        //    return View(data);
+        //}
 
-        //
-        // POST: /CdDvdRequest/Edit/5
+        ////
+        //// POST: /CdDvdRequest/Edit/5
 
-        [HttpPost]
-        public ActionResult ReSubmit(String EmpID, RemoteAccessMdlData data, FormCollection col, String submitButton)
-        {
-            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
-            data.RemoteConnectionType = col["RadBtnConnectionType"];
+        //[HttpPost]
+        //public ActionResult ReSubmit(String EmpID, RemoteAccessMdlData data, FormCollection col, String submitButton)
+        //{
+        //    IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+        //    data.RemoteConnectionType = col["RadBtnConnectionType"];
 
-            RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
-            remoteAccessMdl.ValidateConnectionType(data, ModelState);
-            if (ModelState.IsValid)
-            {
-                ipApprovalRequestView.ReSubmit(data);
-                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
-            }
-            IpRequestorViewData requestor;
-            IpRequestorView ipRequestorView = new IpRequestorView();
-            requestor = ipRequestorView.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
-            ViewBag.requestor = requestor;
-            return View(data);
-        }
+        //    RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
+        //    remoteAccessMdl.ValidateConnectionType(data, ModelState);
+        //    if (ModelState.IsValid)
+        //    {
+        //        ipApprovalRequestView.ReSubmit(data);
+        //        return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
+        //    }
+        //    IpRequestorViewData requestor;
+        //    IpRequestorView ipRequestorView = new IpRequestorView();
+        //    requestor = ipRequestorView.GetRequestor(EmpID);
+        //    ViewData["EmpID"] = EmpID;
+        //    ViewData["FullName"] = requestor.FullName;
+        //    ViewBag.requestor = requestor;
+        //    return View(data);
+        //}
 
         public ActionResult Print(String EmpID, String RemoteAccessId)
         {

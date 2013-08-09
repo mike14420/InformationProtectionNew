@@ -15,6 +15,16 @@
 
     
     <fieldset style="width: 96%">
+        @if (Model.CellPhoneReqId != 0)
+        {
+            <tr>
+                <td>Request Number:
+                </td>
+                <td>
+                    @Html.TextBox("LapTopDeviceId", Model.CellPhoneReqId, new { style = "width:50px", disabled = "true" })
+                </td>
+            </tr>
+        }
         <legend>CellPhone Request</legend>
         <h2 class="RenownHeader1">CELL PHONE USE/REQUEST FORM</h2>
         <table class="Table1Format">
@@ -112,13 +122,13 @@
                             <td style="text-align: center" colspan="2">
                                 @Html.ValidationMessageFor(model => model.RenownOwnedType, "*")
                                 @{
-                                              bool cellNew = false;
-                                              bool cellExisting = false;
-                                              if (Model.RenownOwnedType != null)
-                                              {
-                                                  cellNew = Model.RenownOwnedType.ToLower() == "new";
-                                                  cellExisting = Model.RenownOwnedType.ToLower() == "existing";
-                                              }
+        bool cellNew = false;
+        bool cellExisting = false;
+        if (Model.RenownOwnedType != null)
+        {
+            cellNew = Model.RenownOwnedType.ToLower() == "new";
+            cellExisting = Model.RenownOwnedType.ToLower() == "existing";
+        }
                                 }
                                 <strong>Renown-Owned (Paid by Renown)
                                     <br />
@@ -204,11 +214,17 @@
     
     <table class="Table1Format" style="width: 98%; border: 2px solid">
         <tr>
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+            <td style="font-size: 20px; font-weight: bold; text-align: center">
+                <input type="submit" name="submitButton" value=@Page.SubmitType />
             </td>
 
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
-            </td>
+            @if (Model.CellPhoneReqId == 0)
+            {
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
+                </td>
+            }
+
+
         </tr>
     </table>
 

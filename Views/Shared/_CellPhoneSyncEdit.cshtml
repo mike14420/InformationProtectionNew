@@ -12,8 +12,18 @@
     @Html.ValidationSummary()
     <fieldset style="width: 96%">
         <legend>CellPhone Sync Request</legend>
-
+        <h2 class="RenownHeader1">CELL PHONE SYNCING REQUEST FORM</h2>
         <table class="Table1Format">
+                        @if (Model.CellPhoneSyncDeviceId != 0)
+            {
+                <tr>
+                    <td>Request Number:
+                    </td>
+                    <td>
+                        @Html.TextBox("LapTopDeviceId", Model.CellPhoneSyncDeviceId, new { style = "width:50px", disabled = "true" })
+                    </td>
+                </tr>
+            }
             <tr style="height: 100px">
                 <td class="Request" colspan="4">This form is a request for mobile device use and/or syncing to internal Renown Health information 
                     for a Renown Health <u>exempt</u> employee who requires this access to fulfill their professional responsibilities on behalf of Renown. 
@@ -242,11 +252,17 @@
     
     <table class="Table1Format" style="width: 98%; border: 2px solid">
         <tr>
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+            <td style="font-size: 20px; font-weight: bold; text-align: center">
+                <input type="submit" name="submitButton" value=@Page.SubmitType />
             </td>
 
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
-            </td>
+            @if (Model.CellPhoneSyncDeviceId == 0)
+            {
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
+                </td>
+            }
+
+
         </tr>
     </table>
 

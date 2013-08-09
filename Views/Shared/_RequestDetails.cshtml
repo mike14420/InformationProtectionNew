@@ -1,4 +1,9 @@
-﻿@model InformationProtection.Models.IpApprovalRequestViewData
+﻿@{
+    int requestId = ViewBag.RequestId;
+    InformationProtection.Models.IpApprovalRequestView model = new InformationProtection.Models.IpApprovalRequestView();
+    InformationProtection.Models.IpApprovalRequestViewData data = model.GetApprovalRequest(requestId.ToString());
+}
+
 
 <fieldset>
     <legend>Approval Request</legend>
@@ -9,7 +14,7 @@
                 <strong>@Html.Label("SubmitDate")</strong>
             </td>
             <td>
-                @Html.TextBox("SubmitDate", Model.SubmitDate, new { style = "width:200px", disabled = "true" })
+                @Html.TextBox("SubmitDate", data.SubmitDate, new { style = "width:200px", disabled = "true" })
             </td>
         </tr>
         <tr>
@@ -17,7 +22,7 @@
                 @Html.Label("RequestType", new { style = "font-weight: bold" })
             </td>
             <td>
-                @Html.TextBox("RequestType", Model.RequestType, new { style = "width:200px", disabled = "true" })
+                @Html.TextBox("RequestType", data.RequestType, new { style = "width:200px", disabled = "true" })
             </td>
         </tr>
     </table>
@@ -31,7 +36,7 @@
                     <strong>Name: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("FirstSupName", Model.FirstSupName, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("FirstSupName", data.FirstSupName, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -39,7 +44,7 @@
                     <strong>Statue: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("FirstSupApproval", Model.FirstSupApproval, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("FirstSupApproval", data.FirstSupApproval, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
 
@@ -48,7 +53,7 @@
                     <strong>Date: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("FirstSupApprovalDate", Model.FirstSupApprovalDate, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("FirstSupApprovalDate", data.FirstSupApprovalDate, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -56,7 +61,7 @@
                     <strong>Comment: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("FirstSupComment", Model.FirstSupComment, new { style = "width:98%", disabled = "true" })
+                    @Html.TextBox("FirstSupComment", data.FirstSupComment, new { style = "width:98%", disabled = "true" })
                 </td>
             </tr>
         </table>
@@ -70,7 +75,7 @@
                     <strong>Name: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("SecondSupName", Model.SecondSupName, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("SecondSupName", data.SecondSupName, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -78,15 +83,16 @@
                     <strong>Statue: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("SecondSupApproval", Model.SecondSupApproval, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("SecondSupApproval", data.SecondSupApproval, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
+
             <tr>
                 <td>
                     <strong>Date: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("SecondSupApprovalDate", Model.SecondSupApprovalDate, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("SecondSupApprovalDate", data.SecondSupApprovalDate, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -94,10 +100,9 @@
                     <strong>Comment: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("SecondSupComment", Model.SecondSupComment, new { style = "width:98%", disabled = "true" })
+                    @Html.TextBox("SecondSupComment", data.SecondSupComment, new { style = "width:98%", disabled = "true" })
                 </td>
             </tr>
-
         </table>
     </fieldset>
 
@@ -109,7 +114,7 @@
                     <strong>Name: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("VpHrName", Model.VpHrName, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("VpHrName", data.VpHrName, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -117,7 +122,7 @@
                     <strong>Statue: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("VpHrApproval", Model.VpHrApproval, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("VpHrApproval", data.VpHrApproval, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -125,7 +130,7 @@
                     <strong>Date: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("VpHrApprovalDate", Model.VpHrApprovalDate, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("VpHrApprovalDate", data.VpHrApprovalDate, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -133,7 +138,7 @@
                     <strong>Comment: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("VpHrComment", Model.VpHrComment, new { style = "width:98%", disabled = "true" })
+                    @Html.TextBox("VpHrComment", data.VpHrComment, new { style = "width:98%", disabled = "true" })
                 </td>
             </tr>
 
@@ -149,7 +154,7 @@
                     <strong>Name: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("RhCfoName", Model.RhCfoName, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("RhCfoName", data.RhCfoName, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -157,7 +162,7 @@
                     <strong>Statue: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("RhCfoApproval", Model.RhCfoApproval, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("RhCfoApproval", data.RhCfoApproval, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -165,7 +170,7 @@
                     <strong>Date: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("RhCfoApprovalDate", Model.RhCfoApprovalDate, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("RhCfoApprovalDate", data.RhCfoApprovalDate, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -173,7 +178,7 @@
                     <strong>Comment: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("RhCfoComment", Model.RhCfoComment, new { style = "width:98%", disabled = "true" })
+                    @Html.TextBox("RhCfoComment", data.RhCfoComment, new { style = "width:98%", disabled = "true" })
                 </td>
             </tr>
 
@@ -189,7 +194,7 @@
                     <strong>Name: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("IpdName", Model.IpdName, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("IpdName", data.IpdName, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -197,7 +202,7 @@
                     <strong>Statue: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("IpdApproval", Model.IpdApproval, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("IpdApproval", data.IpdApproval, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -205,7 +210,7 @@
                     <strong>Date: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("IpdApprovalDate", Model.IpdApprovalDate, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("IpdApprovalDate", data.IpdApprovalDate, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -213,7 +218,7 @@
                     <strong>Comment: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("IpdComment", Model.IpdComment, new { style = "width:98%", disabled = "true" })
+                    @Html.TextBox("IpdComment", data.IpdComment, new { style = "width:98%", disabled = "true" })
                 </td>
             </tr>
 
@@ -231,7 +236,7 @@
                     <strong>Name: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("CioName", Model.CioName, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("CioName", data.CioName, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -239,7 +244,7 @@
                     <strong>Statue: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("CioApproval", Model.CioApproval, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("CioApproval", data.CioApproval, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -247,7 +252,7 @@
                     <strong>Date: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("CioApprovalDate", Model.CioApprovalDate, new { style = "width:200px", disabled = "true" })
+                    @Html.TextBox("CioApprovalDate", data.CioApprovalDate, new { style = "width:200px", disabled = "true" })
                 </td>
             </tr>
             <tr>
@@ -255,7 +260,7 @@
                     <strong>Comment: </strong>
                 </td>
                 <td>
-                    @Html.TextBox("CioComment", Model.CioComment, new { style = "width:98%", disabled = "true" })
+                    @Html.TextBox("CioComment", data.CioComment, new { style = "width:98%", disabled = "true" })
                 </td>
             </tr>
 

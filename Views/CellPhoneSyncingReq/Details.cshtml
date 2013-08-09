@@ -34,6 +34,7 @@
     </table>
 
 </fieldset>
+@RenderPage("~/Views/Shared/_RequestDetails.cshtml")
 @RenderPage("~/Views/Shared/_CellPhoneSyncDetails.cshtml")
 <table class="Table1Format" style="width: 98%;border:2px solid">
     <tr>
@@ -42,7 +43,7 @@
         </td>
 
         <td style="font-size: 20px; font-weight: bold; text-align: center">
-            @Html.ActionLink("Edit", "Edit", new { EmpID = id, CdburnerDeviceId = Model.CellPhoneSyncDeviceId }, null)
+            @Html.ActionLink("Edit", "Edit", new { EmpID = id, CellPhoneSyncDeviceId = Model.CellPhoneSyncDeviceId }, null)
         </td>
     </tr>
 </table>

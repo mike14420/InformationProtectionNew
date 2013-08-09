@@ -165,45 +165,16 @@ namespace InformationProtection.Models
         public bool Update(CdBurrnerViewData data, IpApprover.ApproveState state)
         {
             bool retValue = false;
-            CdBurnerView CdMdl = new CdBurnerView();
-            // Update the Device
-            bool result = CdMdl.Update(data);
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-            // Update the Request
-
-            retValue = approvalRequestDbAccess.InitApprovalRequest(data.CdburnerDeviceId, IpApprovalRequest.RequestTypeEnum.cdburnner.ToString(), state.ToString());
-
-            /// Get Copy of Request for email notifications
-            /// 
-            IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
-            IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
-            AddOtherProperties(ipApprovalRequestViewData);
-            // NOW Send notification to next approver
-            ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
-            approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
-            // Tell user his submit was success
-            approversEmailNotification.SendNotificationRequestApproved(ipApprovalRequestViewData);
-            return retValue;
-        }
-        // move state from resubmit to pending
-        public bool ReSubmit(CdBurrnerViewData data)
-        {
-            bool retValue = false;
             CdBurnerView cdBurnerView = new CdBurnerView();
-            // Update the Device
             bool result = cdBurnerView.Update(data);
 
-            /// Get Copy of Request for email notifications
-            /// 
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
             IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
             IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
             AddOtherProperties(ipApprovalRequestViewData);
-            // Update the Request
-            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
-
+            String oldState = ipApprovalRequestViewData.ApprovedStatus.ToString(); ;
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, oldState, IpApprover.ApproveState.pending.ToString());
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
             approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
@@ -252,19 +223,21 @@ namespace InformationProtection.Models
             approversEmailNotification.SendNotificationRequestApproved(Request);
             return retValue;
         }
+
         public bool Update(CellPhoneViewData data, IpApprover.ApproveState state)
         {
+            bool retValue = false;
             CellPhoneView cellPhoneView = new CellPhoneView();
             bool result = cellPhoneView.Update(data);
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;    
-            ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequest(data.CellPhoneReqId, IpApprovalRequest.RequestTypeEnum.cellphone.ToString(), state.ToString());
-            /// Get Copy of Request for email notifications
-            /// 
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            // GET A COPY OF THE REQUEST
             IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
             IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
+            String oldState = ipApprovalRequestViewData.ApprovedStatus.ToString(); ;
             AddOtherProperties(ipApprovalRequestViewData);
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, oldState, IpApprover.ApproveState.pending.ToString());
+
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
             approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
@@ -272,31 +245,31 @@ namespace InformationProtection.Models
             approversEmailNotification.SendNotificationRequestApproved(ipApprovalRequestViewData);
             return retValue;
         }
-        // move state from resubmit to pending
-        public bool ReSubmit(CellPhoneViewData data)
-        {
-            bool retValue = false;
-            CellPhoneView cellPhoneView = new CellPhoneView();
-            // Update the Device
-            bool result = cellPhoneView.Update(data);
+        //// move state from resubmit to pending
+        //public bool ReSubmit(CellPhoneViewData data)
+        //{
+        //    bool retValue = false;
+        //    CellPhoneView cellPhoneView = new CellPhoneView();
+        //    // Update the Device
+        //    bool result = cellPhoneView.Update(data);
 
-            /// Get Copy of Request for email notifications
-            /// 
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-            // Update the Request
-            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
+        //    /// Get Copy of Request for email notifications
+        //    /// 
+        //    String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+        //    ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+        //    // Update the Request
+        //    retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
 
-            // NOW Send notification to next approver
-            ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
-            approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
-            /// TELL USER HIS REQUEST HAS BEEN Submitted
-            IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
-            IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
-            AddOtherProperties(ipApprovalRequestViewData);
-            approversEmailNotification.SendNotificationRequestApproved(ipApprovalRequestViewData);
-            return retValue;
-        }
+        //    // NOW Send notification to next approver
+        //    ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
+        //    approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
+        //    /// TELL USER HIS REQUEST HAS BEEN Submitted
+        //    IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
+        //    IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
+        //    AddOtherProperties(ipApprovalRequestViewData);
+        //    approversEmailNotification.SendNotificationRequestApproved(ipApprovalRequestViewData);
+        //    return retValue;
+        //}
 
 
         public static CellPhoneViewData AddOtherProperties(CellPhoneViewData data)
@@ -339,17 +312,19 @@ namespace InformationProtection.Models
 
         public bool Update(LapTopViewData data, IpApprover.ApproveState state)
         {
+            bool retValue = false;
             LapTopView lapTopView = new LapTopView();
             bool result = lapTopView.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequest(data.LapTopDeviceId, IpApprovalRequest.RequestTypeEnum.laptop.ToString(), state.ToString());
-            /// Get Copy of Request for email notifications
-            /// 
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            //retValue = approvalRequestDbAccess.InitApprovalRequest(data.LapTopDeviceId, IpApprovalRequest.RequestTypeEnum.laptop.ToString(), state.ToString());
+              // GET A COPY OF THE REQUEST
             IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
             IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
+            String oldState = ipApprovalRequestViewData.ApprovedStatus.ToString(); ;
             AddOtherProperties(ipApprovalRequestViewData);
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, oldState, IpApprover.ApproveState.pending.ToString());
+     
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
             approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
@@ -357,31 +332,6 @@ namespace InformationProtection.Models
             approversEmailNotification.SendNotificationRequestApproved(ipApprovalRequestViewData);
             return retValue;
         }
-        // move state from resubmit to pending
-        public bool ReSubmit(LapTopViewData data)
-        {
-            bool retValue = false;
-            LapTopView lapTopView = new LapTopView();
-            // Update the Device
-            bool result = lapTopView.Update(data);
-
-            /// Get Copy of Request for email notifications
-            /// 
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-            // Update the Request
-            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
-            // NOW Send notification to next approver
-            ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
-            approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
-            /// TELL USER HIS REQUEST HAS BEEN Submitted
-            IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
-            IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
-            AddOtherProperties(ipApprovalRequestViewData);
-            approversEmailNotification.SendNotificationRequestApproved(ipApprovalRequestViewData);
-            return retValue;
-        }
-
         public static LapTopViewData AddOtherProperties(LapTopViewData data)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
@@ -421,20 +371,21 @@ namespace InformationProtection.Models
             return retValue;
 
         }
+
         public bool Update(UsbViewData data, IpApprover.ApproveState state)
         {
-            UsbView lapTopView = new UsbView();
-            bool result = lapTopView.Update(data);
+            bool retValue = false;
+            UsbView usbView = new UsbView();
+            bool result = usbView.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequest(data.UsbDeviceId, IpApprovalRequest.RequestTypeEnum.usb.ToString(), state.ToString());
-
-            /// Get Copy of Request for email notifications
-            /// 
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
+            // GET A COPY OF THE REQUEST
             IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
             IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
+            String oldState = ipApprovalRequestViewData.ApprovedStatus.ToString(); ;
             AddOtherProperties(ipApprovalRequestViewData);
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, oldState, IpApprover.ApproveState.pending.ToString());
+
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
             approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
@@ -442,6 +393,7 @@ namespace InformationProtection.Models
             approversEmailNotification.SendNotificationRequestApproved(ipApprovalRequestViewData);
             return retValue;
         }
+
         // move state from resubmit to pending
         public bool ReSubmit(UsbViewData data)
         {
@@ -506,40 +458,18 @@ namespace InformationProtection.Models
         }
         public bool Update(CellPhoneSyncMdlData data, IpApprover.ApproveState state)
         {
-            CellPhoneSyncMdl cellPhoneSyncMdl = new CellPhoneSyncMdl();
-            bool result = cellPhoneSyncMdl.Update(data);
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess model = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = model.InitApprovalRequest(data.CellPhoneSyncDeviceId, IpApprovalRequest.RequestTypeEnum.cellphonesync.ToString(), state.ToString());
-
-            /// Get Copy of Request for email notifications
-            /// 
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-            IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
-            IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
-            AddOtherProperties(ipApprovalRequestViewData);
-            // NOW Send notification to next approver
-            ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
-            approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
-            // Tell user his submit was success
-            approversEmailNotification.SendNotificationRequestApproved(ipApprovalRequestViewData);
-            return retValue;
-        }
-        // move state from resubmit to pending
-        public bool ReSubmit(CellPhoneSyncMdlData data)
-        {
             bool retValue = false;
             CellPhoneSyncMdl cellPhoneSyncMdl = new CellPhoneSyncMdl();
-            // Update the Device
             bool result = cellPhoneSyncMdl.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-            // Update the Request
-            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
-
+            // GET A COPY OF THE REQUEST
             IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
             IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
+            String oldState = ipApprovalRequestViewData.ApprovedStatus.ToString(); ;
             AddOtherProperties(ipApprovalRequestViewData);
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, oldState, IpApprover.ApproveState.pending.ToString());
+
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
             approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
@@ -584,25 +514,20 @@ namespace InformationProtection.Models
             approversEmailNotification.SendNotificationRequestApproved(Request);
             return retValue;
         }
-
-        /// <summary>
-        /// This occurs when user saves form and then makes chanes to resubmit
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
         public bool Update(WirelessMdlData data, IpApprover.ApproveState state)
         {
+            bool retValue = false;
             WirelessMdl wirelessMdl = new WirelessMdl();
             bool result = wirelessMdl.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = approvalRequestDbAccess.InitApprovalRequest(data.WirelessDeviceId, IpApprovalRequest.RequestTypeEnum.wireless.ToString(), state.ToString());
-            
-            /// Get Copy of Request for email notifications
+            // GET A COPY OF THE REQUEST
             IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
             IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
+            String oldState = ipApprovalRequestViewData.ApprovedStatus.ToString(); ;
             AddOtherProperties(ipApprovalRequestViewData);
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, oldState, IpApprover.ApproveState.pending.ToString());
+
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
             approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
@@ -674,42 +599,23 @@ namespace InformationProtection.Models
 
         public bool Update(RemoteAccessMdlData data, IpApprover.ApproveState state)
         {
+            bool retValue = false;
             RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
             bool result = remoteAccessMdl.Update(data);
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-            bool retValue = approvalRequestDbAccess.InitApprovalRequest(data.RemoteAccessId, IpApprovalRequest.RequestTypeEnum.remoteaccess.ToString(), state.ToString());
-
-            /// Get Copy of Request for email notifications
-            /// 
+            // GET A COPY OF THE REQUEST
             IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
             IpApprovalRequestViewData ipApprovalRequestViewData = Convert(request);
+            String oldState = ipApprovalRequestViewData.ApprovedStatus.ToString(); ;
             AddOtherProperties(ipApprovalRequestViewData);
+            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, oldState, IpApprover.ApproveState.pending.ToString());
+
             // NOW Send notification to next approver
             ApproversEmailNotification approversEmailNotification = new ApproversEmailNotification();
             approversEmailNotification.SubmitRequestToNextApprover(data.RequestId.ToString());
             // Tell user his submit was success
             approversEmailNotification.SendNotificationRequestApproved(ipApprovalRequestViewData);
-            return retValue;
-        }
-
-        // move state from resubmit to pending
-        public bool ReSubmit(RemoteAccessMdlData data)
-        {
-            bool retValue = false;
-            RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
-            // Update the Device
-            bool result = remoteAccessMdl.Update(data);
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
-            // Update the Request
-            retValue = approvalRequestDbAccess.ChangeState(data.RequestId, IpApprover.ApproveState.resubmit.ToString(), IpApprover.ApproveState.pending.ToString());
-            IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(data.RequestId.ToString());
-            ApproversEmailNotification Notification = new ApproversEmailNotification();
-            IpApprovalRequestViewData ourRequest = Convert(request);
-            AddOtherProperties(ourRequest);
-            Notification.SubmitRequestToNextApprover(ourRequest.Id.ToString());
-            
             return retValue;
         }
         public static RemoteAccessMdlData AddOtherProperties(RemoteAccessMdlData data)
@@ -961,15 +867,15 @@ namespace InformationProtection.Models
                 case IpApprover.ApproveState.not_submitted:
                 case IpApprover.ApproveState.pending:
                 case IpApprover.ApproveState.rejected:
-                    ipApprovalRequest.RequestDetailsLink = String.Format("<a href=\"/{0}/Details?EmpID={1}&{2}={3}\">Details</a>",
+                    ipApprovalRequest.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&{2}={3}\">Details</a>",
                         devController, EmpId, devIdStr, devIdInt);
                     break;
                 case IpApprover.ApproveState.resubmit:
-                    ipApprovalRequest.RequestDetailsLink = String.Format("<a href=\"/{0}/ReSubmit?EmpID={1}&{2}={3}\">ReSubmit</a>",
+                    ipApprovalRequest.RequestDetailsLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&{2}={3}\">ReSubmit</a>",
                         devController, EmpId, devIdStr, devIdInt);
                     break;
                 case IpApprover.ApproveState.saved:
-                    ipApprovalRequest.RequestDetailsLink = String.Format("<a href=\"/{0}/Edit?EmpID={1}&{2}={3}\">Edit</a>",
+                    ipApprovalRequest.RequestDetailsLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&{2}={3}\">Edit</a>",
                         devController, EmpId, devIdStr, devIdInt);
                     break;
             }
@@ -1084,7 +990,7 @@ namespace InformationProtection.Models
         internal void ApproveProcessing(string ApproversEmpID, string ApproveOrReject, List<int> approvalList, String Comment)
         {
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            ApprovalRequestDbAccess approvalReqDb = new ApprovalRequestDbAccess(connectionString);
+            ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
 
 
             int intApproversEmpID = 0;
@@ -1108,7 +1014,7 @@ namespace InformationProtection.Models
             {
                 foreach (int index in approvalList)
                 {
-                    IpApprovalRequest request = approvalReqDb.GetApprovalRequest(index.ToString());
+                    IpApprovalRequest request = approvalRequestDbAccess.GetApprovalRequest(index.ToString());
                     if (request != null)
                     {
                         if (request.FirstSupEmpId == intApproversEmpID)
@@ -1116,42 +1022,42 @@ namespace InformationProtection.Models
                             request.FirstSupApproval = statusUpdate.ToString();
                             request.FirstSupApprovalDate = DateTime.Now.Date;
                             request.FirstSupComment = Comment;
-                            approvalReqDb.UpdateFirstSupRequest(request);
+                            approvalRequestDbAccess.UpdateFirstSupRequest(request);
                         }
                         if (request.SecondSupEmpId == intApproversEmpID)
                         {
                             request.SecondSupApproval = statusUpdate.ToString();
                             request.SecondSupApprovalDate = DateTime.Now.Date;
                             request.SecondSupComment = Comment;
-                            approvalReqDb.UpdateSecondSupRequest(request);
+                            approvalRequestDbAccess.UpdateSecondSupRequest(request);
                         }
                         if (request.VpHrApproverEmpId == intApproversEmpID)
                         {
                             request.VpHrApproval = statusUpdate.ToString();
                             request.VpHrApprovalDate = DateTime.Now.Date;
                             request.VpHrComment = Comment;
-                            approvalReqDb.UpdateVphrRequest(request);
+                            approvalRequestDbAccess.UpdateVphrRequest(request);
                         }
                         if (request.RhCfoApproverEmpId == intApproversEmpID)
                         {
                             request.RhCfoApproval = statusUpdate.ToString();
                             request.RhCfoApprovalDate = DateTime.Now.Date;
                             request.RhCfoComment = Comment;
-                            approvalReqDb.UpdateRhCfoRequest(request);
+                            approvalRequestDbAccess.UpdateRhCfoRequest(request);
                         }
                         if (request.CioApproverEmpId == intApproversEmpID)
                         {
                             request.CioApproval = statusUpdate.ToString();
                             request.CioApprovalDate = DateTime.Now.Date;
                             request.CioComment = Comment;
-                            approvalReqDb.UpdateCioRequest(request);
+                            approvalRequestDbAccess.UpdateCioRequest(request);
                         }
                         if (request.IpdApproverEmpId == intApproversEmpID)
                         {
                             request.IpdApproval = statusUpdate.ToString();
                             request.IpdApprovalDate = DateTime.Now.Date;
                             request.IpdComment = Comment;
-                            approvalReqDb.UpdateIpdRequest(request);
+                            approvalRequestDbAccess.UpdateIpdRequest(request);
                         }
                     }
                     IpApprovalRequestViewData req = Convert(request);

@@ -31,6 +31,7 @@ namespace InformationProtection.Controllers
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
             ViewBag.ourData = data;
+            ViewBag.RequestId = data.RequestId;
             return View(data);
         }
 
@@ -105,21 +106,21 @@ namespace InformationProtection.Controllers
             UsbViewData data = null;
             int deviceId = 0;
             int.TryParse(UsbDeviceId, out deviceId);
-            if (deviceId > 0)
+            if (deviceId == 0)
             {
-                data = usbView.GetUsbRequest(deviceId);
-            }      
-            if (data != null && (data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
+                return RedirectToAction("Index", "UsersView", null);
+            } 
+            data = usbView.GetUsbRequest(deviceId);
+            if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
-                IpRequestorViewData requestor;
-                IpRequestorView model = new IpRequestorView();
-                requestor = model.GetRequestor(EmpID);
-                ViewData["EmpID"] = EmpID;
-                ViewData["FullName"] = requestor.FullName;
-                ViewBag.requestor = requestor;
-                return View(data);
+                return RedirectToAction("Details", new { EmpID = EmpID, UsbDeviceId = UsbDeviceId });
             }
-            return RedirectToAction("Index", "UsersView", null);
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData requestor = ipRequestorView.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
+            return View(data);
         }
 
         //
@@ -142,7 +143,7 @@ namespace InformationProtection.Controllers
             }
             if (ModelState.IsValid)
             {
-                ourModel.Update(data, IpApprover.ApproveState.not_submitted);
+                ourModel.Update(data, IpApprover.ApproveState.pending);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             IpRequestorViewData requestor;
@@ -154,59 +155,59 @@ namespace InformationProtection.Controllers
             return View(data);
         }
 
-        public ActionResult ReSubmit(String EmpID, String UsbDeviceId)
-        {
+        //public ActionResult ReSubmit(String EmpID, String UsbDeviceId)
+        //{
 
-            if (String.IsNullOrEmpty(EmpID))
-            {
-                return RedirectToAction("Index", "UsersView", null);
-            }
-            UsbView usbView = new UsbView();
-            UsbViewData data = null;
-            int deviceId;
-            int.TryParse(UsbDeviceId, out deviceId);
-            if (deviceId > 0)
-            {
-                data = usbView.GetUsbRequest(deviceId);
-            }  
-            if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
-            {
-                return RedirectToAction("Details", new { EmpID = EmpID, UsbDeviceId = UsbDeviceId });
-            }
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
-            requestor = model.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
-            ViewBag.requestor = requestor;
-            return View(data);
-        }
+        //    if (String.IsNullOrEmpty(EmpID))
+        //    {
+        //        return RedirectToAction("Index", "UsersView", null);
+        //    }
+        //    UsbView usbView = new UsbView();
+        //    UsbViewData data = null;
+        //    int deviceId;
+        //    int.TryParse(UsbDeviceId, out deviceId);
+        //    if (deviceId > 0)
+        //    {
+        //        data = usbView.GetUsbRequest(deviceId);
+        //    }  
+        //    if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
+        //    {
+        //        return RedirectToAction("Details", new { EmpID = EmpID, UsbDeviceId = UsbDeviceId });
+        //    }
+        //    IpRequestorViewData requestor;
+        //    IpRequestorView model = new IpRequestorView();
+        //    requestor = model.GetRequestor(EmpID);
+        //    ViewData["EmpID"] = EmpID;
+        //    ViewData["FullName"] = requestor.FullName;
+        //    ViewBag.requestor = requestor;
+        //    return View(data);
+        //}
 
         //
         // POST: /CdDvdRequest/Edit/5
 
-        [HttpPost]
-        public ActionResult ReSubmit(String EmpID, UsbViewData data, FormCollection col, String submitButton)
-        {
-            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
-            data.RenownOwned = col["RadBtnRenownOwned"];
+        //[HttpPost]
+        //public ActionResult ReSubmit(String EmpID, UsbViewData data, FormCollection col, String submitButton)
+        //{
+        //    IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+        //    data.RenownOwned = col["RadBtnRenownOwned"];
 
-            UsbView usbView = new UsbView();
-            usbView.ValidateRenownOwned(data, ModelState);
-            if (ModelState.IsValid)
-            {
-                ipApprovalRequestView.ReSubmit(data);
-                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
-            }
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
-            requestor = model.GetRequestor(EmpID);
+        //    UsbView usbView = new UsbView();
+        //    usbView.ValidateRenownOwned(data, ModelState);
+        //    if (ModelState.IsValid)
+        //    {
+        //        ipApprovalRequestView.ReSubmit(data);
+        //        return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
+        //    }
+        //    IpRequestorViewData requestor;
+        //    IpRequestorView model = new IpRequestorView();
+        //    requestor = model.GetRequestor(EmpID);
 
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
-            ViewBag.requestor = requestor;
-            return View(data);
-        }
+        //    ViewData["EmpID"] = EmpID;
+        //    ViewData["FullName"] = requestor.FullName;
+        //    ViewBag.requestor = requestor;
+        //    return View(data);
+        //}
 
         public ActionResult Print(String EmpID, String UsbDeviceId)
         {

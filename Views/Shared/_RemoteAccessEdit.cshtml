@@ -18,6 +18,16 @@
         @Html.Hidden("EmpID", ViewData["EmpID"])
         @Html.ValidationSummary()
         <table class="Table1Format">
+            @if (Model.RemoteAccessId != 0)
+            {
+                <tr>
+                    <td>Request Number:
+                    </td>
+                    <td>
+                        @Html.TextBox("LapTopDeviceId", Model.RemoteAccessId, new { style = "width:50px", disabled = "true" })
+                    </td>
+                </tr>
+            }
             <tr style="width: 98%">
                 <td class="Request" colspan="4">This form is a request for 
                    This form is a request for remote access to internal Renown Health applications of systems for an employee who requires this
@@ -142,15 +152,15 @@
                 <td style="text-align: left" colspan="2">
                     @Html.ValidationMessageFor(model => model.RemoteConnectionType, "*")
                     @{
-                                                        bool cableType = false;
-                                                        bool dslType = false;
-                                                        bool dialUpType = false;
-                                                        if (Model.RemoteConnectionType != null)
-                                                        {
-                                                            cableType = Model.RemoteConnectionType.ToLower() == "cable";
-                                                            dslType = Model.RemoteConnectionType.ToLower() == "dsl";
-                                                            dialUpType = Model.RemoteConnectionType.ToLower() == "dialup";
-                                                        }
+            bool cableType = false;
+            bool dslType = false;
+            bool dialUpType = false;
+            if (Model.RemoteConnectionType != null)
+            {
+                cableType = Model.RemoteConnectionType.ToLower() == "cable";
+                dslType = Model.RemoteConnectionType.ToLower() == "dsl";
+                dialUpType = Model.RemoteConnectionType.ToLower() == "dialup";
+            }
                     }
                     <strong>My Remote Connection is:
                                     <br />
@@ -170,7 +180,7 @@
         </table>
 
 
-        <table class="Table1Format" style="width: 100%;border:groove">
+        <table class="Table1Format" style="width: 100%; border: groove">
 
             <tr>
                 <td colspan="4">
@@ -233,11 +243,17 @@
     </fieldset> 
     <table class="Table1Format" style="width: 98%; border: 2px solid">
         <tr>
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+            <td style="font-size: 20px; font-weight: bold; text-align: center">
+                <input type="submit" name="submitButton" value=@Page.SubmitType />
             </td>
 
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
-            </td>
+            @if (Model.RemoteAccessId == 0)
+            {
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
+                </td>
+            }
+
+
         </tr>
     </table>
 

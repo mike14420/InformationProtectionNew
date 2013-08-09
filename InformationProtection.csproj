@@ -1303,6 +1303,7 @@
     <Content Include="Views\AdminView\ViewRejectedRequest.cshtml" />
     <Content Include="Views\AdminView\ViewApprovedRequest.cshtml" />
     <Content Include="Views\AdminView\Details.cshtml" />
+    <Content Include="Views\Shared\_RequestDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

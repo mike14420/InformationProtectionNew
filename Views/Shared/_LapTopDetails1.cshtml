@@ -24,13 +24,7 @@
                 employee file. All access is subject to Renown Health policies and procedures. Thank you. 
             </td>
         </tr>
-        <tr>
-            <td style="width: 150px">
-                <strong>Type :
-                </strong>
-                @Html.TextBox("BusJustType", data.BusJustType, new { style = "width:100px", disabled = "true" })
-            </td>
-        </tr>
+
         <tr>
             <td style="background-color: #D4D0C8; text-align: left" colspan="2">
                 <strong>Business justification: </strong>
@@ -62,170 +56,176 @@
 
 
 
-                        <td colspan="2" style="border: groove">
-                            <table class="box1">
-                                <tr>
-                                    <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
-                                        @Html.CheckBox("SecuredAck1", true, new { disabled = "true" })
-                                        I verify that everything written 
+            <td colspan="2" style="border: groove">
+                <table class="box1">
+                    <tr>
+                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                            @Html.CheckBox("SecuredAck1", true, new { disabled = "true" })
+                            I verify that everything written 
                                herein is true to the best of my knowledge. 
                                 I realize that laptop use and access to Renown Health computer systems and information assets are a privilege and are monitored and subject to 
                                 Renown Health’s policies and procedures concerning professional 
                                 use of computers and information systems, and 
                                 <strong>RENOWN.IRP.210 Mobile Device Usage Policy</strong>.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
-                                        @Html.CheckBox("SecuredAck2", true, new { disabled = "true" })
-                                        I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                            @Html.CheckBox("SecuredAck2", true, new { disabled = "true" })
+                            I understand that non-compliance with Renown Health Policies may result in immediate termination of my 
                                Laptop usage. 
                                In addition, this action may occur with Renown Health employment termination.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
-                                        @Html.CheckBox("SecuredAck3", true, new { disabled = "true" })
-                                        I understand I am responsible for: 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 10px"></td>
-                                    <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
-                                        @Html.CheckBox("SecuredAck4", true, new { disabled = "true" })
-                                        Logical security </td>
-
-                                    <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
-                                        @Html.CheckBox("SecuredAck5", true, new { disabled = "true" })
-                                        Physical security</td>
-
-                                    <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">
-                                        @Html.CheckBox("SecuredAck6", true, new { disabled = "true" })
-                                        Immediate Notification: loss/theft</td>
-                                </tr>
-                            </table>
                         </td>
-
-            </tr>
-        </table>
-
-                <table class="Table1Format" style="width: 100%">
+                    </tr>
                     <tr>
-                        <td colspan="2" style="border: groove">
-                            <table class="box1">
-                                <tr>
-                                    <td colspan="2" style="text-align: center"><strong>Security Requirements:</strong></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                                        @Html.CheckBox("SecurityAck1", data.SecurityAck1, new { disabled = "true" })
-                                        Business Use Only
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                                        @Html.CheckBox("SecurityAck2", data.SecurityAck2, new { disabled = "true" })
-                                        Must have Renown network account (UserID)
-                                    </td>
-                                </tr>
+                        <td colspan="4" style="text-align: left; vertical-align: top; text-wrap: none; border: hidden">
+                            @Html.CheckBox("SecuredAck3", true, new { disabled = "true" })
+                            I understand I am responsible for: 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10px"></td>
+                        <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                            @Html.CheckBox("SecuredAck4", true, new { disabled = "true" })
+                            Logical security </td>
 
-                                <tr>
-                                    <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                                        @Html.CheckBox("SecurityAck3", data.SecurityAck3, new { disabled = "true" })
-                                        Assigned to individual, not to a Department
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                                        @Html.CheckBox("SecurityAck4", data.SecurityAck4, new { disabled = "true" })
-                                        Use encryption
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                                        @Html.CheckBox("SecurityAck5", data.SecurityAck5, new { disabled = "true" })
-                                        Physically secure device
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                                        @Html.CheckBox("SecurityAck6", data.SecurityAck6, new { disabled = "true" })
-                                        Connect laptop to Renown wireless network - weekly
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                                        @Html.CheckBox("SecurityAck7", data.SecurityAck7, new { disabled = "true" })
-                                        Do not store information on laptop; backup all information to network drive
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                                        @Html.CheckBox("SecurityAck8", data.SecurityAck8, new { disabled = "true" })
-                                        Do not disable any security or technical configurations
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
-                                        @Html.CheckBox("SecurityAck9", data.SecurityAck9, new { disabled = "true" })
-                                        Do not install any software or hardware
-                                    </td>
-                                </tr>
+                        <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 100px">
+                            @Html.CheckBox("SecuredAck5", true, new { disabled = "true" })
+                            Physical security</td>
 
-                            </table>
-                            <table class="Table1Format" style="border: groove">
-                                <tr>
-                                    <td colspan="1">
-                                        <div class="editor-label">
-                                            <strong>
-                                                @Html.LabelFor(model => data.Model)
-                                            </strong>
-                                        </div>
-                                    </td>
-                                    <td colspan="1" style="text-align: left">
-                                        <div class="editor-field">
-                                            @Html.TextBox("Model", data.Model, new { style = "width:300px", disabled = "true" })
-                                            @Html.ValidationMessageFor(model => data.Model, "*")
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="editor-label">
-                                            <strong>
-                                                @Html.LabelFor(model => data.SerialNumber)
-                                            </strong>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        @Html.TextBox("SerialNumber", data.SerialNumber, new { style = "width:300px", disabled = "true" })
+                        <td style="text-align: left; vertical-align: top; text-wrap: none; border: hidden; width: 200px">
+                            @Html.CheckBox("SecuredAck6", true, new { disabled = "true" })
+                            Immediate Notification: loss/theft</td>
+                    </tr>
+                </table>
+            </td>
 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; width: 75px">
-                                        <strong>Employee Signature:</strong>
-                                    </td>
-                                    <td>
-                                        @Html.TextBox("EmployeeSignature", null, new { style = "width:300px", disabled = "true" })
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; width: 75px">
-                                        <strong>Date:</strong>
-                                    </td>
-                                    <td>
-                                        @Html.TextBox("SubmitDate", DateTime.Now, new { style = "width:200px", disabled = "true" })
-                                    </td>
-                                </tr>
-                            </table>
+        </tr>
+    </table>
+
+    <table class="Table1Format" style="width: 100%">
+        <tr>
+            <td colspan="2" style="border: groove">
+                <table class="box1">
+                    <tr>
+                        <td colspan="2" style="text-align: center"><strong>Security Requirements:</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.CheckBox("SecurityAck1", data.SecurityAck1, new { disabled = "true" })
+                            Business Use Only
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.CheckBox("SecurityAck2", data.SecurityAck2, new { disabled = "true" })
+                            Must have Renown network account (UserID)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.CheckBox("SecurityAck3", data.SecurityAck3, new { disabled = "true" })
+                            Assigned to individual, not to a Department
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.CheckBox("SecurityAck4", data.SecurityAck4, new { disabled = "true" })
+                            Use encryption
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.CheckBox("SecurityAck5", data.SecurityAck5, new { disabled = "true" })
+                            Physically secure device
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.CheckBox("SecurityAck6", data.SecurityAck6, new { disabled = "true" })
+                            Connect laptop to Renown wireless network - weekly
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.CheckBox("SecurityAck7", data.SecurityAck7, new { disabled = "true" })
+                            Do not store information on laptop; backup all information to network drive
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.CheckBox("SecurityAck8", data.SecurityAck8, new { disabled = "true" })
+                            Do not disable any security or technical configurations
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            @Html.CheckBox("SecurityAck9", data.SecurityAck9, new { disabled = "true" })
+                            Do not install any software or hardware
+                        </td>
+                    </tr>
+
+                </table>
+                <table class="Table1Format" style="border: groove">
+                    <tr>
+                        <td colspan="1">
+
+                            <strong>Type
+                            </strong>
+                        </td>
+                        <td style="width: 150px">
+
+                            @Html.TextBox("BusJustType", data.BusJustType, new { style = "width:100px", disabled = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            <div class="editor-label">
+                                <strong>
+                                    @Html.LabelFor(model => data.Model)
+                                </strong>
+                            </div>
+                        </td>
+                        <td colspan="1" style="text-align: left">
+                            <div class="editor-field">
+                                @Html.TextBox("Model", data.Model, new { style = "width:300px", disabled = "true" })
+                                @Html.ValidationMessageFor(model => data.Model, "*")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="editor-label">
+                                <strong>
+                                    @Html.LabelFor(model => data.SerialNumber)
+                                </strong>
+                            </div>
+                        </td>
+                        <td>
+                            @Html.TextBox("SerialNumber", data.SerialNumber, new { style = "width:300px", disabled = "true" })
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; width: 75px">
+                            <strong>Employee Signature:</strong>
+                        </td>
+                        <td>
+                            @Html.TextBox("EmployeeSignature", data.EmployeeSignature, new { style = "width:300px", disabled = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; width: 75px">
+                            <strong>Date:</strong>
+                        </td>
+                        <td>
+                            @Html.TextBox("SubmitDate", DateTime.Now, new { style = "width:200px", disabled = "true" })
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
-
-
     </table>
 
 </fieldset>

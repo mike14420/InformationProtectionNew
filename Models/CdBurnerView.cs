@@ -54,7 +54,6 @@ namespace InformationProtection.Models
 
         public List<CdBurrnerViewData> CdDvdRequestFor(String EmpId, String Controller)
         {
-            // FIRST Get the requestor ID
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpId);
             int RequestorId = requestor.IpRequestorId;
@@ -81,7 +80,7 @@ namespace InformationProtection.Models
                 }
                 if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
                 {
-                    item.RequestEditLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&CdburnerDeviceId={2}\">ReSubmit</a>",
+                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&CdburnerDeviceId={2}\">ReSubmit</a>",
                         Controller, requestor.EmpID, item.CdburnerDeviceId);
                 }
             }

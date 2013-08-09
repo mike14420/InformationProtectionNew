@@ -30,6 +30,7 @@ namespace InformationProtection.Controllers
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
             ViewBag.ourData = data;
+            ViewBag.RequestId = data.RequestId;
             return View(data);
         }
         //
@@ -49,7 +50,6 @@ namespace InformationProtection.Controllers
                 requestor = model.GetRequestor(EmpID);
             }
             CdBurrnerViewData data = new CdBurrnerViewData();
-            data.RequestorId = requestor.IpRequestorId;
             ViewData["EmpID"] = requestor.EmpID; ;
             ViewData["FullName"] = requestor.FullName;
             ViewBag.requestor = requestor;
@@ -78,12 +78,11 @@ namespace InformationProtection.Controllers
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             // show user the form with the error messages
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
-            requestor = model.GetRequestor(EmpID);
+            
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData requestor = ipRequestorView.GetRequestor(EmpID);
             ViewData["EmpID"] = EmpID;
             ViewData["FullName"] = requestor.FullName;
-            data.RequestorId = requestor.IpRequestorId;
             ViewBag.requestor = requestor;
             return View(data);
         }
@@ -98,30 +97,22 @@ namespace InformationProtection.Controllers
             {
                 return RedirectToAction("Index", "UsersView", null);
             }
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
+
             CdBurnerView cdBurnerView = new CdBurnerView();
-            CdBurrnerViewData data = null;
-            data = cdBurnerView.GetCdBurnerRequest(CdburnerDeviceId);
-
-            if (data.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+            CdBurrnerViewData data = cdBurnerView.GetCdBurnerRequest(CdburnerDeviceId);
+            if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
-                return RedirectToAction("ReSubmit", new { EmpID=EmpID, CdburnerDeviceId = CdburnerDeviceId });
+                return RedirectToAction("Details", new { EmpID = EmpID, CdburnerDeviceId = CdburnerDeviceId });
             }
-            if (data.RequestStatus == IpApprover.ApproveState.saved.ToString())
-            {
-                requestor = model.GetRequestor(EmpID);
-                ViewData["EmpID"] = EmpID;
-                ViewData["FullName"] = requestor.FullName;
 
-                ViewBag.requestor = requestor;
-                return View(data);
-            }
-            return RedirectToAction("Index", "UsersView", null);
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData requestor = ipRequestorView.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
+            return View(data);
         }
 
-        //
-        // POST: /CdDvdRequest/Edit/5
 
         [HttpPost]
         public ActionResult Edit(String EmpID, CdBurrnerViewData data, FormCollection col, String submitButton)
@@ -141,62 +132,12 @@ namespace InformationProtection.Controllers
             }
             if (ModelState.IsValid)
             {
-                ourModel.Update(data, IpApprover.ApproveState.not_submitted);
+                ourModel.Update(data, IpApprover.ApproveState.pending);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             IpRequestorViewData requestor;
             IpRequestorView model = new IpRequestorView();
             requestor = model.GetRequestor(EmpID);
-
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
-            ViewBag.requestor = requestor;
-            data.RequestorId = requestor.IpRequestorId;
-            return View(data);
-        }
-
-        public ActionResult ReSubmit(String EmpID, String CdburnerDeviceId)
-        {
-
-            if (String.IsNullOrEmpty(EmpID))
-            {
-                return RedirectToAction("Index", "UsersView", null);
-            }
-            CdBurnerView cdBurnerView = new CdBurnerView();
-            CdBurrnerViewData data = null;
-            data = cdBurnerView.GetCdBurnerRequest(CdburnerDeviceId);
-            if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
-            {
-                return RedirectToAction("Details", new { EmpID = EmpID, CdburnerDeviceId = CdburnerDeviceId });
-            }
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
-            requestor = model.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
-
-            ViewBag.requestor = requestor;
-            return View(data);
-        }
-
-        //
-        // POST: /CdDvdRequest/Edit/5
-
-        [HttpPost]
-        public ActionResult ReSubmit(String EmpID, CdBurrnerViewData data, FormCollection col, String submitButton)
-        {
-            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
-            data.BusJustType = col["RadBtnWriterType"];
-
-            CdBurnerView cdBurnerView = new CdBurnerView();
-            cdBurnerView.ValidateRenownOwned(data, ModelState);
-            if (ModelState.IsValid)
-            {
-                ipApprovalRequestView.ReSubmit(data);
-                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
-            }           
-            IpRequestorView model = new IpRequestorView();
-            IpRequestorViewData requestor = model.GetRequestor(EmpID);
             ViewData["EmpID"] = EmpID;
             ViewData["FullName"] = requestor.FullName;
             ViewBag.requestor = requestor;

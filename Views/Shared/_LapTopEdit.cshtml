@@ -17,6 +17,16 @@
         <h2 class="RenownHeader1">LAP TOP USE/REQUEST FORM</h2>
 
         <table class="Table1Format">
+            @if (Model.LapTopDeviceId != 0)
+            {
+                <tr>
+                    <td>Request Number:
+                    </td>
+                    <td>
+                        @Html.TextBox("LapTopDeviceId", Model.LapTopDeviceId, new { style = "width:50px", disabled = "true" })
+                    </td>
+                </tr>
+            }
             <tr style="width: 98%">
                 <td class="Request" colspan="4">This form is a request for 
                     <strong>
@@ -46,13 +56,13 @@
                                         <td style="text-align: center" colspan="2">
                                             @Html.ValidationMessageFor(model => model.BusJustType, "*")
                                             @{
-                                                          bool newType = false;
-                                                          bool existingType = false;
-                                                          if (Model.BusJustType != null)
-                                                          {
-                                                              newType = Model.BusJustType.ToLower() == "new";
-                                                              existingType = Model.BusJustType.ToLower() == "existing";
-                                                          }
+            bool newType = false;
+            bool existingType = false;
+            if (Model.BusJustType != null)
+            {
+                newType = Model.BusJustType.ToLower() == "new";
+                existingType = Model.BusJustType.ToLower() == "existing";
+            }
                                             }
                                             <strong>
                                                 <br />
@@ -272,11 +282,17 @@
     
     <table class="Table1Format" style="width: 98%; border: 2px solid">
         <tr>
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+            <td style="font-size: 20px; font-weight: bold; text-align: center">
+                <input type="submit" name="submitButton" value=@Page.SubmitType />
             </td>
 
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
-            </td>
+            @if (Model.LapTopDeviceId == 0)
+            {
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
+                </td>
+            }
+
+
         </tr>
     </table>
 

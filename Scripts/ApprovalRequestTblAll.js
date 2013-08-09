@@ -18,9 +18,9 @@ $(document).ready(function () {
             RequestType: {
                 title: 'Request Type'
             },
-            //Identifier: {
-            //    title: '(id,devId)'
-            //},
+            Identifier: {
+                title: '(id,devId)'
+            },
             ApprovedStatus: {
                 title: 'Status'
             },

@@ -64,7 +64,7 @@ namespace InformationProtection.Models
                 IpApprovalRequestView.AddOtherProperties(item);
                 item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&LapTopDeviceId={2}\">Details</a>",
                     Controller, requestor.EmpID, item.LapTopDeviceId);
-                item.RequestEditLink = String.Empty;
+                String message = String.Empty;
                 if (item.RequestStatus == IpApprover.ApproveState.saved.ToString())
                 {
                     item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&LapTopDeviceId={2}\">Edit</a>",
@@ -72,9 +72,11 @@ namespace InformationProtection.Models
                 }
                 if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
                 {
-                    item.RequestEditLink = String.Format("<a href=\"{0}/ReSubmit?EmpID={1}&LapTopDeviceId={2}\">ReSubmit</a>",
+                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&LapTopDeviceId={2}\">Resubmit</a>",
                         Controller, requestor.EmpID, item.LapTopDeviceId);
                 }
+                
+
             }
             return retData;
         }

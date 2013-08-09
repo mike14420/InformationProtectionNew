@@ -24,6 +24,7 @@ namespace InformationProtection.Controllers
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
             ViewBag.ourData = data;
+            ViewBag.RequestId = data.RequestId;
             return View(data);
         }
 
@@ -111,19 +112,15 @@ namespace InformationProtection.Controllers
             {
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            if (data.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
+            if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
-                return RedirectToAction("ReSubmit", new { EmpID = EmpID, WirelessDeviceId = WirelessDeviceId });
+                return RedirectToAction("Details", new { EmpID = EmpID, WirelessDeviceId = WirelessDeviceId });
             }
-            if (data.RequestStatus == IpApprover.ApproveState.saved.ToString())
-            {
-                requestor = ipRequestorView.GetRequestor(EmpID);
-                ViewData["EmpID"] = EmpID;
-                ViewData["FullName"] = requestor.FullName;
-                ViewBag.requestor = requestor;
-                return View(data);
-            }
-            return RedirectToAction("Index", "UsersView", null);
+            requestor = ipRequestorView.GetRequestor(EmpID);
+            ViewData["EmpID"] = EmpID;
+            ViewData["FullName"] = requestor.FullName;
+            ViewBag.requestor = requestor;
+            return View(data);
         }
 
         //
@@ -146,7 +143,7 @@ namespace InformationProtection.Controllers
             }
             if (ModelState.IsValid)
             {
-                ourModel.Update(data, IpApprover.ApproveState.not_submitted);
+                ourModel.Update(data, IpApprover.ApproveState.pending);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             IpRequestorView ipRequestorView = new IpRequestorView();
@@ -158,59 +155,60 @@ namespace InformationProtection.Controllers
             return View(data);
         }
 
-        public ActionResult ReSubmit(String EmpID, String WirelessDeviceId)
-        {
+        //public ActionResult ReSubmit(String EmpID, String WirelessDeviceId)
+        //{
 
-            if (String.IsNullOrEmpty(EmpID))
-            {
-                return RedirectToAction("Index", "UsersView", null);
-            }
-            WirelessMdl wirelessMdl = new WirelessMdl();
-            WirelessMdlData data = null;
-            int deviceId = 0;
-            int.TryParse(WirelessDeviceId, out deviceId);
-            if (deviceId <= 0)
-            {
-                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
-            }
-            data = wirelessMdl.GetWirelessRequest(deviceId);
-            if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
-            {
-                return RedirectToAction("Details", new { EmpID = EmpID, WirelessDeviceId = WirelessDeviceId });
-            }
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
-            requestor = model.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
-            ViewBag.requestor = requestor;
-            return View(data);
-        }
+        //    if (String.IsNullOrEmpty(EmpID))
+        //    {
+        //        return RedirectToAction("Index", "UsersView", null);
+        //    }
+        //    WirelessMdl wirelessMdl = new WirelessMdl();
+        //    WirelessMdlData data = null;
+        //    int deviceId = 0;
+        //    int.TryParse(WirelessDeviceId, out deviceId);
+        //    if (deviceId <= 0)
+        //    {
+        //        return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
+        //    }
+        //    data = wirelessMdl.GetWirelessRequest(deviceId);
+        //    if (data.RequestStatus != IpApprover.ApproveState.resubmit.ToString())
+        //    {
+        //        return RedirectToAction("Details", new { EmpID = EmpID, WirelessDeviceId = WirelessDeviceId });
+        //    }
+        //    IpRequestorViewData requestor;
+        //    IpRequestorView model = new IpRequestorView();
+        //    requestor = model.GetRequestor(EmpID);
+        //    ViewData["EmpID"] = EmpID;
+        //    ViewData["FullName"] = requestor.FullName;
+        //    ViewBag.requestor = requestor;
+
+        //    return View(data);
+        //}
 
         //
         // POST: /CdDvdRequest/Edit/5
 
-        [HttpPost]
-        public ActionResult ReSubmit(String EmpID, WirelessMdlData data, FormCollection col, String submitButton)
-        {
-            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
-            data.RenownOwnedType = col["RadBtnRenownOwned"];
+        //[HttpPost]
+        //public ActionResult ReSubmit(String EmpID, WirelessMdlData data, FormCollection col, String submitButton)
+        //{
+        //    IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
+        //    data.RenownOwnedType = col["RadBtnRenownOwned"];
 
-            WirelessMdl wirelessMdl = new WirelessMdl();
-            wirelessMdl.ValidateRenownOwned(data, ModelState);
-            if (ModelState.IsValid)
-            {
-                ipApprovalRequestView.ReSubmit(data);
-                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
-            }
-            IpRequestorViewData requestor;
-            IpRequestorView model = new IpRequestorView();
-            requestor = model.GetRequestor(EmpID);
-            ViewData["EmpID"] = EmpID;
-            ViewData["FullName"] = requestor.FullName;
-            ViewBag.requestor = requestor;
-            return View(data);
-        }
+        //    WirelessMdl wirelessMdl = new WirelessMdl();
+        //    wirelessMdl.ValidateRenownOwned(data, ModelState);
+        //    if (ModelState.IsValid)
+        //    {
+        //        ipApprovalRequestView.ReSubmit(data);
+        //        return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
+        //    }
+        //    IpRequestorViewData requestor;
+        //    IpRequestorView model = new IpRequestorView();
+        //    requestor = model.GetRequestor(EmpID);
+        //    ViewData["EmpID"] = EmpID;
+        //    ViewData["FullName"] = requestor.FullName;
+        //    ViewBag.requestor = requestor;
+        //    return View(data);
+        //}
 
         public ActionResult Print(String EmpID, String WirelessDeviceId)
         {
