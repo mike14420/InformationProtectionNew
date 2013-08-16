@@ -1,24 +1,19 @@
-﻿@{
-    ViewBag.Title = "ViewApprovedRequest";
-}
-    <div id="PendingRequestTable" style="width: 98%; margin: auto;font-size:5px"></div>
-
-<script type="text/javascript">
+﻿
     $(document).ready(function () {
         var EmpId = $("#EmpId").val();
         var RequestorId = $("#RequestorId").val();
         //Prepare jtable plugin
-        $('#PendingRequestTable').jtable({
-            title: 'All Approved Request',
+        $('#PendingRequestTable2').jtable({
+            title: 'All Pending Request',
             sorting: true,
             pageSize: 20,
             paging: true,
             defaultSorting: 'Name ASC',
             selecting: false,
             multiselect: false,
-            selectingCheckboxes: false, 
+            selectingCheckboxes: false,
             actions: {
-                listAction: 'GetByRequestsState?state=approved'
+                listAction: 'GetByRequestsState?state=pending'
             },
             fields: {
                 Id: {
@@ -27,36 +22,32 @@
                     edit: false,
                     list: false
                 },
-                RequestDetailsLink: {
+                RemindersLink: {
                     title: ''
-                },
-                RequestorsName: {
-                    title: 'Name'
                 },
                 SubmitDate: {
                     title: 'Submited',
                     type: 'date',
                     displayFormat: 'mm/dd/yy'
                 },
+                RequestorsName: {
+                    title: 'Name'
+                },
                 RequestType: {
                     title: 'type'
                 },
-                CioApprovalDate: {
-                    title: 'approvedDate',
-                    type: 'date',
-                    displayFormat: 'mm/dd/yy'
+                PendingApproverLevel: {
+                    title: 'Pending On',
+                    sort: 'false'
+                },
+                PendingApproverName: {
+                    title: 'Approver',
+                    sorting: false
                 }
             }
         });
 
         //Load person list from server
-        $('#PendingRequestTable').jtable('load');
+        $('#PendingRequestTable2').jtable('load');
 
     });
-
-</script>
-
-<br />
-<br />
-<br />
-<br />

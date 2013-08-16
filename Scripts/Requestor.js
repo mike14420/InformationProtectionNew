@@ -78,16 +78,37 @@ $(document).ready(function () {
                     var p = result.PhoneNumber;
                     var j = result.JobTitle;
                     var deptN = result.DepartmentName;
+                    var fn = result.FullName;
 
                     $('#FullName').val(dn);
-                    $('#Fname').val(f);
+
+                    $('#FnameDispId').val(f);
+                    $('#FnameId').val(f);
+
                     $('#EmpID').val(empId);
                     $('#EmpID1').val(empId);
+
+                    $('#LnameDispId').val(l);
                     $('#Lname').val(l);
+
                     $('#Mname').val(m);
+                    $('#MnameDispId').val(m);
+
                     $('#Email').val(e);
+                    $('#EmailDispId').val(e);
+
                     $('#JobTitle').val(j);
-                    $('#DepartmentName').val(deptN);
+                    $('#JobTitleDisp').val(j);
+
+                    $('#DeptNameDispId').val(d);
+                    $('#DeptName').val(d);
+
+
+                    $('#DeptIdDispId').val(deptN);
+                    $('#DeptId').val(deptN);
+
+                    $('#FullNameDispId').val(fn);
+                    $('#FullName').val(fn);
                 },
                 error: function (data) {
                     alert("ERROR");

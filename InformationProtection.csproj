@@ -1173,6 +1173,8 @@
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Scripts\PendingRequest1.js" />
+    <Content Include="Scripts\PendingRequest2.js" />
     <Content Include="Scripts\PrintPage.js" />
     <Content Include="Scripts\Requestor.js" />
     <Content Include="Scripts\_references.js" />

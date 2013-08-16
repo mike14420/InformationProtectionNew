@@ -789,7 +789,15 @@ namespace InformationProtection.Models
             {
                 request = request.OrderByDescending(p => p.CioName);
             }
-
+            else if (jtsorting.Equals("CioApprovalDate ASC"))
+            {
+                request = request.OrderBy(p => p.CioApprovalDate);
+            }
+            else if (jtsorting.Equals("CioApprovalDate DESC"))
+            {
+                request = request.OrderByDescending(p => p.CioApprovalDate);
+            }
+            
             return request.ToList();
         }
         

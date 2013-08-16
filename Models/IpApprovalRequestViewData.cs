@@ -499,5 +499,179 @@ namespace InformationProtection.Models
                 return retValue;
             }
         }
+        public String PendingApproverLevel
+        {
+            get
+            {
+                String retValue = String.Empty;
+                if (IsFirstSupApprovalNextPending())
+                {
+                    retValue = IpApprover.FIRSTSUP;
+                }
+                if (IsSecondSupApprovalNextPending())
+                {
+                    retValue = IpApprover.SECONDSUP;
+                }
+                if (IsVpHrApprovalNextPending())
+                {
+                    retValue = IpApprover.VPHR;
+                }
+                if (IsRhCfoApprovalNextPending())
+                {
+                    retValue = IpApprover.RHCFO;
+                }
+                if (IsIpdApprovalNextPending())
+                {
+                    retValue = IpApprover.IPD;
+                }
+                if (IsCioApprovalNextPending())
+                {
+                    retValue = IpApprover.CIO;
+                }
+                return retValue;
+            }
+        }
+        public String PendingApproverName
+        {
+            get
+            {
+                String retValue = String.Empty;
+                if (IsFirstSupApprovalNextPending())
+                {
+                    retValue = FirstSupName;
+                }
+                if (IsSecondSupApprovalNextPending())
+                {
+                    retValue = SecondSupName;
+                }
+                if (IsVpHrApprovalNextPending())
+                {
+                    retValue = VpHrName;
+                }
+                if (IsRhCfoApprovalNextPending())
+                {
+                    retValue = RhCfoName;
+                }
+                if (IsIpdApprovalNextPending())
+                {
+                    retValue = IpdName;
+                }
+                if (IsCioApprovalNextPending())
+                {
+                    retValue = CioName;
+                }
+                return retValue;
+            }
+        }
+        public String RejectedApproverName
+        {
+            get
+            {
+                String retValue = String.Empty;
+                if (FirstSupApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = FirstSupName;
+                }
+                if (SecondSupApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = SecondSupName;
+                }
+                if (VpHrApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = VpHrName;
+                }
+                if (RhCfoApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = RhCfoName;
+                }
+                if (IpdApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = IpdName;
+                }
+                if ( CioApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = CioName;
+                }
+                return retValue;
+            }
+        }
+        public DateTime RejectedDate
+        {
+            get
+            {
+                DateTime retValue = DateTime.MinValue;
+                if (FirstSupApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = FirstSupApprovalDate;
+                }
+                if (SecondSupApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = SecondSupApprovalDate;
+                }
+                if (VpHrApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = VpHrApprovalDate;
+                }
+                if (RhCfoApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = RhCfoApprovalDate;
+                }
+                if (IpdApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = IpdApprovalDate;
+                }
+                if ( CioApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = CioApprovalDate;
+                }
+                return retValue;
+            }
+
+        }
+        public String RejectedApproverLevel
+        {
+            get
+            {
+                String retValue = String.Empty;
+                if (FirstSupApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = IpApprover.FIRSTSUP;
+                }
+                if (SecondSupApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = IpApprover.SECONDSUP;
+                }
+                if (VpHrApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = IpApprover.VPHR;
+                }
+                if (RhCfoApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = IpApprover.RHCFO;
+                }
+                if (IpdApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = IpApprover.IPD;
+                }
+                if (CioApproval == IpApprover.ApproveState.rejected.ToString())
+                {
+                    retValue = IpApprover.CIO;
+                }
+                return retValue;
+            }
+        }
     }
 }
+
+
+                //RejectedApproverLevel: {
+                //    title: 'Rejected On'
+                //},
+                //RejectedApproverName: {
+                //    title: 'Rejector Name',
+                //    sorting: false
+                //},
+                //RejectedDate: {
+                //    title: 'Rejected Date',
+                //    sorting: false
+                //}

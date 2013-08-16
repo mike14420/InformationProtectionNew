@@ -92,7 +92,7 @@ namespace InformationProtection.Models
                 }
                 if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
                 {
-                    EditLink = String.Format("<a href=\"{0}/Edut?EmpID={1}&CellPhoneSyncDeviceId={2}\">ReSubmit</a>",
+                    EditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&CellPhoneSyncDeviceId={2}\">ReSubmit</a>",
                         Controller, requestor.EmpID, item.CellPhoneSyncDeviceId);
                 }
                 if (EditLink.Length > 0)

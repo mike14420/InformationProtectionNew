@@ -1,96 +1,11 @@
 ﻿@{
     ViewBag.Title = "ViewPendingRequest";
 }
-<div id="PendingRequestTable" style="width: 98%; margin: auto; font-size: 5px"></div>
+<div id="PendingRequestTable2" style="width: 98%; margin: auto; font-size: 5px"></div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        var EmpId = $("#EmpId").val();
-        var RequestorId = $("#RequestorId").val();
-        //Prepare jtable plugin
-        $('#PendingRequestTable').jtable({
-            title: 'All Pending Request',
-            sorting: true,
-            pageSize: 20,
-            paging: true,
-            defaultSorting: 'Name ASC',
-            selecting: false,
-            multiselect: false,
-            selectingCheckboxes: false,
-            actions: {
-                listAction: 'GetByRequestsState?state=pending'
-            },
-            fields: {
-                Id: {
-                    key: true,
-                    create: false,
-                    edit: false
-                },
-                SubmitDate: {
-                    title: 'Submited',
-                    type: 'date',
-                    displayFormat: 'mm/dd/yy'
-                },
-                RequestType: {
-                    title: 'type'
-                },
-                RequestorsName: {
-                    title: 'Name'
-                },
-                FirstSupName: {
-                    title: '1st'
-                },
-                FirstSupStatus: {
-                    title: 'St',
-                    sorting: false
-                },
-                SecondSupName: {
-                    title: '2nd'
-                },
-                SecondSupStatus: {
-                    title: 'St',
-                    sorting: false
-                },
-                VpHrName: {
-                    title: 'Vphr'
-                },
-                VpHrStatus: {
-                    title: 'St',
-                    sorting: false
-                },
-                RhCfoName: {
-                    title: 'RhCfo'
-                },
-                RhCfoStatus: {
-                    title: 'St',
-                    sorting: false
-                },
-                IpdName: {
-                    title: 'IPD'
-                },
-                IpdStatus: {
-                    title: 'St',
-                    sorting: false
-                },
-                CioName: {
-                    title: 'CIO'
-                },
-                CioStatus: {
-                    title: 'St',
-                    sorting: false
-                },
-                RemindersLink: {
-                    title: ''
-                }
-            }
-        });
 
-        //Load person list from server
-        $('#PendingRequestTable').jtable('load');
 
-    });
-
-</script>
+<script src="~/Scripts/PendingRequest2.js"></script>
 <table style="width: 50%;">
     <tr>
         <td colspan="2">

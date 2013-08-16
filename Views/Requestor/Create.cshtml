@@ -57,8 +57,8 @@
                 @Html.LabelFor(model => model.Fname)
             </td>
             <td>
-                @Html.TextBox("FnameDisp", Model.Fname, new {disabled = "true" })
-                @Html.Hidden("Fname", Model.Fname, new { id = "Fname" })
+                @Html.TextBox("FnameDisp", Model.Fname, new {id = "FnameDispId",  disabled = "true" })
+                @Html.Hidden("Fname", Model.Lname, new { id = "Fname" })
             </td>
         </tr>
 
@@ -67,7 +67,7 @@
                 @Html.LabelFor(model => model.Lname)
             </td>
             <td>
-                @Html.TextBox("LnameDisp", Model.Lname, new {disabled = "true" })
+                @Html.TextBox("LnameDisp", Model.Lname, new {id = "LnameDispId", disabled = "true" })
                 @Html.Hidden("Lname", Model.Lname, new { id = "Lname" })
             </td>
         </tr>
@@ -77,7 +77,7 @@
                 @Html.LabelFor(model => model.Mname)
             </td>
             <td>
-                @Html.TextBox("Mname", Model.Mname, new {disabled = "true" })
+                @Html.TextBox("MnameDisp", Model.Mname, new {id = "MnameDispId", disabled = "true" })
                 @Html.Hidden("Mname", Model.Mname, new { id = "Mname" })
             </td>
         </tr>
@@ -87,7 +87,7 @@
                 @Html.LabelFor(model => model.Email)
             </td>
             <td>
-                @Html.TextBox("Email", Model.Email, new {disabled = "true" })
+                @Html.TextBox("EmailDisp", Model.Email, new {id="EmailDispId", disabled = "true" })
                 @Html.Hidden("Email", Model.Email, new { id = "Email" })
             </td>
         </tr>
@@ -99,7 +99,7 @@
                 @Html.LabelFor(model => model.JobTitle)
             </td>
             <td>
-                @Html.TextBox("JobTitle", Model.JobTitle, new {disabled = "true" })
+                @Html.TextBox("JobTitleDisp", Model.JobTitle, new {id="JobTitleDispId", disabled = "true" })
                 @Html.Hidden("JobTitle", Model.JobTitle, new { id = "JobTitle" })
             </td>
         </tr>
@@ -109,7 +109,7 @@
                 @Html.LabelFor(model => model.DeptName)
             </td>
             <td>
-                @Html.TextBox("DeptName", Model.DeptName, new {disabled = "true" })
+                @Html.TextBox("DeptNameDisp", Model.DeptName, new {id = "DeptNameDispId", disabled = "true" })
                 @Html.Hidden("DeptName", Model.DeptName, new { id = "DeptName" })
             </td>
         </tr>
@@ -118,8 +118,8 @@
                 @Html.LabelFor(model => model.DeptID)
             </td>
             <td>
-                @Html.TextBox("DeptID", Model.DeptID, new {disabled = "true" })
-                @Html.Hidden("DeptID", Model.DeptID, new { id = "DeptID" })
+                @Html.TextBox("DeptIdDisp", Model.DeptID, new {id = "DeptIdDispId", disabled = "true" })
+                @Html.Hidden("DeptId", Model.DeptID, new { id = "DeptId" })
             </td>
         </tr>
         <tr>
@@ -136,8 +136,8 @@
                 @Html.LabelFor(model => model.FullName)
             </td>
             <td>
-                 @Html.TextBox("FullName", Model.FullName, new {disabled = "true" })
-                 @Html.Hidden("FullNameHidden", Model.FullName, new  { id = "FullNameHiddenId"});
+                 @Html.TextBox("FullName", Model.FullName, new {id = "FullNameDispId", disabled = "true" })
+                 @Html.Hidden("FullNameHidden", Model.FullName, new  { id = "FullNameHiddenId"})
             </td>
         </tr>
     </table>

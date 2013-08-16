@@ -137,12 +137,14 @@ namespace InformationProtection.Controllers
                         FirstName = retData.FirstName,
                         LastName = retData.LastName,
                         MiddleName = retData.MiddleName,
-                        DepartmentID = retData.Department,
+
                         Email = retData.Email,
                         Emp_id = retData.Emp_id.IntValue.ToString(),
                         PhoneNumber = "",
                         JobTitle = retData.JobTitle,
-                        DepartmentName = retData.Department,
+                        DepartmentID = (retData.Department != null) ? retData.Department.Dept_id.ToString() : String.Empty,
+                        DepartmentName = (retData.Department != null) ? retData.Department.Dept_name.ToString() : String.Empty,
+                        FullName = retData.Display_name
                     }
                  );
             }
@@ -159,6 +161,7 @@ namespace InformationProtection.Controllers
                         PhoneNumber = "",
                         JobTitle = "",
                         DepartmentName = "",
+                        FullName = ""
                     }
                  );
         }
