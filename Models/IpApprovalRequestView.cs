@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Configuration;
 using IpDataProvider;
 using IpModelData;
@@ -635,7 +636,7 @@ namespace InformationProtection.Models
         /// </summary>
         /// <param name="EmpID"></param>
         /// <returns></returns>
-        public List<IpApprovalRequestViewData> GetApproversData(String ApproverEmpID)
+        public List<IpApprovalRequestViewData> GetApproversDataPending(String ApproverEmpID)
         {
             int intApproverEmpID = 0;
             int.TryParse(ApproverEmpID, out intApproverEmpID);
@@ -661,6 +662,29 @@ namespace InformationProtection.Models
             return PendingList.OrderBy(P => P.RequuestorsEmpId).ToList();
         }
 
+        /// <summary>
+        ///  FIND ALL REQUEST for approver with EMPID
+        /// </summary>
+        /// <param name="EmpID"></param>
+        /// <returns></returns>
+        public List<IpApprovalRequestViewData> GetApproversDataAll(String ApproverEmpID)
+        {
+            int intApproverEmpID = 0;
+            int.TryParse(ApproverEmpID, out intApproverEmpID);
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            ApprovalRequestDbAccess ApprovalReqReqDbAcess = new ApprovalRequestDbAccess(connectionString);
+            List<IpApprovalRequest> data = ApprovalReqReqDbAcess.GetApproversData(ApproverEmpID);
+            List<IpApprovalRequestViewData> approversData = Convert(data);
+
+            foreach (IpApprovalRequestViewData item in approversData)
+            {
+                AddOtherProperties(item);
+                item.RequestDetailsLink = String.Format("<a href=\"Details?Id={0}&ApproverEmpID={1}\">Details</a>",
+                    item.Id, ApproverEmpID);
+
+            }
+            return approversData.OrderBy(P => P.RequuestorsEmpId).ToList();
+        }
 
         /// <summary>
         /// STATE=IpApprover.ApproveState.not_submitted.ToString();
@@ -1250,7 +1274,17 @@ namespace InformationProtection.Models
             return toApprove;
         }
 
-
+        public static bool IsDataOwner(String LoginUserName, int dataOwnerRequestorsId)
+        {
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData logInRequestor = ipRequestorView.GetRequestorByLoginId(LoginUserName);
+            IpRequestorViewData dataOwnerRequestor = ipRequestorView.GetRequestorByRequestorId(dataOwnerRequestorsId);
+            if (dataOwnerRequestor.EmpID == logInRequestor.EmpID)
+            {
+                return true;
+            }
+            return false;
+        }
 
 
         public static List<IpApprovalRequestViewData> Convert(List<IpApprovalRequest> ourData)

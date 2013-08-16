@@ -27,6 +27,12 @@ namespace InformationProtection.Controllers
             int key = 0;
             int.TryParse(UsbDeviceId, out key);
             UsbViewData data = ourModel.GetUsbRequest(key);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
@@ -111,6 +117,12 @@ namespace InformationProtection.Controllers
                 return RedirectToAction("Index", "UsersView", null);
             } 
             data = usbView.GetUsbRequest(deviceId);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
                 return RedirectToAction("Details", new { EmpID = EmpID, UsbDeviceId = UsbDeviceId });

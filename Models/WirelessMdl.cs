@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Http.ModelBinding;
@@ -55,20 +56,30 @@ namespace InformationProtection.Models
             List<WirelessMdlData> retData = Convert(data);
             foreach (WirelessMdlData item in retData)
             {
-                IpApprovalRequestView.AddOtherProperties(item);    
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&WirelessDeviceId={2}\">Details</a>",
-                    Controller, requestor.EmpID, item.WirelessDeviceId);
+                IpApprovalRequestView.AddOtherProperties(item);
+
+                StringBuilder RequestDetailsLink = new StringBuilder();
+                String EditLink = String.Empty;
+                RequestDetailsLink.Append(String.Format("<a href=\"{0}/Details?EmpID={1}&WirelessDeviceId={2}\">Details</a>",
+                    Controller, requestor.EmpID, item.WirelessDeviceId));
+
+
                 item.RequestEditLink = String.Empty;
                 if (item.RequestStatus == IpApprover.ApproveState.saved.ToString())
                 {
-                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&WirelessDeviceId={2}\">Edit</a>",
+                    EditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&WirelessDeviceId={2}\">Edit</a>",
                         Controller, requestor.EmpID, item.WirelessDeviceId);
                 }
                 if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
                 {
-                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&WirelessDeviceId={2}\">ReSubmit</a>",
+                    EditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&WirelessDeviceId={2}\">ReSubmit</a>",
                         Controller, requestor.EmpID, item.WirelessDeviceId);
                 }
+                if (EditLink.Length > 0)
+                {
+                    RequestDetailsLink.Append("<br />" + EditLink);
+                }
+                item.RequestDetailsLink = RequestDetailsLink.ToString();
             }
             return retData;
         }

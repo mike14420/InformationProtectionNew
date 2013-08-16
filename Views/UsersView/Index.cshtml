@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "Index";
+    var myViewsShared = "~/Views/Shared/";
 }
-@*<link href="@Url.Content("~/Scripts/jtable/themes/metro/purple/jtable.css")" rel="stylesheet" type="text/css" />*@
 
 <h2>Users View</h2>
 @Html.Hidden("EmpId", Model.EmpID, new { id = "EmpId" })
@@ -15,16 +15,13 @@
         $("#tabs").tabs();
     });
 </script>
-@{
-    var myViewsShared = "~/Views/Shared/";
-}
 
 
 <div id="tabs" style="height: 100%">
 
         <ul style="height: 40px">
             <li><a href="#tabs-1">Requestor</a></li>
-            <li><a href="#tabs-2">Request</a></li>
+            <li><a href="#tabs-2">Status</a></li>
             <li><a href="#tabs-3">Wireless</a></li>
             <li><a href="#tabs-4">USB</a></li>
             <li><a href="#tabs-5">CD</a></li>

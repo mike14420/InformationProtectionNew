@@ -22,7 +22,7 @@ namespace InformationProtection.Controllers
             if (!Membership.ValidateUser(LoginUserName, "MyPass"))
                 ModelState.AddModelError("", "Incorrect username or password");
             string[] userRoles = Roles.GetRolesForUser(LoginUserName);
-            if(LoginUserName != @"WMCDOMAIN\29795") 
+            if(LoginUserName != @"WMCDOMAIN\29795" || LoginUserName != @"HHPNET\HIRJKF") 
             {
                 if (!userRoles.Contains(IpModelData.Roles.RoleNameEnum.admin.ToString()) )
                 {

@@ -45,13 +45,15 @@ namespace InformationProtection.Models
             SQLRFSDP dp = null;
             dp = new SQLRFSDP();
             List<Employee> allEmployees = dp.GetEmployeesAll();
+            allEmployees = allEmployees.OrderBy(A => A.LastName).ToList();
+            
             SelectList returnData = new SelectList(
                     (
                         from E in allEmployees
                         select new SelectListItem
                         {
                             Value = E.Emp_id.ToString(),
-                            Text = String.Format("{0} {1}", E.FirstName, E.LastName)
+                            Text = String.Format("{0}, {1}",E.LastName, E.FirstName)
                         }
                     )
                     ,"Value", "Text");

@@ -20,6 +20,12 @@ namespace InformationProtection.Controllers
             int id = 0;
             int.TryParse(WirelessDeviceId, out id);
             WirelessMdlData data = ourModel.GetWirelessRequest(id);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
@@ -99,7 +105,7 @@ namespace InformationProtection.Controllers
             WirelessMdl wirelessMdl = new WirelessMdl();
             int deviceId = 0;
             int.TryParse(WirelessDeviceId, out deviceId);
-            WirelessMdlData data = null;
+            
             IpRequestorView ipRequestorView = new IpRequestorView();
             IpRequestorViewData requestor;
             requestor = ipRequestorView.GetRequestor(EmpID);
@@ -107,11 +113,13 @@ namespace InformationProtection.Controllers
             {
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
-            data = wirelessMdl.GetWirelessRequest(deviceId);
-            if (data == null)
+            WirelessMdlData data = wirelessMdl.GetWirelessRequest(deviceId);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
             {
-                return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
+                return RedirectToAction("Index", "UsersView");
             }
+            // only edit for resubmit or form that has been saved
             if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
                 return RedirectToAction("Details", new { EmpID = EmpID, WirelessDeviceId = WirelessDeviceId });

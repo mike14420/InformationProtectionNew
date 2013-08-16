@@ -16,6 +16,12 @@ namespace InformationProtection.Controllers
         {
             CellPhoneView ourModel = new CellPhoneView();
             CellPhoneViewData data = ourModel.GetDevice(CellPhoneReqId);
+            // Only allow the data owner to view the form
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.IpRequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
@@ -94,6 +100,12 @@ namespace InformationProtection.Controllers
 
             CellPhoneView cellPhoneView = new CellPhoneView();
             CellPhoneViewData data = cellPhoneView.GetDevice(CellPhoneReqId);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.IpRequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
                 return RedirectToAction("Details", new { EmpID = EmpID, CellPhoneReqId = CellPhoneReqId });

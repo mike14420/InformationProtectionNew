@@ -18,6 +18,12 @@ namespace InformationProtection.Controllers
         {
             CellPhoneSyncMdl ourModel = new CellPhoneSyncMdl();
             CellPhoneSyncMdlData data = ourModel.GetDevice(CellPhoneSyncDeviceId);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
@@ -89,6 +95,12 @@ namespace InformationProtection.Controllers
             }
             CellPhoneSyncMdl cellPhoneSyncMdl = new CellPhoneSyncMdl();
             CellPhoneSyncMdlData data = cellPhoneSyncMdl.GetDevice(CellPhoneSyncDeviceId);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
                 return RedirectToAction("Details", new { EmpID = EmpID, CellPhoneSyncDeviceId = CellPhoneSyncDeviceId });

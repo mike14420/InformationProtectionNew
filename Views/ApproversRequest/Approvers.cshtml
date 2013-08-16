@@ -7,23 +7,6 @@
 <link href="@Url.Content("~/Scripts/jtable/themes/metro/purple/jtable.css")" rel="stylesheet" type="text/css" />
 <script src="@Url.Content("~/Scripts/jtable/jquery.jtable.js")" type="text/javascript"></script>
 
-<h2>Approver</h2>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayFor(model => model.EmailAddress)
-        </th>
-
-        <th></th>
-    </tr>
-</table>
-
 
 
 <script type="text/javascript">
@@ -104,44 +87,139 @@
 </script>
 
 
-<div id="ApproversTable" style="width: 98%; margin: auto"></div>
-@using (Html.BeginForm())
-{
-    <table>
-        <tr>
-            <td>
-                <p>Comments</p>
+<script type="text/javascript">
 
-            </td>
-            <td>
-                @Html.TextBox("Comments", null, new { style = "width:500px" })
-            </td>
-        </tr>
+    $(document).ready(function () {
+        var EmpId = $("#EmpID").val();
+        var ApproverEmpID = $("#ApproverEmpID").val();
+        var uri = 'GetAppsDataAll?ApprsEmpID=' + ApproverEmpID;
+        //Prepare jtable plugin
+        $('#ApproversTableAll').jtable({
+            title: 'All Request',
+            sorting: true,
+            pageSize: 20,
+            paging: true,
+            defaultSorting: 'Name ASC',
+            actions: {
+                listAction: uri
+            },
+            fields: {
+                Id: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: false
+                },
+                RequestType: {
+                    title: 'Type'
+                },
+                RequestorsName: {
+                    title: 'Name'
+                },
+                RequuestorsEmpId: {
+                    title: 'EmpId'
+                },
+                ApprovedStatus: {
+                    title: 'Status',
+                    sorting: false
+                },
+                RequestDetailsLink: {
+                    title: '',
+                    sorting: false
+                }
+            }
 
-        <tr>
-            <td>
-                <input type="submit" name="submitButton" value="Approve" />
+        });
 
-            </td>
-            <td>
-                <input type="submit" name="submitButton" value="Re-Submit with changes" />
-            </td>
-            <td>
-                <input type="submit" name="submitButton" value="Reject" />
-            </td>
+        //Load person list from server
+        $('#ApproversTableAll').jtable('load');
 
-        </tr>
-    </table>
-    <div id="ApproveListId" style="visibility: hidden">
-        @{
-    var EmpID = Model.EmpID;
-    var ApproversEmpId = ViewBag.ApproverEmpID;
+
+    });
+
+</script>
+
+
+
+
+
+<h2>Approver</h2>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayFor(model => model.EmailAddress)
+        </th>
+
+        <th></th>
+    </tr>
+</table>
+
+
+<script>
+    $(function () {
+        $("#tabs").tabs();
+    });
+</script>
+<div id="tabs" style="height: 100%">
+
+    <ul style="height: 40px">
+        <li><a href="#tabs-1">Pending</a></li>
+        <li><a href="#tabs-2">All</a></li>
+    </ul>
+
+    <div id="tabs-1">
+        <div id="ApproversTable" style="width: 98%; margin: auto"></div>
+        @using (Html.BeginForm())
+        {
+            <table>
+                <tr>
+                    <td>
+                        <p>Comments</p>
+
+                    </td>
+                    <td>
+                        @Html.TextBox("Comments", null, new { style = "width:500px" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="submit" name="submitButton" value="Approve" />
+
+                    </td>
+                    <td>
+                        <input type="submit" name="submitButton" value="Re-Submit with changes" />
+                    </td>
+                    <td>
+                        <input type="submit" name="submitButton" value="Reject" />
+                    </td>
+
+                </tr>
+            </table>
+            <div id="ApproveListId" style="visibility: hidden">
+                @{
+            var EmpID = Model.EmpID;
+            var ApproversEmpId = ViewBag.ApproverEmpID;
+                }
+                @Html.TextBox("OurApprovalList", null)
+                @Html.Hidden("ApproverEmpID", ViewData["ApproverEmpID"], new { id = "ApproverEmpID" })
+                @Html.Hidden("EmpID", EmpID, new { id = "EmpID" })
+            </div>
+
         }
-        @Html.TextBox("OurApprovalList", null)
-        @Html.Hidden("ApproverEmpID", ViewData["ApproverEmpID"], new { id = "ApproverEmpID" })
-        @Html.Hidden("EmpID", EmpID, new { id = "EmpID" })
+    </div>
+    <div id="tabs-2">
+        <div id="ApproversTableAll" style="width: 98%; margin: auto"></div>
     </div>
 
-}
+
+</div>
+
 
 

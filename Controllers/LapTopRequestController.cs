@@ -17,6 +17,12 @@ namespace InformationProtection.Controllers
         {
             LapTopView ourModel = new LapTopView();
             LapTopViewData data = ourModel.GetLapTopRequest(LapTopDeviceId);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
@@ -94,7 +100,12 @@ namespace InformationProtection.Controllers
             }
             LapTopView lapTopView = new LapTopView();
             LapTopViewData data = lapTopView.GetLapTopRequest(LapTopDeviceId);
-
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+            // edit is available for resubmit or saved form data
             if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
                 return RedirectToAction("Details", new { EmpID = EmpID, LapTopDeviceId = LapTopDeviceId });

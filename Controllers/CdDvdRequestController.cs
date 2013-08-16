@@ -24,15 +24,26 @@ namespace InformationProtection.Controllers
 
         public ActionResult Details(String EmpID, String CdburnerDeviceId)
         {
-            CdBurnerView ourModel = new CdBurnerView();
-            CdBurrnerViewData data = ourModel.GetCdBurnerRequest(CdburnerDeviceId);
-            IpRequestorView Model = new IpRequestorView();
-            IpRequestorViewData requestor = Model.GetRequestor(EmpID);
+            IpRequestorView ipRequestorView = new IpRequestorView();
+            IpRequestorViewData requestor = ipRequestorView.GetRequestor(EmpID);
+            CdBurnerView cdBurnerView = new CdBurnerView();
+            CdBurrnerViewData cdBurrnerViewData = cdBurnerView.GetCdBurnerRequest(CdburnerDeviceId);
+
+            // Only allow the data owner to view the form
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, cdBurrnerViewData.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             ViewBag.requestor = requestor;
-            ViewBag.ourData = data;
-            ViewBag.RequestId = data.RequestId;
-            return View(data);
+            ViewBag.ourData = cdBurrnerViewData;
+            ViewBag.RequestId = cdBurrnerViewData.RequestId;
+            return View(cdBurrnerViewData);
         }
+
+
+
+
         //
         // GET: /CdDvdRequest/Create
         [HttpGet]
@@ -97,9 +108,14 @@ namespace InformationProtection.Controllers
             {
                 return RedirectToAction("Index", "UsersView", null);
             }
-
             CdBurnerView cdBurnerView = new CdBurnerView();
             CdBurrnerViewData data = cdBurnerView.GetCdBurnerRequest(CdburnerDeviceId);
+            // Only allow the data owner to view the form
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+            // Only allow edit for state resubmit or saved
             if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
                 return RedirectToAction("Details", new { EmpID = EmpID, CdburnerDeviceId = CdburnerDeviceId });

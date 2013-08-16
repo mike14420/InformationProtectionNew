@@ -15,11 +15,15 @@ $(document).ready(function () {
                 list: false,
                 title: 'Id'
             },
+            RequestDetailsLink: {
+                title: ''
+            },
             RequestType: {
                 title: 'Request Type'
             },
             Identifier: {
-                title: '(id,devId)'
+                title: '(id,devId)',
+                list: false
             },
             ApprovedStatus: {
                 title: 'Status'
@@ -28,9 +32,6 @@ $(document).ready(function () {
                 title: 'Submitted',
                 type: 'date',
                 displayFormat: 'mm/dd/yy'
-            },
-            RequestDetailsLink: {
-                title: 'Details'
             }
         }
     });

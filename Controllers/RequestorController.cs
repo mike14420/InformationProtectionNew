@@ -71,7 +71,7 @@ namespace InformationProtection.Controllers
             {
                 IpRequestorView ourModel = new IpRequestorView();
                 int retValue = ourModel.CreateRequestor(thisEmployee, Roles.RoleNameEnum.user.ToString());
-                return RedirectToAction("Details", new { EmpID = thisEmployee.EmpID });
+                return RedirectToAction("Index", "UsersView", new { EmpID = thisEmployee.EmpID });
             }
             EmployeeView Mdl = new EmployeeView();
             ViewBag.AllUsers = Mdl.GetEmployees();
@@ -128,22 +128,39 @@ namespace InformationProtection.Controllers
             String EgmId = d.EgmId;
             EmployeeView employeeView = new EmployeeView();
             retData = employeeView.DbGetEmployeeByEmpId(d.EgmId);
-
+            if (retData != null)
+            {
+                return this.Json(
+                    new
+                    {
+                        DisplayName = retData.Display_name,
+                        FirstName = retData.FirstName,
+                        LastName = retData.LastName,
+                        MiddleName = retData.MiddleName,
+                        DepartmentID = retData.Department,
+                        Email = retData.Email,
+                        Emp_id = retData.Emp_id.IntValue.ToString(),
+                        PhoneNumber = "",
+                        JobTitle = retData.JobTitle,
+                        DepartmentName = retData.Department,
+                    }
+                 );
+            }
             return this.Json(
-                new
-                {
-                    DisplayName = retData.Display_name,
-                    FirstName = retData.FirstName,
-                    LastName = retData.LastName,
-                    MiddleName = retData.MiddleName,
-                    DepartmentID = retData.Department,
-                    Email = retData.Email,
-                    Emp_id = retData.Emp_id.IntValue.ToString(),
-                    PhoneNumber = "",
-                    JobTitle = retData.JobTitle,
-                    DepartmentName = retData.Department,
-                }
-             );
+                    new
+                    {
+                        DisplayName = "",
+                        FirstName = "",
+                        LastName = "",
+                        MiddleName = "",
+                        DepartmentID = "",
+                        Email = "",
+                        Emp_id = "",
+                        PhoneNumber = "",
+                        JobTitle = "",
+                        DepartmentName = "",
+                    }
+                 );
         }
    
     }

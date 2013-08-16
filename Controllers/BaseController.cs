@@ -49,7 +49,7 @@ namespace InformationProtection.Controllers
             {
                 IpApprovalRequestView ourRespository = new IpApprovalRequestView();
 
-                IEnumerable<IpApprovalRequestViewData> outData = ourRespository.GetApproversData(ApprsEmpID);
+                IEnumerable<IpApprovalRequestViewData> outData = ourRespository.GetApproversDataPending(ApprsEmpID);
 
                 if (string.IsNullOrEmpty(jtsorting) || jtsorting.Equals("RequestType ASC"))
                 {
@@ -86,6 +86,49 @@ namespace InformationProtection.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult GetAppsDataAll(string ApprsEmpID, int jtStartIndex = 0, int jtPageSize = 0, string jtsorting = null)
+        {
+            try
+            {
+                IpApprovalRequestView ourRespository = new IpApprovalRequestView();
+
+                IEnumerable<IpApprovalRequestViewData> outData = ourRespository.GetApproversDataAll(ApprsEmpID);
+
+                if (string.IsNullOrEmpty(jtsorting) || jtsorting.Equals("RequestType ASC"))
+                {
+                    outData = outData.OrderBy(p => p.RequestType);
+                }
+                else if (jtsorting.Equals("RequestType DESC"))
+                {
+                    outData = outData.OrderByDescending(p => p.RequestType);
+                }
+                else if (jtsorting.Equals("RequestorsName ASC"))
+                {
+                    outData = outData.OrderBy(p => p.RequestorsName);
+                }
+                else if (jtsorting.Equals("RequestorsName DESC"))
+                {
+                    outData = outData.OrderByDescending(p => p.RequestorsName);
+                }
+                else if (jtsorting.Equals("RequuestorsEmpId ASC"))
+                {
+                    outData = outData.OrderBy(p => p.RequuestorsEmpId);
+                }
+                else if (jtsorting.Equals("RequuestorsEmpId DESC"))
+                {
+                    outData = outData.OrderByDescending(p => p.RequuestorsEmpId);
+                }
+
+                IEnumerable<IpApprovalRequestViewData> outData1 = outData.Skip(jtStartIndex).Take(jtPageSize);
+                return Json(new { Result = "OK", Records = outData1, TotalRecordCount = outData.Count() });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
         [HttpPost]
         public JsonResult GetApproversData()
         {

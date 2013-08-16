@@ -11,8 +11,6 @@
 
 @using (Html.BeginForm())
 {
-    @Html.Hidden("FullNameHidden", Model.FullName, new  { id = "FullNameHiddenId"});
-    @Html.Hidden("EmpID", Model.EmpID, new { id = "EmpID" })
 
     @Html.ValidationSummary(true)
     <table class="Table1Format">
@@ -49,17 +47,18 @@
                 <p>Employee ID</p>
             </td>
             <td>
-               @Html.TextBox("EmpID1", Model.EmpID, new { id = "EmpID1", disabled = "true" })
+               @Html.TextBox("EmpID1", Model.EmpID, new {disabled = "true" })
+
+               @Html.Hidden("EmpID", Model.EmpID, new { id = "EmpID" })
             </td>
         </tr>
         <tr>
             <td>
                 @Html.LabelFor(model => model.Fname)
-
             </td>
             <td>
-                @Html.EditorFor(model => model.Fname)
-                @Html.ValidationMessageFor(model => model.Fname)
+                @Html.TextBox("FnameDisp", Model.Fname, new {disabled = "true" })
+                @Html.Hidden("Fname", Model.Fname, new { id = "Fname" })
             </td>
         </tr>
 
@@ -68,8 +67,8 @@
                 @Html.LabelFor(model => model.Lname)
             </td>
             <td>
-                @Html.EditorFor(model => model.Lname)
-                @Html.ValidationMessageFor(model => model.Lname)
+                @Html.TextBox("LnameDisp", Model.Lname, new {disabled = "true" })
+                @Html.Hidden("Lname", Model.Lname, new { id = "Lname" })
             </td>
         </tr>
 
@@ -78,8 +77,8 @@
                 @Html.LabelFor(model => model.Mname)
             </td>
             <td>
-                @Html.EditorFor(model => model.Mname)
-                @Html.ValidationMessageFor(model => model.Mname)
+                @Html.TextBox("Mname", Model.Mname, new {disabled = "true" })
+                @Html.Hidden("Mname", Model.Mname, new { id = "Mname" })
             </td>
         </tr>
 
@@ -88,8 +87,8 @@
                 @Html.LabelFor(model => model.Email)
             </td>
             <td>
-                @Html.EditorFor(model => model.Email)
-                @Html.ValidationMessageFor(model => model.Email)
+                @Html.TextBox("Email", Model.Email, new {disabled = "true" })
+                @Html.Hidden("Email", Model.Email, new { id = "Email" })
             </td>
         </tr>
 
@@ -100,8 +99,8 @@
                 @Html.LabelFor(model => model.JobTitle)
             </td>
             <td>
-                @Html.EditorFor(model => model.JobTitle)
-                @Html.ValidationMessageFor(model => model.JobTitle)
+                @Html.TextBox("JobTitle", Model.JobTitle, new {disabled = "true" })
+                @Html.Hidden("JobTitle", Model.JobTitle, new { id = "JobTitle" })
             </td>
         </tr>
 
@@ -110,8 +109,8 @@
                 @Html.LabelFor(model => model.DeptName)
             </td>
             <td>
-                @Html.EditorFor(model => model.DeptName)
-                @Html.ValidationMessageFor(model => model.DeptName)
+                @Html.TextBox("DeptName", Model.DeptName, new {disabled = "true" })
+                @Html.Hidden("DeptName", Model.DeptName, new { id = "DeptName" })
             </td>
         </tr>
         <tr>
@@ -119,8 +118,8 @@
                 @Html.LabelFor(model => model.DeptID)
             </td>
             <td>
-                @Html.EditorFor(model => model.DeptID)
-                @Html.ValidationMessageFor(model => model.DeptID)
+                @Html.TextBox("DeptID", Model.DeptID, new {disabled = "true" })
+                @Html.Hidden("DeptID", Model.DeptID, new { id = "DeptID" })
             </td>
         </tr>
         <tr>
@@ -137,8 +136,8 @@
                 @Html.LabelFor(model => model.FullName)
             </td>
             <td>
-                @Html.EditorFor(model => model.FullName)
-                @Html.ValidationMessageFor(model => model.FullName)
+                 @Html.TextBox("FullName", Model.FullName, new {disabled = "true" })
+                 @Html.Hidden("FullNameHidden", Model.FullName, new  { id = "FullNameHiddenId"});
             </td>
         </tr>
     </table>

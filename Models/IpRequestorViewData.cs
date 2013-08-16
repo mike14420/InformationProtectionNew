@@ -13,13 +13,10 @@ namespace InformationProtection.Models
         [Display(Name = "Employee ID")]
         public String EmpID { get; set; }
 
-        [StringLength(160, MinimumLength = 3)]
-        [Required]
         [Display(Name="First Name")]
         public string Fname { get; set; }
 
-        [StringLength(160, MinimumLength = 3)]
-        [Required]
+
         [Display(Name = "Last Name")]
         public string Lname { get; set; }
 
@@ -28,17 +25,11 @@ namespace InformationProtection.Models
 
         public string Email { get; set; }
 
-        [Display(Name = "Job Title")]
-        [StringLength(160, MinimumLength = 3)]
         public string JobTitle { get; set; }
 
-        [Display(Name = "Department Name")]
-        [Required]
         [StringLength(160, MinimumLength = 3)]
         public string DeptName { get; set; }
 
-        [Display(Name = "Department ID")]
-        [Required]
         [StringLength(160, MinimumLength = 3)]
         public string DeptID { get; set; }
 
@@ -46,7 +37,6 @@ namespace InformationProtection.Models
         [StringLength(10, MinimumLength = 3)]
         public string PhoneNumber { get; set; }
 
-        [StringLength(160, MinimumLength = 3)]
         public string FullName
         {
             get

@@ -18,6 +18,12 @@ namespace InformationProtection.Controllers
         {
             RemoteAccessMdl ourModel = new RemoteAccessMdl();
             RemoteAccessMdlData data = ourModel.GetRemoteAccessRequest(RemoteAccessId);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
@@ -90,6 +96,12 @@ namespace InformationProtection.Controllers
             }
             RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
             RemoteAccessMdlData data = remoteAccessMdl.GetRemoteAccessRequest(RemoteAccessId);
+            // only allow view of data for owner
+            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            {
+                return RedirectToAction("Index", "UsersView");
+            }
+
             if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
                 return RedirectToAction("Details", new { EmpID = EmpID, RemoteAccessId = RemoteAccessId });

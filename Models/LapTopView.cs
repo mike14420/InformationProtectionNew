@@ -6,6 +6,7 @@ using IpModelData;
 using System.Linq;
 using System.Web.Configuration;
 using IpDataProvider;
+using System.Text;
 
 namespace InformationProtection.Models
 {
@@ -62,21 +63,27 @@ namespace InformationProtection.Models
             foreach (LapTopViewData item in retData)
             {
                 IpApprovalRequestView.AddOtherProperties(item);
-                item.RequestDetailsLink = String.Format("<a href=\"{0}/Details?EmpID={1}&LapTopDeviceId={2}\">Details</a>",
-                    Controller, requestor.EmpID, item.LapTopDeviceId);
-                String message = String.Empty;
+                StringBuilder RequestDetailsLink = new StringBuilder();
+                String EditLink = String.Empty;
+
+                RequestDetailsLink.Append(String.Format("<a href=\"{0}/Details?EmpID={1}&LapTopDeviceId={2}\">Details</a>",
+                    Controller, requestor.EmpID, item.LapTopDeviceId));
+
                 if (item.RequestStatus == IpApprover.ApproveState.saved.ToString())
                 {
-                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&LapTopDeviceId={2}\">Edit</a>",
+                    EditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&LapTopDeviceId={2}\">Edit</a>",
                         Controller, requestor.EmpID, item.LapTopDeviceId);
                 }
                 if (item.RequestStatus == IpApprover.ApproveState.resubmit.ToString())
                 {
-                    item.RequestEditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&LapTopDeviceId={2}\">Resubmit</a>",
+                    EditLink = String.Format("<a href=\"{0}/Edit?EmpID={1}&LapTopDeviceId={2}\">Resubmit</a>",
                         Controller, requestor.EmpID, item.LapTopDeviceId);
                 }
-                
-
+                if (EditLink.Length > 0)
+                {
+                    RequestDetailsLink.Append("<br />" + EditLink);
+                }
+                item.RequestDetailsLink = RequestDetailsLink.ToString();
             }
             return retData;
         }

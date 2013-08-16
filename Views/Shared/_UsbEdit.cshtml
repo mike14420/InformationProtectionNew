@@ -14,8 +14,18 @@
         <h2 class="RenownHeader1">USB/REQUEST FORM</h2>
         <legend>USB IP Request</legend>
 
-    
+
         <table class="Table1Format">
+            @if (Model.UsbDeviceId != 0)
+            {
+                <tr>
+                    <td>Request Number:
+                    </td>
+                    <td>
+                        @Html.TextBox("LapTopDeviceId", Model.UsbDeviceId, new { style = "width:50px", disabled = "true" })
+                    </td>
+                </tr>
+            }
             <tr style="width: 98%">
 
                 <td class="Request" colspan="4">This form is a request to receive and utilize a
@@ -115,14 +125,14 @@
                             <td colspan="2" style="text-align: center"><strong>Security Requirements:</strong></td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: none">
                                 @Html.CheckBox("SecurityAck1")
                                 @Html.ValidationMessageFor(model => model.SecurityAck1, "*")
                                 Business Use Only
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: none">
                                 @Html.CheckBox("SecurityAck2")
                                 @Html.ValidationMessageFor(model => model.SecurityAck2, "*")
                                 Must have Renown network account (UserID)
@@ -130,49 +140,49 @@
                         </tr>
 
                         <tr>
-                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: none">
                                 @Html.CheckBox("SecurityAck3")
                                 @Html.ValidationMessageFor(model => model.SecurityAck3, "*")
                                 Assigned to individual, not to a Department
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: none">
                                 @Html.CheckBox("SecurityAck4")
                                 @Html.ValidationMessageFor(model => model.SecurityAck4, "*")
                                 Use encryption
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: none">
                                 @Html.CheckBox("SecurityAck5")
                                 @Html.ValidationMessageFor(model => model.SecurityAck6, "*")
                                 Physically secure device
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: none">
                                 @Html.CheckBox("SecurityAck6")
                                 @Html.ValidationMessageFor(model => model.SecurityAck6, "*")
                                 Do not disable any security or technical configurations
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: none">
                                 @Html.CheckBox("SecurityAck7")
                                 @Html.ValidationMessageFor(model => model.SecurityAck7, "*")
                                 Do not permanently store information on USB; backup all information to network drive
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: none">
                                 @Html.CheckBox("SecurityAck8")
                                 @Html.ValidationMessageFor(model => model.SecurityAck8, "*")
                                 Do not install any software
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: ridge">
+                            <td colspan="2" style="text-align: left; vertical-align: top; text-wrap: none; border: none">
                                 @Html.CheckBox("SecurityAck9")
                                 @Html.ValidationMessageFor(model => model.SecurityAck9, "*")
                                 Scan the device for malicious software prior to opening files
@@ -188,13 +198,13 @@
 
                                 @Html.ValidationMessageFor(model => model.RenownOwned, "*")
                                 @{
-                                                  bool newOpt = false;
-                                                  bool existingOpt = false;
-                                                  if (Model.RenownOwned != null)
-                                                  {
-                                                      newOpt = Model.RenownOwned == "New";
-                                                      existingOpt = Model.RenownOwned == "Existing";
-                                                  }
+            bool newOpt = false;
+            bool existingOpt = false;
+            if (Model.RenownOwned != null)
+            {
+                newOpt = Model.RenownOwned == "New";
+                existingOpt = Model.RenownOwned == "Existing";
+            }
                                 }
                                 <strong>
 
@@ -264,11 +274,14 @@
     </fieldset> 
     <table class="Table1Format" style="width: 98%; border: 2px solid">
         <tr>
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Commit (Request is Complete)<input type="submit" name="submitButton" value=@Page.SubmitType />
+            <td style="font-size: 20px; font-weight: bold; text-align: center"><input type="submit" name="submitButton" value=@Page.SubmitType />
             </td>
 
-            <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
-            </td>
+            @if (Model.UsbDeviceId == 0)
+            {
+                <td style="font-size: 20px; font-weight: bold; text-align: center">Save for later (No Validation Performed)<input type="submit" name="submitButton" value="Save" />
+                </td>
+            }
         </tr>
     </table>
 
