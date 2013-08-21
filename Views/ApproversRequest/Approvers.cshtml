@@ -177,24 +177,31 @@
         <div id="ApproversTable" style="width: 98%; margin: auto"></div>
         @using (Html.BeginForm())
         {
-            <table>
+            <table class="Table1Format">
                 <tr>
                     <td>
                         <p>Comments</p>
-
-                    </td>
-                    <td>
-                        @Html.TextBox("Comments", null, new { style = "width:500px" })
+                        @Html.TextArea("Comments", null, new { style = "width:500px" })
                     </td>
                 </tr>
 
                 <tr>
+                    <td style="width: 400px">Send to next approver
+                    </td>
                     <td>
                         <input type="submit" name="submitButton" value="Approve" />
 
                     </td>
+                </tr>
+                <tr>
+                    <td style="width: 400px">Make Changes to the Information Protection Request
+                    </td>
                     <td>
-                        <input type="submit" name="submitButton" value="Re-Submit with changes" />
+                        <input type="submit" name="submitButton" value="Re-Submit" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 400px">Reject Information Protection Request
                     </td>
                     <td>
                         <input type="submit" name="submitButton" value="Reject" />
