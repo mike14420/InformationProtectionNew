@@ -43,9 +43,18 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             UsbDbAccessReq UsbDbAccess = new UsbDbAccessReq(connectionString);
 
-            UsbDevice data = UsbDbAccess.GetDevice(dbKey);
+            UsbDevice usbDevice = UsbDbAccess.GetDevice(dbKey);
 
-            return IpApprovalRequestView.AddOtherProperties(Convert(data));
+            UsbViewData usbViewData = Convert(usbDevice);
+            IpApprovalRequestView.AddOtherProperties(usbViewData);
+            if (usbViewData.HasAccessRights())
+            {
+                return usbViewData;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public List<UsbViewData> GetUsbRequestFor(String EmpId, String Controller)
@@ -59,8 +68,16 @@ namespace InformationProtection.Models
             UsbDbAccessReq UsbDbAccess = new UsbDbAccessReq(connectionString);
 
             List<UsbDevice> data = UsbDbAccess.GetDevicesFor(RequestorId);
-
-            List<UsbViewData> retData = UsbView.Convert(data); ;
+            List<UsbViewData> retData = new List<UsbViewData>();
+            List<UsbViewData> temp = Convert(data);
+            foreach (UsbViewData item in temp)
+            {
+                IpApprovalRequestView.AddOtherProperties(item);
+                if (item.HasAccessRights())
+                {
+                    retData.Add(item);
+                }
+            }
             foreach (UsbViewData item in retData)
             {
                 StringBuilder RequestDetailsLink = new StringBuilder();
@@ -89,17 +106,17 @@ namespace InformationProtection.Models
             return retData;
         }
 
-        public List<UsbViewData> GetUsbRequests()
-        {
+        //public List<UsbViewData> GetUsbRequests()
+        //{
 
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            UsbDbAccessReq UsbDbAccess = new UsbDbAccessReq(connectionString);
+        //    String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+        //    UsbDbAccessReq UsbDbAccess = new UsbDbAccessReq(connectionString);
 
-            List<UsbDevice> data = UsbDbAccess.GetDevices();
+        //    List<UsbDevice> data = UsbDbAccess.GetDevices();
 
-            List<UsbViewData> retData = UsbView.Convert(data); ;
-            return retData;
-        }
+        //    List<UsbViewData> retData = UsbView.Convert(data); ;
+        //    return retData;
+        //}
 
         public static List<UsbViewData> Convert(List<UsbDevice> ourData)
         {

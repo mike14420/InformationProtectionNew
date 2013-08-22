@@ -58,7 +58,7 @@
             </td>
             <td>
                 @Html.TextBox("FnameDisp", Model.Fname, new {id = "FnameDispId",  disabled = "true" })
-                @Html.Hidden("Fname", Model.Lname, new { id = "Fname" })
+                @Html.Hidden("Fname", Model.Fname, new { id = "Fname" })
             </td>
         </tr>
 
@@ -138,6 +138,14 @@
             <td>
                  @Html.TextBox("FullName", Model.FullName, new {id = "FullNameDispId", disabled = "true" })
                  @Html.Hidden("FullNameHidden", Model.FullName, new  { id = "FullNameHiddenId"})
+            </td>
+        </tr>
+         <tr>
+            <td>
+                <p>Submitter ID</p>
+            </td>
+            <td>
+               @Html.TextBox("LoginUser", (String)ViewBag.LoginUserName, new {disabled = "true" })
             </td>
         </tr>
     </table>

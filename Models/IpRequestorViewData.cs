@@ -120,5 +120,7 @@ namespace InformationProtection.Models
         {
             throw new NotImplementedException();
         }
+
+        public string SupervisorEmpID { get; set; }
     }
 }

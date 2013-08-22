@@ -23,5 +23,7 @@ namespace IpModelData
         public string RoleId { get; set; }
         // Request can be approved, pending or rejected
         public List<IpApprovalRequest> IpApprovalRequest { get; set; }
+
+        public string SupervisorEmpID { get; set; }
     }
 }

@@ -18,8 +18,11 @@ namespace InformationProtection.Controllers
         {
             CellPhoneSyncMdl ourModel = new CellPhoneSyncMdl();
             CellPhoneSyncMdlData data = ourModel.GetDevice(CellPhoneSyncDeviceId);
-            // only allow view of data for owner
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            // Only allow the data owner to view the form
+            // nulll is returned if user has no data 
+            // 1. no permissions
+            // 2. or no request current
+            if (data == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }
@@ -95,8 +98,8 @@ namespace InformationProtection.Controllers
             }
             CellPhoneSyncMdl cellPhoneSyncMdl = new CellPhoneSyncMdl();
             CellPhoneSyncMdlData data = cellPhoneSyncMdl.GetDevice(CellPhoneSyncDeviceId);
-            // only allow view of data for owner
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            // Only allow the data owner to view the form
+            if (data == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }

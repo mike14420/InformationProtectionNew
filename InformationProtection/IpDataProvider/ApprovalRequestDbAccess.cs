@@ -285,10 +285,16 @@ namespace IpDataProvider
                 p49.Value = data.WirelessDeviceID;
                 cmd.Parameters.Add(p49);
 
-                SqlParameter p50 = new SqlParameter("@Archive", SqlDbType.Bit);
+                SqlParameter p50 = new SqlParameter("@LogonUserIdentity", SqlDbType.VarChar);
                 p50.Direction = ParameterDirection.Input;
-                p50.Value = data.Archive;
+                p50.Value = data.LogonUserIdentity;
                 cmd.Parameters.Add(p50);
+
+                SqlParameter p51 = new SqlParameter("@Archive", SqlDbType.Bit);
+                p51.Direction = ParameterDirection.Input;
+                p51.Value = data.Archive;
+                cmd.Parameters.Add(p51);
+
 
                 //// EXECUTE THE SP
                 cmd.ExecuteScalar();
@@ -1435,7 +1441,14 @@ namespace IpDataProvider
                 {
                     request.IpdComment = String.Empty;
                 }
-
+                if (reader["LogonUserIdentity"] != DBNull.Value)
+                {
+                    request.LogonUserIdentity = (String)reader["LogonUserIdentity"];
+                }
+                else
+                {
+                    request.LogonUserIdentity = String.Empty;
+                }
                 request.Archive = (bool)reader["Archive"];
 
                 request.CellPhoneDeviceId = (int)reader["CellPhoneDeviceId"];

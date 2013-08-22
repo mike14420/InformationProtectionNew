@@ -39,7 +39,18 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             WirelessDbAccessReq wirelessDbAccess = new WirelessDbAccessReq(connectionString);
             WirelessDevice device = wirelessDbAccess.GetDevice(dbKey);
-            return IpApprovalRequestView.AddOtherProperties(Convert(device));
+
+            WirelessMdlData WwrelessMdlData = Convert(device);
+            IpApprovalRequestView.AddOtherProperties(WwrelessMdlData);
+            if (WwrelessMdlData.HasAccessRights())
+            {
+                return WwrelessMdlData;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
         public List<WirelessMdlData> GetWirelessFor(String EmpId, String Controller)
@@ -51,12 +62,23 @@ namespace InformationProtection.Models
          
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             WirelessDbAccessReq wirelessDbAccess = new WirelessDbAccessReq(connectionString);
-            List<WirelessDevice> data = wirelessDbAccess.GetDevicesFor(RequestorId);
+            List<WirelessDevice> wirelessDevice = wirelessDbAccess.GetDevicesFor(RequestorId);
 
-            List<WirelessMdlData> retData = Convert(data);
-            foreach (WirelessMdlData item in retData)
+            List<WirelessMdlData> retData = new List<WirelessMdlData>();
+
+            List<WirelessMdlData> temp = Convert(wirelessDevice);
+            // only allow access if the current user has permission to view
+            foreach (WirelessMdlData item in temp)
             {
                 IpApprovalRequestView.AddOtherProperties(item);
+                if (item.HasAccessRights())
+                {
+                    retData.Add(item);
+                }
+            }
+
+            foreach (WirelessMdlData item in retData)
+            {
 
                 StringBuilder RequestDetailsLink = new StringBuilder();
                 String EditLink = String.Empty;

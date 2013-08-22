@@ -74,7 +74,6 @@ namespace IpModelData
         public int WirelessDeviceID { get; set; }
 
         public bool Archive { get; set; }
-
-
+        public string LogonUserIdentity { get; set; }
     }
 }

@@ -18,8 +18,8 @@ namespace InformationProtection.Controllers
         {
             RemoteAccessMdl ourModel = new RemoteAccessMdl();
             RemoteAccessMdlData data = ourModel.GetRemoteAccessRequest(RemoteAccessId);
-            // only allow view of data for owner
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            // Only allow the data owner to view the form
+            if (data == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }
@@ -96,8 +96,8 @@ namespace InformationProtection.Controllers
             }
             RemoteAccessMdl remoteAccessMdl = new RemoteAccessMdl();
             RemoteAccessMdlData data = remoteAccessMdl.GetRemoteAccessRequest(RemoteAccessId);
-            // only allow view of data for owner
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            // Only allow the data owner to view the form
+            if (data == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }

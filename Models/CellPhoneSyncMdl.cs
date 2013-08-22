@@ -34,32 +34,43 @@ namespace InformationProtection.Models
             return result;
         }
 
-        public List<CellPhoneSyncMdlData> GetDevices()
-        {
+        //public List<CellPhoneSyncMdlData> GetDevices()
+        //{
 
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            CellPhoneSyncReqDbAccess CellPhoneSyncReqDbAcess = new CellPhoneSyncReqDbAccess(connectionString);
+        //    String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+        //    CellPhoneSyncReqDbAccess CellPhoneSyncReqDbAcess = new CellPhoneSyncReqDbAccess(connectionString);
 
-            List<CellPhoneSyncDevice> data = CellPhoneSyncReqDbAcess.GetDevices();
-
-            return Convert(data);
-        }
+        //    List<CellPhoneSyncDevice> data = CellPhoneSyncReqDbAcess.GetDevices();
+        //    List<CellPhoneSyncMdlData> cellPhoneSyncData = Convert(data);
+        //    return cellPhoneSyncData;
+        //}
 
         public CellPhoneSyncMdlData GetDevice(string CellPhoneSyncDeviceIdStr)
         {
             int intId = 0;
             int.TryParse(CellPhoneSyncDeviceIdStr, out intId);
-            CellPhoneSyncDevice cDevice;
+            
 
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             CellPhoneSyncReqDbAccess CellPhoneSyncReqDbAcess = new CellPhoneSyncReqDbAccess(connectionString);
 
             List<CellPhoneSyncDevice> data = CellPhoneSyncReqDbAcess.GetDevices();
 
-            cDevice = (from C in data
+            CellPhoneSyncDevice cellPhoneSyncDevice = (from C in data
                        where C.CellPhoneSyncDeviceId == intId
                        select C).FirstOrDefault();
-            return IpApprovalRequestView.AddOtherProperties(Convert(cDevice));
+
+            CellPhoneSyncMdlData cellPhoneSyncMdlData = Convert(cellPhoneSyncDevice);
+            IpApprovalRequestView.AddOtherProperties(cellPhoneSyncMdlData);
+            if (cellPhoneSyncMdlData.HasAccessRights())
+            {
+                return cellPhoneSyncMdlData;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
 
@@ -74,11 +85,21 @@ namespace InformationProtection.Models
 
             List<CellPhoneSyncDevice> data = CellPhoneSyncReqDbAcess.GetDevicesFor(RequestorId);
 
-            List<CellPhoneSyncMdlData> retData = Convert(data);
+            List<CellPhoneSyncMdlData> retData = new List<CellPhoneSyncMdlData>();
+            List<CellPhoneSyncMdlData> temp= Convert(data);
+            temp = Convert(data);
+            foreach (CellPhoneSyncMdlData item in temp)
+            {
+                IpApprovalRequestView.AddOtherProperties(item);
+                if (item.HasAccessRights())
+                {
+                    retData.Add(item);
+                }
+            }
 
             foreach (CellPhoneSyncMdlData item in retData)
             {
-                IpApprovalRequestView.AddOtherProperties(item);
+
                 StringBuilder RequestDetailsLink = new StringBuilder();
                 String EditLink = String.Empty;
 

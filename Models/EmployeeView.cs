@@ -42,8 +42,7 @@ namespace InformationProtection.Models
 
         public SelectList GetEmployees()
         {
-            SQLRFSDP dp = null;
-            dp = new SQLRFSDP();
+            SQLRFSDP dp = new SQLRFSDP();
             List<Employee> allEmployees = dp.GetEmployeesAll();
             allEmployees = allEmployees.OrderBy(A => A.LastName).ToList();
             
@@ -57,6 +56,37 @@ namespace InformationProtection.Models
                         }
                     )
                     ,"Value", "Text");
+            return returnData;
+        }
+
+
+        public SelectList GetSupervisorsEmployees()
+        {
+            String LogonUserIdentity = HttpContext.Current.Request.LogonUserIdentity.Name;
+            Employee theSupervisor = DbGetUserInfo(LogonUserIdentity);
+
+            // MIKE @@@ WORK  DATA FOR TESTING A SUPERVISOR as me
+            //theSupervisor = DbGetEmployeeByEmpId("19541");
+
+
+            SQLRFSDP dp = new SQLRFSDP();
+            List<Employee> allEmployees = dp.GetEmployeesAll();
+            List<Employee> supervisorsEmployees = new List<Employee>();
+
+            supervisorsEmployees = (from item in allEmployees
+                 where item.SupId == theSupervisor.Emp_id
+                 select item).ToList();
+
+            SelectList returnData = new SelectList(
+                    (
+                        from E in supervisorsEmployees
+                        select new SelectListItem
+                        {
+                            Value = E.Emp_id.ToString(),
+                            Text = String.Format("{0}, {1}", E.LastName, E.FirstName)
+                        }
+                    )
+                    , "Value", "Text");
             return returnData;
         }
 
@@ -84,6 +114,7 @@ namespace InformationProtection.Models
                 thisEmp.Mname = DbEmp.MiddleName;
                 thisEmp.Fname = DbEmp.FirstName;
                 thisEmp.EmpID = DbEmp.Emp_id.ToString();
+                thisEmp.SupervisorEmpID = DbEmp.Supervisor.Sup_id.ToString();
             }
             return thisEmp;
 

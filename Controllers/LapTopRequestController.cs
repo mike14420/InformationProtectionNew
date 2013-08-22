@@ -16,9 +16,9 @@ namespace InformationProtection.Controllers
         public ActionResult Details(String EmpID, String LapTopDeviceId)
         {
             LapTopView ourModel = new LapTopView();
-            LapTopViewData data = ourModel.GetLapTopRequest(LapTopDeviceId);
-            // only allow view of data for owner
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            LapTopViewData lapTopViewData = ourModel.GetLapTopRequest(LapTopDeviceId);
+            // Only allow the data owner to view the form
+            if (lapTopViewData == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }
@@ -26,9 +26,9 @@ namespace InformationProtection.Controllers
             IpRequestorView Model = new IpRequestorView();
             IpRequestorViewData requestor = Model.GetRequestor(EmpID);
             ViewBag.requestor = requestor;
-            ViewBag.ourData = data;
-            ViewBag.RequestId = data.RequestId;
-            return View(data);
+            ViewBag.ourData = lapTopViewData;
+            ViewBag.RequestId = lapTopViewData.RequestId;
+            return View(lapTopViewData);
         }
 
         //
@@ -99,14 +99,14 @@ namespace InformationProtection.Controllers
                 return RedirectToAction("Index", "UsersView", null);
             }
             LapTopView lapTopView = new LapTopView();
-            LapTopViewData data = lapTopView.GetLapTopRequest(LapTopDeviceId);
-            // only allow view of data for owner
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            LapTopViewData lapTopViewData = lapTopView.GetLapTopRequest(LapTopDeviceId);
+            // Only allow the data owner to view the form
+            if (lapTopViewData == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }
             // edit is available for resubmit or saved form data
-            if (!(data.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || data.RequestStatus == IpApprover.ApproveState.saved.ToString()))
+            if (!(lapTopViewData.RequestStatus == IpApprover.ApproveState.resubmit.ToString() || lapTopViewData.RequestStatus == IpApprover.ApproveState.saved.ToString()))
             {
                 return RedirectToAction("Details", new { EmpID = EmpID, LapTopDeviceId = LapTopDeviceId });
             }
@@ -115,7 +115,7 @@ namespace InformationProtection.Controllers
             ViewData["EmpID"] = EmpID;
             ViewData["FullName"] = requestor.FullName;
             ViewBag.requestor = requestor;
-            return View(data);
+            return View(lapTopViewData);
         }
 
         //

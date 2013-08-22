@@ -39,7 +39,8 @@ namespace InformationProtection.Models
                     Mname = employee.MiddleName,
                     Fname = employee.FirstName,
                     PhoneNumber = String.Empty,
-                    EmpID = employee.Emp_id.ToString()
+                    EmpID = employee.Emp_id.ToString(),
+                    SupervisorEmpID = (employee.Supervisor != null) ? employee.Supervisor.Sup_id.ToString() : String.Empty
                 };
                 requestorId = CreateRequestor(thisEmp, role);
             }
@@ -435,6 +436,7 @@ namespace InformationProtection.Models
                     Lname = data.Lname,
                     Mname = data.Mname,
                     PhoneNumber = data.PhoneNumber,
+                    SupervisorEmpID = data.SupervisorEmpID
                 };
             }
 
@@ -457,6 +459,7 @@ namespace InformationProtection.Models
                     Lname = data.Lname,
                     Mname = data.Mname,
                     PhoneNumber = data.PhoneNumber,
+                    SupervisorEmpID = data.SupervisorEmpID
                 };
             }
 

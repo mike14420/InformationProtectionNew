@@ -157,7 +157,50 @@ namespace InformationProtection.Models
             if (PhysLocation == null) 
                 PhysLocation = "";
         }
+        public bool HasAccessRights()
+        {
+            bool retValue = false;
+            String logonUserIdentity = HttpContext.Current.Request.LogonUserIdentity.Name;
+            IpRequestorView ipRequestorView = new IpRequestorView();
 
+            // THE PERSON TRYING TO VIEW THE DATA
+            IpRequestorViewData logInRequestor = ipRequestorView.GetRequestorByLoginId(logonUserIdentity);
+            String logInEmpId = logInRequestor.EmpID;
+
+            if (logInRequestor.IsAdmin)
+            {
+                retValue = true;
+            }
+            if (logInEmpId == RequestorId.ToString())
+            {
+                retValue = true;
+            }
+            if (logInEmpId == FirstSupEmpId.ToString())
+            {
+                retValue = true;
+            }
+            if (logInEmpId == SecondSupEmpId.ToString())
+            {
+                retValue = true;
+            }
+            if (logInEmpId == VpHrApproverEmpId.ToString())
+            {
+                retValue = true;
+            }
+            if (logInEmpId == RhCfoApproverEmpId.ToString())
+            {
+                retValue = true;
+            }
+            if (logInEmpId == IpdApproverEmpId.ToString())
+            {
+                retValue = true;
+            }
+            if (logInEmpId == CioEmpId.ToString())
+            {
+                retValue = true;
+            }
+            return retValue;
+        }
         public string RequestStatus { get; set; }
 
         public int RequestId { get; set; }
@@ -165,5 +208,17 @@ namespace InformationProtection.Models
         public string RequestorsName { get; set; }
 
         public string RequestReSubmitLink { get; set; }
+
+        public int FirstSupEmpId { get; set; }
+
+        public int SecondSupEmpId { get; set; }
+
+        public int VpHrApproverEmpId { get; set; }
+
+        public int RhCfoApproverEmpId { get; set; }
+
+        public int IpdApproverEmpId { get; set; }
+
+        public int CioEmpId { get; set; }
     }
 }

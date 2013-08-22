@@ -56,8 +56,9 @@ namespace InformationProtection.Controllers
             {
                 return RedirectToAction("Index");
             }
-            SelectList employees = model.GetEmployees();
+            SelectList employees = model.GetSupervisorsEmployees();
             ViewBag.AllUsers = employees;
+            ViewBag.LoginUserName = LoginUserName;
             return View(thisEmployee);
         }
 

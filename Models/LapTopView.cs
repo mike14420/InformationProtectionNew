@@ -12,16 +12,7 @@ namespace InformationProtection.Models
 {
     public class LapTopView
     {
-        public LapTopViewData GetLapTopRequest(string LapTopDeviceId)
-        {
-            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
-            LapTopReqDbReqAccess LapTopModel = new LapTopReqDbReqAccess(connectionString);
-            int intLapTopDeviceId = 0;
-            int.TryParse(LapTopDeviceId, out intLapTopDeviceId);
-
-            LapTopDevice data = LapTopModel.GetDevice(intLapTopDeviceId);
-            return IpApprovalRequestView.AddOtherProperties(LapTopView.Convert(data));
-        }
+        
 
         public int Create(LapTopViewData LapTopRequest, int IpRequestorId)
         {
@@ -47,6 +38,26 @@ namespace InformationProtection.Models
             return retVal;
         }
 
+        public LapTopViewData GetLapTopRequest(string LapTopDeviceId)
+        {
+            String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+            LapTopReqDbReqAccess LapTopModel = new LapTopReqDbReqAccess(connectionString);
+            int intLapTopDeviceId = 0;
+            int.TryParse(LapTopDeviceId, out intLapTopDeviceId);
+
+            LapTopDevice data = LapTopModel.GetDevice(intLapTopDeviceId);
+            LapTopViewData lapTopViewData = LapTopView.Convert(data);
+            IpApprovalRequestView.AddOtherProperties(lapTopViewData);
+
+            if (lapTopViewData.HasAccessRights())
+            {
+                return lapTopViewData;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         public List<LapTopViewData> GetLapTopRequestFor(String EmpId, String Controller)
         {
@@ -58,11 +69,21 @@ namespace InformationProtection.Models
             LapTopReqDbReqAccess LapTopModel = new LapTopReqDbReqAccess(connectionString);
 
             List<LapTopDevice> devices = LapTopModel.GetDevicesFor(RequestorId);
-            List<LapTopViewData> retData = Convert(devices);
+            List<LapTopViewData> retData = new List<LapTopViewData>();
+            List<LapTopViewData> temp = Convert(devices);
+            // check permission to view data
+            foreach (LapTopViewData item in temp)
+            {
+                IpApprovalRequestView.AddOtherProperties(item);
+                if (item.HasAccessRights())
+                {
+                    retData.Add(item);
+                }
+            }
 
             foreach (LapTopViewData item in retData)
             {
-                IpApprovalRequestView.AddOtherProperties(item);
+
                 StringBuilder RequestDetailsLink = new StringBuilder();
                 String EditLink = String.Empty;
 

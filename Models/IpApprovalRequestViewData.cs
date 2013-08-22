@@ -660,6 +660,8 @@ namespace InformationProtection.Models
                 return retValue;
             }
         }
+
+        public string LogonUserIdentity { get; set; }
     }
 }
 

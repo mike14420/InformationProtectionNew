@@ -30,7 +30,7 @@ namespace InformationProtection.Controllers
             CdBurrnerViewData cdBurrnerViewData = cdBurnerView.GetCdBurnerRequest(CdburnerDeviceId);
 
             // Only allow the data owner to view the form
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, cdBurrnerViewData.RequestorId))
+            if (cdBurrnerViewData == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }
@@ -75,17 +75,17 @@ namespace InformationProtection.Controllers
             data.BusJustType = col["RadBtnWriterType"];
             CdBurnerView cdModel = new CdBurnerView();
             cdModel.ValidateRenownOwned(data, ModelState);
-            IpApprovalRequestView ourModel = new IpApprovalRequestView();
+            IpApprovalRequestView ipApprovalRequestView = new IpApprovalRequestView();
             if (submitButton == "Save")
             {
                 // save without checking model validataion
                 data.SaveInitialize();
-                ourModel.Create(data, EmpID, IpApprover.ApproveState.saved);
+                ipApprovalRequestView.Create(data, EmpID, IpApprover.ApproveState.saved);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             if (ModelState.IsValid)
             {
-                ourModel.Create(data, EmpID, IpApprover.ApproveState.pending);
+                ipApprovalRequestView.Create(data, EmpID, IpApprover.ApproveState.pending);
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             // show user the form with the error messages
@@ -111,7 +111,7 @@ namespace InformationProtection.Controllers
             CdBurnerView cdBurnerView = new CdBurnerView();
             CdBurrnerViewData data = cdBurnerView.GetCdBurnerRequest(CdburnerDeviceId);
             // Only allow the data owner to view the form
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            if (data == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }

@@ -7,6 +7,7 @@ using System.Linq;
 using IpDataProvider;
 using System.Web.Configuration;
 using System.Text;
+using System.Web;
 
 
 namespace InformationProtection.Models
@@ -36,6 +37,7 @@ namespace InformationProtection.Models
             return result;
         }
 
+
         public CdBurrnerViewData GetCdBurnerRequest(string CdburnerDeviceId)
         {
             int intId = 0;
@@ -43,14 +45,21 @@ namespace InformationProtection.Models
 
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             CdBurnerReqDbAccess CdBurnerReqDbAcess = new CdBurnerReqDbAccess(connectionString);
-
             List<CdBurnerDevice> data = CdBurnerReqDbAcess.GetDevices();
             CdBurnerDevice cDevice = (from C in data
-                           where C.CdburnerDeviceId == intId
-                           select C).FirstOrDefault();  
-            CdBurrnerViewData tmp = Convert(cDevice);
-            IpApprovalRequestView.AddOtherProperties(tmp);
-            return tmp;
+                                      where C.CdburnerDeviceId == intId
+                                      select C).FirstOrDefault();
+            CdBurrnerViewData cdBurrnerViewData = Convert(cDevice);
+            IpApprovalRequestView.AddOtherProperties(cdBurrnerViewData);
+            if (cdBurrnerViewData.HasAccessRights())
+            {
+                return cdBurrnerViewData;
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         public List<CdBurrnerViewData> CdDvdRequestFor(String EmpId, String Controller)
@@ -66,12 +75,19 @@ namespace InformationProtection.Models
             List<CdBurnerDevice> RequestorsData = (from C in data
                                                    where C.RequestorId == RequestorId
                                                    select C).ToList();
-            List<CdBurrnerViewData> retData;
-            retData = Convert(RequestorsData);
-            foreach (CdBurrnerViewData item in retData)
+            List<CdBurrnerViewData> retData = new List<CdBurrnerViewData>();
+            List<CdBurrnerViewData> temp = Convert(RequestorsData);
+            foreach (CdBurrnerViewData item in temp)
             {
                 IpApprovalRequestView.AddOtherProperties(item);
+                if (item.HasAccessRights())
+                {
+                    retData.Add(item);
+                }
+            }
 
+            foreach (CdBurrnerViewData item in retData)
+            {
                 StringBuilder RequestDetailsLink = new StringBuilder();
                 String EditLink = String.Empty;
                 RequestDetailsLink.Append(String.Format("<a href=\"{0}/Details?EmpID={1}&CdburnerDeviceId={2}\">Details</a>",
@@ -188,3 +204,19 @@ namespace InformationProtection.Models
 
     }
 }
+
+        //public CdBurrnerViewData GetCdBurnerRequestOLD(string CdburnerDeviceId)
+        //{
+        //    int intId = 0;
+        //    int.TryParse(CdburnerDeviceId, out intId);
+
+        //    String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
+        //    CdBurnerReqDbAccess CdBurnerReqDbAcess = new CdBurnerReqDbAccess(connectionString);
+        //    List<CdBurnerDevice> data = CdBurnerReqDbAcess.GetDevices();
+        //    CdBurnerDevice cDevice = (from C in data
+        //                   where C.CdburnerDeviceId == intId
+        //                   select C).FirstOrDefault();  
+        //    CdBurrnerViewData tmp = Convert(cDevice);
+        //    IpApprovalRequestView.AddOtherProperties(tmp);
+        //    return tmp;
+        //}

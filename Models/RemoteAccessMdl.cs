@@ -21,7 +21,15 @@ namespace InformationProtection.Models
             int.TryParse(RemoteAccessId, out dbKey);
             RemoteAccess device = RemoteAccessModel.GetDevice(dbKey);
 
-            return IpApprovalRequestView.AddOtherProperties(Convert(device));
+            RemoteAccessMdlData remoteAccessMdlData = IpApprovalRequestView.AddOtherProperties(Convert(device));
+            if (remoteAccessMdlData.HasAccessRights())
+            {
+                return remoteAccessMdlData;
+            }
+            else
+            {
+                return null;
+            }
         }
         public List<RemoteAccessMdlData> GetRemoteAccessFor(String EmpId, String Controller)
         {
@@ -30,19 +38,30 @@ namespace InformationProtection.Models
             int RequestorId = requestor.IpRequestorId;
 
             List<RemoteAccess> data;
-            List<RemoteAccessMdlData> retData;
+
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             RemoteAccessDbReqAccess RemoteAccessModel = new RemoteAccessDbReqAccess(connectionString);
             ApprovalRequestDbAccess approvalRequestDbAccess = new ApprovalRequestDbAccess(connectionString);
 
             data = RemoteAccessModel.GetDevicesFor(RequestorId);
 
-            retData = Convert(data);
+            List<RemoteAccessMdlData> retData = new List<RemoteAccessMdlData>();
+            List<RemoteAccessMdlData> temp;
+            temp = Convert(data);
+            // onlly allow data viewed if has permission to view
+            foreach (RemoteAccessMdlData item in temp)
+            {
+                IpApprovalRequestView.AddOtherProperties(item);
+                if (item.HasAccessRights())
+                {
+                    retData.Add(item);
+                }
+            }
+
             foreach (RemoteAccessMdlData item in retData)
             {
                 StringBuilder RequestDetailsLink = new StringBuilder();
                 String EditLink = String.Empty;
-                IpApprovalRequestView.AddOtherProperties(item);
 
                 RequestDetailsLink.Append(String.Format("<a href=\"{0}/Details?EmpID={1}&RemoteAccessId={2}\">Details</a>",
                     Controller, requestor.EmpID, item.RemoteAccessId));

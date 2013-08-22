@@ -20,8 +20,8 @@ namespace InformationProtection.Controllers
             int id = 0;
             int.TryParse(WirelessDeviceId, out id);
             WirelessMdlData data = ourModel.GetWirelessRequest(id);
-            // only allow view of data for owner
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            // Only allow the data owner to view the form
+            if (data == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }
@@ -114,8 +114,8 @@ namespace InformationProtection.Controllers
                 return RedirectToAction("Index", "UsersView", new { EmpID = EmpID });
             }
             WirelessMdlData data = wirelessMdl.GetWirelessRequest(deviceId);
-            // only allow view of data for owner
-            if (!IpApprovalRequestView.IsDataOwner(HttpContext.Request.LogonUserIdentity.Name, data.RequestorId))
+            // Only allow the data owner to view the form
+            if (data == null)
             {
                 return RedirectToAction("Index", "UsersView");
             }

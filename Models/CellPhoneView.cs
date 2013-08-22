@@ -33,13 +33,20 @@ namespace InformationProtection.Models
         {
             int intId = 0;
             int.TryParse(cellPhoneDevId, out intId);
-            CellPhoneDevice cDevice;
+            CellPhoneDevice cellPhoneDevice;
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             CellPhoneReqDbAccess CellReqDbAcess = new CellPhoneReqDbAccess(connectionString);
-            cDevice = CellReqDbAcess.GetDevice(intId);
-            CellPhoneViewData data = Convert(cDevice);
-            CellPhoneViewData retData = IpApprovalRequestView.AddOtherProperties(data);
-            return retData;
+            cellPhoneDevice = CellReqDbAcess.GetDevice(intId);
+            CellPhoneViewData data = Convert(cellPhoneDevice);
+            CellPhoneViewData cellPhoneViewData = IpApprovalRequestView.AddOtherProperties(data);
+            if (cellPhoneViewData.HasAccessRights())
+            {
+                return cellPhoneViewData;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public List<CellPhoneViewData> GetDevicesFor(String EmpId, String Controller)
@@ -51,12 +58,20 @@ namespace InformationProtection.Models
             String connectionString = WebConfigurationManager.ConnectionStrings["IpRequest"].ConnectionString;
             CellPhoneReqDbAccess CellPhoneReqDbAcess = new CellPhoneReqDbAccess(connectionString);
             List<CellPhoneDevice> data = CellPhoneReqDbAcess.GetDevicesFor(RequestorId);
-            List<CellPhoneViewData> retData;
-            retData = Convert(data);
-            foreach (CellPhoneViewData item in retData)
+            List<CellPhoneViewData> retData = new List<CellPhoneViewData>();
+
+            List<CellPhoneViewData> temp = new List<CellPhoneViewData>();
+            foreach (CellPhoneViewData item in temp)
             {
                 IpApprovalRequestView.AddOtherProperties(item);
+                if (item.HasAccessRights())
+                {
+                    retData.Add(item);
+                }
+            }
 
+            foreach (CellPhoneViewData item in retData)
+            {
                 StringBuilder RequestDetailsLink = new StringBuilder();
                 String EditLink = String.Empty;
 
